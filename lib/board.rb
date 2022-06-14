@@ -8,29 +8,19 @@ class Board
   end
 
   def make_board
-    Array.new(8) { Array.new(8, '  ') }
+    Array.new(8) { Array.new(8, '   ') }
   end
 
-  # def drawboard
-  #   @grid.each do |row|
-  #     print '|'
-  #     row.each do |value|
-  #       print "#{value} |".colorize( :background => :blue)
-  #     end
-  #     puts "\n"
-  #   end
-  # end
-
   def drawboard
-    i = 0
+    i = 8
     puts "\n"
     @grid.each do |row|
       j = 0
-      print '   '
+      print "   #{i} "
       if i.even?
         until j == row.length
           if j.even?
-            print row[j].colorize(:background => :white)
+            print row[j].colorize(:background => :blue)
           else
             print row[j].colorize(:background => :red)
           end
@@ -41,14 +31,15 @@ class Board
           if j.even?
             print row[j].colorize(:background => :red)
           else
-            print row[j].colorize(:background => :white)
+            print row[j].colorize(:background => :blue)
           end
           j += 1
         end
       end
       puts "\n"
-      i += 1
+      i -= 1
     end
+    puts '      a  b  c  d  e  f  g  h'
     puts "\n"
   end
 end

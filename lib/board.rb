@@ -59,7 +59,4 @@ class Board
     end
     puts '       a      b      c      d      e      f      g      h'
   end
-
-  def place_pieces
-  end
 end

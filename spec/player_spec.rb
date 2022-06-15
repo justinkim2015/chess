@@ -16,7 +16,6 @@ describe Player do
   let(:knight) { double(Knight) }
   let(:pawn) { double(Pawn) }
 
-
   before do
     allow(rook).to receive(:color) { 'Black' }
   end

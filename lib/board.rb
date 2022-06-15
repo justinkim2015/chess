@@ -50,8 +50,8 @@ class Board
     height1 = 8
     height2 = 7
     4.times do
-      make_row_squares(:red, :green, i, height1)
-      make_row_squares(:green, :red, j, height2)
+      make_row_squares(:red, :blue, i, height1)
+      make_row_squares(:blue, :red, j, height2)
       i += 2
       j += 2
       height1 -= 2

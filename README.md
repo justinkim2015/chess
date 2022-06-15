@@ -34,3 +34,6 @@ Now that I've figured out how to draw the board, next step is to figure out how 
     -game.white_pieces.knight << This feels more messy, plus if I do it like this, player2 could potentially call player1's pieces.
 
 *MAIN THING TO FIGURE OUT ATM, WHERE DO I SAVE THE LOCATIONS OF THE PIECES
+-If I want to save the locations to game, board.grid[0][0] = player1.pieces[:rook1].color  
+
+*If I save the location of each piece to the piece object how can I use this information?  

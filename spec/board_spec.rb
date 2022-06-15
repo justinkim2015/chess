@@ -1,9 +1,10 @@
 require './lib/board'
+# rspec spec/board_spec.rb
 
 describe Board do
   subject(:board) { described_class.new }
 
-  context '#make_board' do
+  describe '#make_board' do
     it 'creates an array with length 8' do
       expect(board.grid.length).to eq(8)
     end

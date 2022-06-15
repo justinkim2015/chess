@@ -15,10 +15,7 @@ class Game
     @black_pieces = black_pieces
   end
 
-  def create_pieces
-  end
-
   def set_board
-    @board.grid[0][0] = Knight.new.black_piece
+    @board.grid[0][0] = player1.pieces
   end
 end

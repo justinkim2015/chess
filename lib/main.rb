@@ -1,23 +1,24 @@
 require_relative 'board'
 require_relative 'player'
+require_relative './pieces/king'
+require_relative './pieces/bishop'
+require_relative './pieces/pawn'
+require_relative './pieces/queen'
+require_relative './pieces/rook'
+require_relative './pieces/knight'
 
 board = Board.new
-
-board.grid[0][0] = 'f'
-board.grid[0][1] = 'g'
-board.grid[0][2] = 'h'
-board.grid[0][3] = 'i'
-board.grid[1][0] = 'a'
-board.grid[2][0] = 'b'
-board.grid[3][0] = 'c'
-board.grid[4][0] = 'd'
+player1 = Player.new('Justin', 'White')
+player2 = Player.new('Maya', 'Black')
 
 board.drawboard
 
+player1.pieces.each do |hash|
+  p hash
+end
 
-# board.make_row_blocks(:green, :red)
-# board.make_row(:red, :green)
-# board.make_row_value_with_data(:red, :green, 0)
-# board.make_row(:red, :green)
+puts '-------------------------------'
 
-# board.drawboard
+player2.pieces.each do |hash|
+  p hash
+end

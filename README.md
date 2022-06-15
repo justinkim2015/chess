@@ -27,8 +27,10 @@ TO-DO
 
 Now that I've figured out how to draw the board, next step is to figure out how to place the pieces on the board.  
 
--First of all I need to initialize an object for each of the 32 pieces and save them somewhere.
+-First of all I need to initialize an object for each of the 32 pieces and save them somewhere. 
   -If I save these to player class how will I call them? 
     -game.player1.knight
   -If I save these to game class how will I call them?
     -game.white_pieces.knight << This feels more messy, plus if I do it like this, player2 could potentially call player1's pieces.
+
+*MAIN THING TO FIGURE OUT ATM, WHERE DO I SAVE THE LOCATIONS OF THE PIECES

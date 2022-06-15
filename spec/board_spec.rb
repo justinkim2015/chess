@@ -1,4 +1,5 @@
 require './lib/board'
+
 # rspec spec/board_spec.rb
 
 describe Board do

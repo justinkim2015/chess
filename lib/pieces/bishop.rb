@@ -18,7 +18,7 @@ class Bishop < Piece
     end
   end
 
-  def valid?(st_x, st_y, fin_x, fin_y)
+  def valid_move?(st_x, st_y, fin_x, fin_y)
     i = 1
     7.times do
       return true if [fin_x, fin_y] == [st_x + i, st_y + i] && ((st_x + i) && (st_y + i)) <= 7 ||
@@ -28,6 +28,19 @@ class Bishop < Piece
 
       i += 1
     end
+    false
+  end
+
+  # What color is my bishop class in my test case??
+  def valid_spot?(board, x, y)
+    pieces = if @color == 'White'
+               @white_pieces
+             else
+               @black_pieces
+             end
+
+    return true unless pieces.include?(board.grid[x][y])
+
     false
   end
 end

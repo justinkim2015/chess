@@ -15,6 +15,11 @@ class Game
     @turn = @player1
   end
 
+  def move
+    @player1.pieces[:bishop].move(@board, 5, 5)
+    @player1.pieces[:bishop].move(@board, 0, 0)
+  end
+
   def place_pieces
     board.grid[0][0] = player2.pieces[:rook].color
     board.grid[0][1] = player2.pieces[:knight].color

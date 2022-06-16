@@ -10,5 +10,5 @@ require_relative './pieces/knight'
 
 game = Game.new
 game.place_pieces
+game.move
 game.board.drawboard
-

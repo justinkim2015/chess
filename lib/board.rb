@@ -19,7 +19,7 @@ class Board
     print "\n"
   end
 
-  def make_single_center_row(color, value = 'k')
+  def make_single_center_row(color, value)
     print "   #{value}   ".colorize(background: color)
   end
 

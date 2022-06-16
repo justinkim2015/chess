@@ -6,7 +6,7 @@ This project seems like a really big step-up in scale over the rest of the proje
 PARTS OF A CHESS GAME
 -Board(8x8)
 -Players(2)
--Pieces ***This should also store the location of the piece possibly.***
+-Pieces 
   -Pawns(8 ea)
   -Rooks(2 ea)
   -Bishops(2 ea)
@@ -27,13 +27,18 @@ TO-DO
 
 Now that I've figured out how to draw the board, next step is to figure out how to place the pieces on the board.  
 
--First of all I need to initialize an object for each of the 32 pieces and save them somewhere. 
+-First of all I need to initialize an object for each of the 32 pieces and save them somewhere. **DONE saved to player classes**
   -If I save these to player class how will I call them? 
     -game.player1.knight
   -If I save these to game class how will I call them?
     -game.white_pieces.knight << This feels more messy, plus if I do it like this, player2 could potentially call player1's pieces.
 
 *MAIN THING TO FIGURE OUT ATM, WHERE DO I SAVE THE LOCATIONS OF THE PIECES
--If I want to save the locations to game, board.grid[0][0] = player1.pieces[:rook1].color  
+-If I want to save the locations to game, board.grid[0][0] = player1.pieces[:rook1].color  **DONE** I don't need to save the locations anywhere, the board will track it.
 
-*If I save the location of each piece to the piece object how can I use this information?  
+What do I need to do to move a piece.  The things I need to know are
+-Initial location
+-End location
+-Type of piece
+
+

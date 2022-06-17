@@ -1,4 +1,4 @@
-require './lib/pieces/piece'
+require_relative 'piece'
 
 class Bishop < Piece
   attr_accessor :color
@@ -12,10 +12,11 @@ class Bishop < Piece
     color == 'White' ? '♝' : '♗'
   end
 
-  def move(board, x, y)
-    unless @white_pieces.include?(board.grid[x][y])
-      board.grid[x][y] = @color
-    end
+  def move(board, st_x, st_y, fin_x, fin_y)
+    return unless valid_move?(st_x, st_y, fin_x, fin_y) && valid_spot?(board, fin_x, fin_y)
+
+    board.grid[fin_x][fin_y] = @color
+    board.grid[st_x][st_y] = ' '
   end
 
   def valid_move?(st_x, st_y, fin_x, fin_y)
@@ -31,15 +32,14 @@ class Bishop < Piece
     false
   end
 
-  # What color is my bishop class in my test case??
   def valid_spot?(board, x, y)
-    pieces = if @color == 'White'
-               @white_pieces
-             else
-               @black_pieces
-             end
+    enemy_pieces = if @color == 'White'
+                     @black_pieces
+                   else
+                     @white_pieces
+                   end
 
-    return true unless pieces.include?(board.grid[x][y])
+    return true unless enemy_pieces.include?(board.grid[x][y])
 
     false
   end

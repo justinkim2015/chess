@@ -11,25 +11,40 @@ describe Bishop do
   describe '#move' do
     context 'space is empty' do
       it 'moves to empty space' do
-        x = 0
-        y = 0
-        expect { bishop.move(gameboard, x, y) }.to change { gameboard.grid[x][y] }.from(' ').to('♝')
+        st_x = 3
+        st_y = 3
+        fin_x = 0
+        fin_y = 0
+        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[fin_x][fin_y] }.from(' ').to('♝')
+      end
+
+      it 'removes pieces from original spot' do
+        st_x = 3
+        st_y = 3
+        fin_x = 0
+        fin_y = 0
+        gameboard.grid[st_x][st_y] = '♝'
+        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[st_x][st_y] }.from('♝').to(' ')
       end
     end
 
     context 'space is not empty' do
       it 'takes enemy piece' do
-      x = 0
-      y = 0
-      gameboard.grid[0][0] = '♗'
-      expect { bishop.move(gameboard, x, y) }.to change { gameboard.grid[x][y] }.from('♗').to('♝')
+        st_x = 3
+        st_y = 3
+        fin_x = 0
+        fin_y = 0
+        gameboard.grid[0][0] = '♗'
+        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[fin_x][fin_y] }.from('♗').to('♝')
       end
 
       it 'doesnt go to the space' do
-        x = 0
-        y = 0
+        st_x = 3
+        st_y = 3
+        fin_x = 0
+        fin_y = 0
         gameboard.grid[0][0] = '♝'
-        expect { bishop.move(gameboard, x, y) }.not_to change { gameboard.grid[x][y] }
+        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.not_to change { gameboard.grid[fin_x][fin_y] }
       end
     end
   end
@@ -103,7 +118,7 @@ describe Bishop do
         y = 0
         expect(bishop.valid_spot?(gameboard, x, y)).to be true
       end
-    end 
+    end
 
     context 'when spot is not empty' do
       it 'returns false' do

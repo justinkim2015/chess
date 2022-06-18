@@ -2,7 +2,7 @@ require './lib/pieces/bishop'
 require './lib/board'
 require './lib/player'
 require './lib/pieces/piece'
-# rspec /spec/bishop_spec.rb
+# rspec spec/bishop_spec.rb
 
 describe Bishop do
   subject(:bishop) { described_class.new('White') }
@@ -11,40 +11,32 @@ describe Bishop do
   describe '#move' do
     context 'space is empty' do
       it 'moves to empty space' do
-        st_x = 3
-        st_y = 3
-        fin_x = 0
-        fin_y = 0
-        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[fin_x][fin_y] }.from(' ').to('♝')
+        start = [3, 3]
+        fin = [0, 0]
+        expect { bishop.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from(' ').to('♝')
       end
 
       it 'removes pieces from original spot' do
-        st_x = 3
-        st_y = 3
-        fin_x = 0
-        fin_y = 0
-        gameboard.grid[st_x][st_y] = '♝'
-        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[st_x][st_y] }.from('♝').to(' ')
+        start = [3, 3]
+        fin = [0, 0]
+        gameboard.grid[start[0]][start[1]] = '♝'
+        expect { bishop.move(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♝').to(' ')
       end
     end
 
     context 'space is not empty' do
       it 'takes enemy piece' do
-        st_x = 3
-        st_y = 3
-        fin_x = 0
-        fin_y = 0
+        start = [3, 3]
+        fin = [0, 0]
         gameboard.grid[0][0] = '♗'
-        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.to change { gameboard.grid[fin_x][fin_y] }.from('♗').to('♝')
+        expect { bishop.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from('♗').to('♝')
       end
 
       it 'doesnt go to the space' do
-        st_x = 3
-        st_y = 3
-        fin_x = 0
-        fin_y = 0
+        start = [3, 3]
+        fin = [0, 0]
         gameboard.grid[0][0] = '♝'
-        expect { bishop.move(gameboard, st_x, st_y, fin_x, fin_y) }.not_to change { gameboard.grid[fin_x][fin_y] }
+        expect { bishop.move(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
       end
     end
   end
@@ -56,7 +48,7 @@ describe Bishop do
         start_y = 0
         fin_x = 5
         fin_y = 5
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be true
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be true
       end
 
       it 'returns true(-1/-1)' do
@@ -64,7 +56,7 @@ describe Bishop do
         start_y = 5
         fin_x = 0
         fin_y = 0
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be true
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be true
       end
 
       it 'returns true(+1/-1)' do
@@ -72,7 +64,7 @@ describe Bishop do
         start_y = 4
         fin_x = 6
         fin_y = 2
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be true
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be true
       end
 
       it 'returns true(-1/+1)' do
@@ -80,7 +72,7 @@ describe Bishop do
         start_y = 4
         fin_x = 1
         fin_y = 7
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be true
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be true
       end
     end
 
@@ -90,7 +82,7 @@ describe Bishop do
         start_y = 1
         fin_x = 9
         fin_y = 9
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be false
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
       end
 
       it 'returns false if the same' do
@@ -98,7 +90,7 @@ describe Bishop do
         start_y = 3
         fin_x = 3
         fin_y = 3
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be false
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
       end
 
       it 'returns false' do
@@ -106,7 +98,7 @@ describe Bishop do
         start_y = 3
         fin_x = 5
         fin_y = 4
-        expect(bishop.valid_move?(start_x, start_y, fin_x, fin_y)).to be false
+        expect(bishop.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
       end
     end
   end
@@ -116,7 +108,7 @@ describe Bishop do
       it 'returns true' do
         x = 0
         y = 0
-        expect(bishop.valid_spot?(gameboard, x, y)).to be true
+        expect(bishop.valid_spot?(gameboard, [x, y])).to be true
       end
     end
 
@@ -125,7 +117,7 @@ describe Bishop do
         x = 0
         y = 0
         gameboard.grid[0][0] = '♝'
-        expect(bishop.valid_spot?(gameboard, x, y)).to be false
+        expect(bishop.valid_spot?(gameboard, [x, y])).to be false
       end
     end
   end

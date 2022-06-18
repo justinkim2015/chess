@@ -17,7 +17,7 @@ class Game
 
   def move
     # Maybe refactor the piece.move method to take two arrays, start and fin
-    @player1.pieces[:bishop].move(@board, 7, 2, 6, 3)
+    @player1.pieces[:bishop].move(@board, [7, 2], [6, 3])
   end
 
   def convert(value)

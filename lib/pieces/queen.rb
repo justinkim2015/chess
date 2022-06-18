@@ -1,7 +1,10 @@
-class Queen
+require_relative 'piece'
+
+class Queen < Piece
   attr_accessor :color
 
   def initialize(color)
+    super()
     @color = select_color(color)
   end
 

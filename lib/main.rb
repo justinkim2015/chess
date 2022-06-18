@@ -10,6 +10,6 @@ require_relative './pieces/knight'
 
 game = Game.new
 game.place_pieces
-# game.move
-# game.board.drawboard
-p game.convert('a2')
+game.board.drawboard
+game.move
+game.board.drawboard

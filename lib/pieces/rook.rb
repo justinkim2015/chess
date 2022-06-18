@@ -1,7 +1,10 @@
-class Rook
+require_relative 'piece'
+
+class Rook < Piece
   attr_accessor :color
 
   def initialize(color)
+    super()
     @color = select_color(color)
   end
 

@@ -16,8 +16,16 @@ class Game
   end
 
   def move
-    # Maybe refactor the piece.move method to take two arrays, start and fin
-    @player1.pieces[:bishop].move(@board, [7, 2], [6, 3])
+    puts 'Which piece would you like to move?'
+    start = convert(gets.chomp)
+    puts 'Where would you like to move it?'
+    fin = convert(gets.chomp)
+    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop].color
+      @turn.pieces[:bishop].move(@board, start, fin)
+    else
+      puts 'NO PIECE'
+      move
+    end
   end
 
   def convert(value)
@@ -27,8 +35,10 @@ class Game
     num_value = value[-1].to_i
     shift_value_number = 8 - num_value
 
-    { location: [shift_value_number, shift_value_letter],
-      piece: board.grid[shift_value_number][shift_value_letter] }
+    [shift_value_number, shift_value_letter]
+  end
+
+  def which_piece(piece)
   end
 
   def place_pieces

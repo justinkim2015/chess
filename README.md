@@ -49,4 +49,4 @@ I want to be able to select the intial location by typing in 1a, 2c, etc...  Wha
   -  The color is easy-ish, if I type in a1 return board.grid[7][0] (The coordinates that = the point a1)  This will return a string of the piece I need. 
   
   - How to get the coordinates, I suppose I could just write the same function again except this one returns an array with the coordinate [x, y].
-THE PROBLEM IS, BOTH OF THESE METHODS WILL BE SUUUPER LONG. I WONDER IF THERE'S A WAY TO MAKE THIS MORE PALATABLE. Should I just do it?  
+THE PROBLEM IS, BOTH OF THESE METHODS WILL BE SUUUPER LONG. I WONDER IF THERE'S A WAY TO MAKE THIS MORE PALATABLE. Should I just do it?  What is the table-driven method

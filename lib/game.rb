@@ -20,24 +20,15 @@ class Game
     @player1.pieces[:bishop].move(@board, 7, 2, 6, 3)
   end
 
-  def spot_values(input)
-    if input == 'a1'
-      board.grid[7][0]
-    elsif input == 'a2'
-      board.grid[6][0]
-    elsif input == 'a3'
-      board.grid[5][0]
-    elsif input == 'a4'
-      board.grid[4][0]
-    elsif input == 'a5'
-      board.grid[3][0]
-    elsif input == 'a6'
-      board.grid[2][0]
-    elsif input == 'a7'
-      board.grid[1][0]
-    elsif input == 'a8'
-      board.grid[0][0]
-    end
+  def convert(value)
+    letter_value = value[0].ord
+    shift_value_letter = letter_value - 97
+
+    num_value = value[-1].to_i
+    shift_value_number = 8 - num_value
+
+    { location: [shift_value_number, shift_value_letter],
+      piece: board.grid[shift_value_number][shift_value_letter] }
   end
 
   def place_pieces

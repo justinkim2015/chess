@@ -10,6 +10,9 @@ require_relative './pieces/knight'
 
 game = Game.new
 game.place_pieces
-game.board.drawboard
-game.move
-game.board.drawboard
+
+8.times do
+  game.board.drawboard
+  game.move
+  game.board.drawboard
+end

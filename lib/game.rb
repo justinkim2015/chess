@@ -26,6 +26,8 @@ class Game
       @turn.pieces[:rook].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight].color
       @turn.pieces[:knight].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
+      @turn.pieces[:pawn].move_pawn(@board, start, fin)
     else
       puts 'NO PIECE'
       move
@@ -54,14 +56,14 @@ class Game
     board.grid[0][5] = player2.pieces[:bishop].color
     board.grid[0][6] = player2.pieces[:knight].color
     board.grid[0][7] = player2.pieces[:rook].color
-    # board.grid[1][0] = player2.pieces[:pawn].color
-    # board.grid[1][1] = player2.pieces[:pawn].color
-    # board.grid[1][2] = player2.pieces[:pawn].color
-    # board.grid[1][3] = player2.pieces[:pawn].color
-    # board.grid[1][4] = player2.pieces[:pawn].color
-    # board.grid[1][5] = player2.pieces[:pawn].color
-    # board.grid[1][6] = player2.pieces[:pawn].color
-    # board.grid[1][7] = player2.pieces[:pawn].color
+    board.grid[1][0] = player2.pieces[:pawn].color
+    board.grid[1][1] = player2.pieces[:pawn].color
+    board.grid[1][2] = player2.pieces[:pawn].color
+    board.grid[1][3] = player2.pieces[:pawn].color
+    board.grid[1][4] = player2.pieces[:pawn].color
+    board.grid[1][5] = player2.pieces[:pawn].color
+    board.grid[1][6] = player2.pieces[:pawn].color
+    board.grid[1][7] = player2.pieces[:pawn].color
 
     board.grid[7][0] = player1.pieces[:rook].color
     board.grid[7][1] = player1.pieces[:knight].color
@@ -71,13 +73,13 @@ class Game
     board.grid[7][5] = player1.pieces[:bishop].color
     board.grid[7][6] = player1.pieces[:knight].color
     board.grid[7][7] = player1.pieces[:rook].color
-    # board.grid[6][0] = player1.pieces[:pawn].color
-    # board.grid[6][1] = player1.pieces[:pawn].color
-    # board.grid[6][2] = player1.pieces[:pawn].color
-    # board.grid[6][3] = player1.pieces[:pawn].color
-    # board.grid[6][4] = player1.pieces[:pawn].color
-    # board.grid[6][5] = player1.pieces[:pawn].color
-    # board.grid[6][6] = player1.pieces[:pawn].color
-    # board.grid[6][7] = player1.pieces[:pawn].color
+    board.grid[6][0] = player1.pieces[:pawn].color
+    board.grid[6][1] = player1.pieces[:pawn].color
+    board.grid[6][2] = player1.pieces[:pawn].color
+    board.grid[6][3] = player1.pieces[:pawn].color
+    board.grid[6][4] = player1.pieces[:pawn].color
+    board.grid[6][5] = player1.pieces[:pawn].color
+    board.grid[6][6] = player1.pieces[:pawn].color
+    board.grid[6][7] = player1.pieces[:pawn].color
   end
 end

@@ -13,7 +13,7 @@ class Pawn < Piece
   end
 
   # Current problem is that pawns can eat backwards and eat pieces directly
-  # in front of them.  
+  # in front of them.
   def valid_move?(board, start, fin)
     if @color == '♙'
       return true if [fin[0], fin[1]] == [start[0] + 1, start[1]] ||

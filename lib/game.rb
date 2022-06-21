@@ -13,13 +13,10 @@ class Game
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
     @turn = @player1
+    @turn_count = 0
   end
 
-  def move
-    puts 'Which piece would you like to move?'
-    start = convert(gets.chomp)
-    puts 'Where would you like to move it?'
-    fin = convert(gets.chomp)
+  def move(start, fin)
     if board.grid[start[0]][start[1]] == @turn.pieces[:bishop].color
       @turn.pieces[:bishop].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook].color
@@ -28,10 +25,24 @@ class Game
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
       @turn.pieces[:pawn].move_pawn(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
+      @turn.pieces[:king].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
+      @turn.pieces[:queen].move(@board, start, fin)
     else
-      puts 'NO PIECE'
-      move
+      puts 'Invalid move, try again'
     end
+  end
+
+    def take_turn
+    board.drawboard
+    puts "Its #{@turn.name}'s turn!"
+    puts 'Which piece would you like to move?'
+    start = get_valid_input
+    puts 'Where would you like to move it?'
+    fin = get_valid_input
+    move(start, fin)
+    change_turn if board.grid[start[0]][start[1]] == ' '
   end
 
   def convert(value)
@@ -42,6 +53,24 @@ class Game
     shift_value_number = 8 - num_value
 
     [shift_value_number, shift_value_letter]
+  end
+
+  def get_valid_input
+    input = convert(gets.chomp)
+
+    return input if input[0].between?(0, 7) && input[1].between?(0, 7) &&
+                    board.grid[input[0]][input[1]] != ' '
+
+    puts 'INVALID SPACE'
+    get_valid_input
+  end
+
+  def change_turn
+    @turn = if @turn == @player1
+              @player2
+            else
+              @player1
+            end
   end
 
   def place_pieces

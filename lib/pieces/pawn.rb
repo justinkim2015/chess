@@ -12,7 +12,6 @@ class Pawn < Piece
     color == 'White' ? '♟' : '♙'
   end
 
-  # problem is it is still eating piece in front
   def valid_move?(board, start, fin)
     return false if board.grid[fin[0]].nil?
 
@@ -36,11 +35,17 @@ class Pawn < Piece
 
   def eat_diag(board, start, fin)
     if @color == '♙'
-      return true if @white_pieces.include?(board.grid[fin[0]][fin[1]]) && [fin[0], fin[1]] == [start[0] + 1, start[0] - 1] ||
-                     @white_pieces.include?(board.grid[fin[0]][fin[1]]) && [fin[0], fin[1]] == [start[0] + 1, start[0] + 1]
+      return true if @white_pieces.include?(board.grid[fin[0]][fin[1]]) &&
+                     [fin[0], fin[1]] == [start[0] + 1, start[1] - 1] ||
+
+                     @white_pieces.include?(board.grid[fin[0]][fin[1]]) &&
+                     [fin[0], fin[1]] == [start[0] + 1, start[1] + 1]
     else
-      return true if @black_pieces.include?(board.grid[fin[0]][fin[1]]) && [fin[0], fin[1]] == [start[0] - 1, start[0] - 1] ||
-                     @black_pieces.include?(board.grid[fin[0]][fin[1]]) && [fin[0], fin[1]] == [start[0] - 1, start[0] + 1]
+      return true if @black_pieces.include?(board.grid[fin[0]][fin[1]]) &&
+                     [fin[0], fin[1]] == [start[0] - 1, start[1] - 1] ||
+
+                     @black_pieces.include?(board.grid[fin[0]][fin[1]]) &&
+                     [fin[0], fin[1]] == [start[0] - 1, start[1] + 1]
     end
     false
   end

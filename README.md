@@ -44,9 +44,6 @@ What do I need to do to move a piece.  The things I need to know are
 
 So I can move the piece, now how should I get these three things in the game class.  
 
-I want to be able to select the intial location by typing in 1a, 2c, etc...  What I need returned after typing in something like this is the coordinates of the piece and the color of the piece.  
+I want to be able to select the intial location by typing in 1a, 2c, etc...  What I need returned after typing in something like this is the coordinates of the piece and the color of the piece.  **DONE**
 
-  -  The color is easy-ish, if I type in a1 return board.grid[7][0] (The coordinates that = the point a1)  This will return a string of the piece I need. 
-  
-  - How to get the coordinates, I suppose I could just write the same function again except this one returns an array with the coordinate [x, y].
-THE PROBLEM IS, BOTH OF THESE METHODS WILL BE SUUUPER LONG. I WONDER IF THERE'S A WAY TO MAKE THIS MORE PALATABLE. Should I just do it?  What is the table-driven method
+Next I need to figure out how to take a turn, where it doesn't change the turn with an invalid move.  

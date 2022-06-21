@@ -69,6 +69,13 @@ describe Pawn do
         gameboard.grid[4][4] = '♙'
         expect(white_pawn.valid_move?(gameboard, start, fin)).to be true
       end
+
+      it 'eats piece diagonally forward' do
+        start = [5, 1]
+        fin = [4, 0]
+        gameboard.grid[4][0] = '♙'
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be true
+      end
     end
 
     context 'move_pawnment is invalid' do
@@ -121,6 +128,13 @@ describe Pawn do
       fin = [2, 3]
       gameboard.grid[2][3] = '♙'
       expect(white_pawn.eat_diag(gameboard, start, fin)).to be false
+    end
+
+    it 'eats piece diagonally forward' do
+      start = [5, 1]
+      fin = [4, 0]
+      gameboard.grid[4][0] = '♙'
+      expect(white_pawn.eat_diag(gameboard, start, fin)).to be true
     end
   end
 end

@@ -11,8 +11,6 @@ require_relative './pieces/knight'
 game = Game.new
 game.place_pieces
 
-8.times do
-  game.board.drawboard
-  game.move
-  game.board.drawboard
+loop do
+  game.take_turn
 end

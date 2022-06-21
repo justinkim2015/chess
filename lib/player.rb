@@ -1,5 +1,5 @@
 class Player
-  attr_accessor :pieces
+  attr_accessor :pieces, :name
 
   def initialize(name, color)
     @name = name

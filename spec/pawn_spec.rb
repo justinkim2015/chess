@@ -9,78 +9,118 @@ describe Pawn do
   subject(:black_pawn) { described_class.new('Black') }
   subject(:gameboard) { Board.new }
 
-  describe '#move' do
+  describe '#move_pawn' do
     context 'space is empty' do
-      it 'moves to empty space' do
+      it 'move_pawns to empty space' do
         start = [3, 3]
         fin = [2, 3]
-        expect { white_pawn.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from(' ').to('♟')
+        expect { white_pawn.move_pawn(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from(' ').to('♟')
       end
 
-      it 'removes pieces from original spot' do
+      it 'remove_pawns pieces from original spot' do
         start = [3, 3]
         fin = [2, 3]
         gameboard.grid[start[0]][start[1]] = '♟'
-        expect { white_pawn.move(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♟').to(' ')
+        expect { white_pawn.move_pawn(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♟').to(' ')
       end
     end
 
     context 'space is not empty' do
-      xit 'takes enemy piece' do
+      it 'takes enemy piece' do
         start = [3, 3]
-        fin = [2, 3]
-        gameboard.grid[2][3] = '♙'
-        expect { white_pawn.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from('♙').to('♟')
+        fin = [2, 2]
+        gameboard.grid[2][2] = '♙'
+        expect { white_pawn.move_pawn(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from('♙').to('♟')
       end
 
-      it 'doesnt go to the space' do
+      it 'doesnt go to to space with ally' do
         start = [3, 3]
         fin = [2, 3]
         gameboard.grid[2][3] = '♟'
-        expect { white_pawn.move(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
+        expect { white_pawn.move_pawn(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
+      end
+
+      it 'doesnt eat directly in front' do
+        start = [3, 3]
+        fin = [2, 3]
+        gameboard.grid[2][3] = '♙'
+        expect { white_pawn.move_pawn(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
       end
     end
   end
 
   describe '#valid_move?' do
-    context 'movement is valid' do
+    context 'move_pawnment is valid' do
       it 'returns true(+1/0)' do
         start = [0, 0]
         fin = [1, 0]
-        expect(black_pawn.valid_move?(start, fin)).to be true
+        expect(black_pawn.valid_move?(gameboard, start, fin)).to be true
       end
 
       it 'returns true(-1/0)' do
         start = [5, 5]
         fin = [4, 5]
-        expect(white_pawn.valid_move?(start, fin)).to be true
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be true
+      end
+
+      it 'eats piece diagonally forward' do
+        start = [5, 5]
+        fin = [4, 4]
+        gameboard.grid[4][4] = '♙'
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be true
       end
     end
 
-    context 'movement is invalid' do
+    context 'move_pawnment is invalid' do
       it 'returns false if out of bounds' do
-        start_x = 0
-        start_y = 1
-        fin_x = 9
-        fin_y = 9
-        expect(white_pawn.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
+        start = [0, 1]
+        fin = [9, 9]
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be false
       end
 
       it 'returns false if the same' do
-        start_x = 3
-        start_y = 3
-        fin_x = 3
-        fin_y = 3
-        expect(white_pawn.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
+        start = [3, 3]
+        fin = [3, 3]
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be false
       end
 
       it 'returns false' do
-        start_x = 3
-        start_y = 3
-        fin_x = 5
-        fin_y = 4
-        expect(white_pawn.valid_move?([start_x, start_y], [fin_x, fin_y])).to be false
+        start = [3, 3]
+        fin = [5, 4]
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be false
       end
+
+      it 'doesnt eat piece diagonally backwards' do
+        start = [3, 3]
+        fin = [4, 4]
+        gameboard.grid[4][4] = '♙'
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be false
+      end
+
+      it 'doesnt eat directly in front' do
+        start = [3, 3]
+        fin = [2, 3]
+        gameboard.grid[2][3] = '♙'
+        expect(white_pawn.valid_move?(gameboard, start, fin)).to be false
+      end
+    end
+  end
+
+  describe '#move_forward' do
+    it 'returns false when path is blocked' do
+      start = [3, 3]
+      fin = [2, 3]
+      gameboard.grid[2][3] = '♙'
+      expect(white_pawn.move_forward(gameboard, start, fin)).to be false
+    end
+  end
+
+  describe '#eat_diag' do
+    it 'returns false when path is blocked' do
+      start = [3, 3]
+      fin = [2, 3]
+      gameboard.grid[2][3] = '♙'
+      expect(white_pawn.eat_diag(gameboard, start, fin)).to be false
     end
   end
 end

@@ -44,15 +44,12 @@ class Game
     [shift_value_number, shift_value_letter]
   end
 
-  def which_piece(piece)
-  end
-
   def place_pieces
     board.grid[0][0] = player2.pieces[:rook].color
     board.grid[0][1] = player2.pieces[:knight].color
     board.grid[0][2] = player2.pieces[:bishop].color
-    # board.grid[0][3] = player2.pieces[:queen].color
-    # board.grid[0][4] = player2.pieces[:king].color
+    board.grid[0][3] = player2.pieces[:queen].color
+    board.grid[0][4] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop].color
     board.grid[0][6] = player2.pieces[:knight].color
     board.grid[0][7] = player2.pieces[:rook].color
@@ -68,8 +65,8 @@ class Game
     board.grid[7][0] = player1.pieces[:rook].color
     board.grid[7][1] = player1.pieces[:knight].color
     board.grid[7][2] = player1.pieces[:bishop].color
-    # board.grid[7][3] = player1.pieces[:queen].color
-    # board.grid[7][4] = player1.pieces[:king].color
+    board.grid[7][3] = player1.pieces[:queen].color
+    board.grid[7][4] = player1.pieces[:king].color
     board.grid[7][5] = player1.pieces[:bishop].color
     board.grid[7][6] = player1.pieces[:knight].color
     board.grid[7][7] = player1.pieces[:rook].color

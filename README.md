@@ -78,4 +78,10 @@ How can I check if the king is in check and which class should it be in?
 
 # before switching turns check if the opposing players king is in check
 
-  
+Check movement logic
+  -If in check you must protect your king (eat attacking piece, move king, block with another piece)
+    - Get start value of piece you want to protect with
+    - get finish value of piece you want to protect with
+    -using these two values check to see if king would be in check.
+      -if so then move is illegal and ask to try again
+      -if not then move is allowed.

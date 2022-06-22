@@ -2,16 +2,25 @@ require_relative 'piece'
 require 'pry'
 
 class King < Piece
-  attr_accessor :color
+  attr_accessor :color, :location
 
   def initialize(color)
     super()
     @color = select_color(color)
     @in_check = false
+    @location = @color == '♚' ? [7, 4] : [0, 4]
   end
 
   def select_color(color)
     color == 'White' ? '♚' : '♔'
+  end
+
+  def move_king(board, start, fin)
+    return unless valid_move?(start, fin) && valid_spot?(board, fin)
+
+    board.grid[fin[0]][fin[1]] = @color
+    board.grid[start[0]][start[1]] = ' '
+    @location = fin
   end
 
   def valid_move?(start, fin)
@@ -63,13 +72,13 @@ class King < Piece
     i = 1
     color = @color == '♚' ? '♗' : '♝'
     7.times do
-      if (spot[0] + i) && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] == color ||
-         (spot[0] - i) && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] == color ||
+      if (spot[0] + i) <= 7 && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] == color ||
+         (spot[0] - i) >= 0 && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] == color ||
          (spot[0] + i) <= 7 && (spot[1] - i) >= 0 && board.grid[spot[0] + i][spot[1] - i] == color ||
          (spot[0] - i) >= 0 && (spot[1] + i) <= 7 && board.grid[spot[0] - i][spot[1] + i] == color
         return true
-      elsif (spot[0] + i) && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] != ' ' ||
-            (spot[0] - i) && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] != ' ' ||
+      elsif (spot[0] + i) <= 7 && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] != ' ' ||
+            (spot[0] - i) >= 0 && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] != ' ' ||
             (spot[0] + i) <= 7 && (spot[1] - i) >= 0 && board.grid[spot[0] + i][spot[1] - i] != ' ' ||
             (spot[0] - i) >= 0 && (spot[1] + i) <= 7 && board.grid[spot[0] - i][spot[1] + i] != ' '
         break
@@ -80,17 +89,17 @@ class King < Piece
     false
   end
 
+  # This is broken, if it goes too far out of the graph it becomes nil
   def knight_checking?(board, spot)
     color = @color == '♚' ? '♘' : '♞'
-
-    return true if board.grid[spot[0] + 1][spot[1] + 2] == color ||
-                   board.grid[spot[0] + 1][spot[1] - 2] == color ||
-                   board.grid[spot[0] + 2][spot[1] + 1] == color ||
-                   board.grid[spot[0] + 2][spot[1] - 1] == color ||
-                   board.grid[spot[0] - 1][spot[1] + 2] == color ||
-                   board.grid[spot[0] - 1][spot[1] - 2] == color ||
-                   board.grid[spot[0] - 2][spot[1] + 1] == color ||
-                   board.grid[spot[0] - 2][spot[1] - 1] == color
+    return true if (spot[0] + 1) <= 7 && (spot[1] + 2) <= 7 && board.grid[spot[0] + 1][spot[1] + 2] == color ||
+                   (spot[0] + 1) <= 7 && (spot[1] - 2) >= 0 && board.grid[spot[0] + 1][spot[1] - 2] == color ||
+                   (spot[0] + 2) <= 7 && (spot[1] + 1) <= 7 && board.grid[spot[0] + 2][spot[1] + 1] == color ||
+                   (spot[0] + 2) <= 7 && (spot[1] - 1) >= 0 && board.grid[spot[0] + 2][spot[1] - 1] == color ||
+                   (spot[0] - 1) >= 0 && (spot[1] + 2) <= 7 && board.grid[spot[0] - 1][spot[1] + 2] == color ||
+                   (spot[0] - 1) >= 0 && (spot[1] - 2) >= 0 && board.grid[spot[0] - 1][spot[1] - 2] == color ||
+                   (spot[0] - 2) >= 0 && (spot[1] + 1) <= 7 && board.grid[spot[0] - 2][spot[1] + 1] == color ||
+                   (spot[0] - 2) >= 0 && (spot[1] - 1) >= 0 && board.grid[spot[0] - 2][spot[1] - 1] == color
 
     false
   end
@@ -99,8 +108,8 @@ class King < Piece
     i = 1
     color = @color == '♚' ? '♕' : '♛'
     7.times do
-      if (spot[0] + i) && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] == color ||
-         (spot[0] - i) && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] == color ||
+      if (spot[0] + i) <= 7 && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] == color ||
+         (spot[0] - i) >= 0 && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] == color ||
          (spot[0] + i) <= 7 && (spot[1] - i) >= 0 && board.grid[spot[0] + i][spot[1] - i] == color ||
          (spot[0] - i) >= 0 && (spot[1] + i) <= 7 && board.grid[spot[0] - i][spot[1] + i] == color ||
          (spot[0] + i) <= 7 && board.grid[spot[0] + i][spot[1]] == color ||
@@ -108,8 +117,8 @@ class King < Piece
          (spot[1] - i) >= 0 && board.grid[spot[0]][spot[1] - i] == color ||
          (spot[1] + i) <= 7 && board.grid[spot[0]][spot[1] + i] == color
         return true
-      elsif (spot[0] + i) && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] != ' ' ||
-            (spot[0] - i) && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] != ' ' ||
+      elsif (spot[0] + i) <= 7 && (spot[1] + i) <= 7 && board.grid[spot[0] + i][spot[1] + i] != ' ' ||
+            (spot[0] - i) >= 0 && (spot[1] - i) >= 0 && board.grid[spot[0] - i][spot[1] - i] != ' ' ||
             (spot[0] + i) <= 7 && (spot[1] - i) >= 0 && board.grid[spot[0] + i][spot[1] - i] != ' ' ||
             (spot[0] - i) >= 0 && (spot[1] + i) <= 7 && board.grid[spot[0] - i][spot[1] + i] != ' ' ||
             (spot[0] + i) <= 7 && board.grid[spot[0] + i][spot[1]] != ' ' ||

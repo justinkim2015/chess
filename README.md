@@ -4,15 +4,15 @@ This is the final project for the ruby portion of TOP.  I'm really excited to ge
 This project seems like a really big step-up in scale over the rest of the projects I've done until now and I think before I start I should really sit down and figure out what my plan is for this.
 
 PARTS OF A CHESS GAME
--Board(8x8)
--Players(2)
--Pieces 
-  -Pawns(8 ea)
-  -Rooks(2 ea)
-  -Bishops(2 ea)
-  -Knights(2 ea)
-  -Queen(1)
-  -King(1)
+-Board(8x8) *DONE*
+-Players(2)*DONE*
+-Pieces *DONE*
+  -Pawns(8 ea)*DONE*
+  -Rooks(2 ea)*DONE*
+  -Bishops(2 ea)*DONE*
+  -Knights(2 ea)*DONE*
+  -Queen(1)*DONE*
+  -King(1)*DONE*
 -Game logic
 
 TO-DO
@@ -46,4 +46,36 @@ So I can move the piece, now how should I get these three things in the game cla
 
 I want to be able to select the intial location by typing in 1a, 2c, etc...  What I need returned after typing in something like this is the coordinates of the piece and the color of the piece.  **DONE**
 
-Next I need to figure out how to take a turn, where it doesn't change the turn with an invalid move.  
+Next I need to figure out how to take a turn, where it doesn't change the turn with an invalid move.  *DONE but maybe could be done better*
+
+How can I make a pawn move forward twice if its the first move?
+- I can have a instance variable @turns but then I would need to make an individual object for every piece
+- I can check the starting location of the piece and if it's where it starts on the board it can move twice, since pawns cant move backwards I don't have to worry about them going back to the same space and moving twice again. **DONE**
+  - starting locations of pawns 
+    -white [a2..h2]
+    -white [a7..h2]
+
+How can I check if the king is in check and which class should it be in?
+  -If any enemy piece can move to a block then that block can be considered in check.  How can I 'check' (heh) this state?
+    -Everytime the king tries to move to a new space, it'll check EVERY space that could possibly have an attacking enemy piece.   
+      -So bascially first i'll check the two diags to see if theres a pawn there
+        -white_king = x, y / possible black pawns = x-1, y-1 / x-1, y+1
+      -Second i'll check the 4 cardinal directions til I hit a piece to see if its a queen or a rook
+      -Third i'll check the 4 diags until I hit a piece to look for a queen or bishop
+      -Fourth i'll check the 8 possible locations a knight could be.
+    If all of these checks come back safe then the king can move to the spot.  If all these checks fail, the spot is marked unsafe and can't be moved too.
+    
+    If all possible moves of the king are deemed unsafe, the king is in checkmate and the game is finished.  
+
+  -I should write this logic in the king class.  
+
+# WAIT A KING MOVING CAN EXPOSE AN OPPOSING KING TO CHECK.  I NEED TO CHECK WHEN THE OPPONENT MOVES, NOT WHEN THE KING ITSELF MOVES. Oh wait I probably have to do both, as a king cannot move itself into check, but also can be checked by moving.  
+  -If king is in check it must move, therefore maybe I should have an instance variable saying whether the kings in check or not.
+
+  Basically I think with the way I'm doing this now, i'll just check if the king is in check after every move.  If i'm going to write it like this, maybe this king check logic should be in every single class.  For example pawn checking king should be in pawn class.  pawn_checking? or something.   
+
+# before making a move make sure the move doesn't put the active players king into check.  
+
+# before switching turns check if the opposing players king is in check
+
+  

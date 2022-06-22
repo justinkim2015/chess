@@ -137,4 +137,21 @@ describe Pawn do
       expect(white_pawn.eat_diag(gameboard, start, fin)).to be true
     end
   end
+
+  describe '#move_two' do
+    context 'when piece is in original spot' do
+      it 'can move two spaces(black)' do
+        start = [1, 0]
+        fin = [3, 0]
+        expect(black_pawn.move_two(gameboard, start, fin)).to be true
+      end
+
+      it 'can move two spaces(white)' do
+        start = [6, 3]
+        fin = [4, 3]
+        expect(white_pawn.move_two(gameboard, start, fin)).to be true
+      end
+
+    end
+  end
 end

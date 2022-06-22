@@ -13,7 +13,6 @@ class Game
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
     @turn = @player1
-    @turn_count = 0
   end
 
   def move(start, fin)
@@ -34,13 +33,13 @@ class Game
     end
   end
 
-    def take_turn
+  def take_turn
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
     puts 'Which piece would you like to move?'
-    start = get_valid_input
+    start = valid_input_start
     puts 'Where would you like to move it?'
-    fin = get_valid_input
+    fin = valid_input_fin
     move(start, fin)
     change_turn if board.grid[start[0]][start[1]] == ' '
   end
@@ -55,14 +54,23 @@ class Game
     [shift_value_number, shift_value_letter]
   end
 
-  def get_valid_input
+  def valid_input_start
     input = convert(gets.chomp)
 
     return input if input[0].between?(0, 7) && input[1].between?(0, 7) &&
                     board.grid[input[0]][input[1]] != ' '
 
     puts 'INVALID SPACE'
-    get_valid_input
+    valid_input_start
+  end
+
+  def valid_input_fin
+    input = convert(gets.chomp)
+
+    return input if input[0].between?(0, 7) && input[1].between?(0, 7)
+
+    puts 'INVALID SPACE'
+    valid_input_fin
   end
 
   def change_turn

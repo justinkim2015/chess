@@ -9,6 +9,7 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 
 game = Game.new
+
 game.place_pieces
 
 loop do

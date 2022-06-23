@@ -2,25 +2,17 @@ require_relative 'piece'
 require 'pry'
 
 class King < Piece
-  attr_accessor :color, :location
+  attr_accessor :color, :position
 
-  def initialize(color)
+  def initialize(color, position)
     super()
     @color = select_color(color)
     @in_check = false
-    @location = @color == '♚' ? [7, 4] : [0, 4]
+    @position = position
   end
 
   def select_color(color)
     color == 'White' ? '♚' : '♔'
-  end
-
-  def move_king(board, start, fin)
-    return unless valid_move?(start, fin) && valid_spot?(board, fin)
-
-    board.grid[fin[0]][fin[1]] = @color
-    board.grid[start[0]][start[1]] = ' '
-    @location = fin
   end
 
   def valid_move?(start, fin)

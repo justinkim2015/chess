@@ -1,11 +1,12 @@
 require_relative 'piece'
 
 class Knight < Piece
-  attr_accessor :color
+  attr_accessor :color, :position
 
-  def initialize(color)
+  def initialize(color, position)
     super()
     @color = select_color(color)
+    @position = position
   end
 
   def select_color(color)

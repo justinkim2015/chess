@@ -5,23 +5,23 @@ require './lib/pieces/king'
 # rspec spec/king_spec.rb
 
 describe King do
-  subject(:white_king) { described_class.new('White') }
-  subject(:black_king) { described_class.new('Black') }
+  subject(:white_king) { described_class.new('White', [0, 3]) }
+  subject(:black_king) { described_class.new('Black', [7, 3]) }
   subject(:gameboard) { Board.new }
 
-  describe '#move_king' do
+  describe '#move' do
     context 'space is empty' do
       it 'moves to empty space' do
         start = [3, 3]
         fin = [4, 4]
-        expect { white_king.move_king(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from(' ').to('♚')
+        expect { white_king.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from(' ').to('♚')
       end
 
       it 'removes pieces from original spot' do
         start = [3, 3]
         fin = [4, 4]
         gameboard.grid[start[0]][start[1]] = '♚'
-        expect { white_king.move_king(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♚').to(' ')
+        expect { white_king.move(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♚').to(' ')
       end
     end
 
@@ -30,14 +30,14 @@ describe King do
         start = [4, 2]
         fin = [5, 3]
         gameboard.grid[5][3] = '♘'
-        expect { white_king.move_king(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from('♘').to('♚')
+        expect { white_king.move(gameboard, start, fin) }.to change { gameboard.grid[fin[0]][fin[1]] }.from('♘').to('♚')
       end
 
       it 'doesnt go to the space' do
         start = [4, 2]
         fin = [3, 2]
         gameboard.grid[3][2] = '♚'
-        expect { white_king.move_king(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
+        expect { white_king.move(gameboard, start, fin) }.not_to change { gameboard.grid[fin[0]][fin[1]] }
       end
     end
   end

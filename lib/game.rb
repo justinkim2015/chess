@@ -16,16 +16,16 @@ class Game
   end
 
   def move(start, fin)
-    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop].color
-      @turn.pieces[:bishop].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook].color
-      @turn.pieces[:rook].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight].color
-      @turn.pieces[:knight].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
-      @turn.pieces[:pawn].move_pawn(@board, start, fin)
+    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop1].color
+      @turn.pieces[:bishop1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook1].color
+      @turn.pieces[:rook1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight1].color
+      @turn.pieces[:knight1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn1].color
+      @turn.pieces[:pawn1].move_pawn(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
-      @turn.pieces[:king].move_king(@board, start, fin)
+      @turn.pieces[:king].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
       @turn.pieces[:queen].move(@board, start, fin)
     else
@@ -44,15 +44,34 @@ class Game
     change_turn if board.grid[start[0]][start[1]] == ' '
   end
 
-  # This is very sketchiliy working
+  # This is currently only checking the movement of the king to escape check
+  def checkmate?
+    start = @turn.pieces[:king].position
+    fin = [[start[0] - 1, start[1]], [start[0] + 1, start[1]], [start[0], start[1] + 1], [start[0], start[1] - 1], [start[0] + 1, start[1] - 1], [start[0] + 1, start[1] + 1], [start[0] - 1, start[1] - 1], [start[0] - 1, start[1] + 1]]
+    i = 0
+    8.times do
+      move(start, fin[i])
+      return true if spot_in_check?
+
+      move(fin[i], start)
+      i += 1
+    end
+    false
+  end
+
+  def spot_in_check?
+    @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].position)
+  end
+
+  # This is working but very inelegant
   def check?
-    return unless @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].location)
+    return unless spot_in_check?
 
     puts 'You are in check, protect your king!'
     start = valid_input_start
     fin = valid_input_fin
     move(start, fin)
-    if @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].location)
+    if spot_in_check?
       move(fin, start)
       check?
     end
@@ -101,38 +120,38 @@ class Game
   end
 
   def place_pieces
-    # board.grid[0][0] = player2.pieces[:rook].color
-    # board.grid[0][1] = player2.pieces[:knight].color
-    # board.grid[0][2] = player2.pieces[:bishop].color
-    # board.grid[0][3] = player2.pieces[:queen].color
-    board.grid[0][4] = player2.pieces[:king].color
-    # board.grid[0][5] = player2.pieces[:bishop].color
-    # board.grid[0][6] = player2.pieces[:knight].color
-    # board.grid[0][7] = player2.pieces[:rook].color
-    # board.grid[1][0] = player2.pieces[:pawn].color
-    # board.grid[1][1] = player2.pieces[:pawn].color
-    # board.grid[1][2] = player2.pieces[:pawn].color
-    # board.grid[1][3] = player2.pieces[:pawn].color
-    # board.grid[1][4] = player2.pieces[:pawn].color
-    # board.grid[1][5] = player2.pieces[:pawn].color
-    # board.grid[1][6] = player2.pieces[:pawn].color
-    # board.grid[1][7] = player2.pieces[:pawn].color
+    board.grid[0][0] = player2.pieces[:rook1].color
+    board.grid[0][1] = player2.pieces[:knight1].color
+    board.grid[0][2] = player2.pieces[:bishop1].color
+    board.grid[0][4] = player2.pieces[:queen].color
+    board.grid[0][3] = player2.pieces[:king].color
+    board.grid[0][5] = player2.pieces[:bishop2].color
+    board.grid[0][6] = player2.pieces[:knight2].color
+    board.grid[0][7] = player2.pieces[:rook2].color
+    board.grid[1][0] = player2.pieces[:pawn1].color
+    board.grid[1][1] = player2.pieces[:pawn2].color
+    board.grid[1][2] = player2.pieces[:pawn3].color
+    board.grid[1][3] = player2.pieces[:pawn4].color
+    board.grid[1][4] = player2.pieces[:pawn5].color
+    board.grid[1][5] = player2.pieces[:pawn6].color
+    board.grid[1][6] = player2.pieces[:pawn7].color
+    board.grid[1][7] = player2.pieces[:pawn8].color
 
-    # board.grid[7][0] = player1.pieces[:rook].color
-    # board.grid[7][1] = player1.pieces[:knight].color
-    # board.grid[7][2] = player1.pieces[:bishop].color
+    board.grid[7][0] = player1.pieces[:rook1].color
+    board.grid[7][1] = player1.pieces[:knight1].color
+    board.grid[7][2] = player1.pieces[:bishop1].color
     board.grid[7][4] = player1.pieces[:queen].color
-    # board.grid[7][4] = player1.pieces[:king].color
-    # board.grid[7][5] = player1.pieces[:bishop].color
-    # board.grid[7][6] = player1.pieces[:knight].color
-    # board.grid[7][7] = player1.pieces[:rook].color
-    # board.grid[6][0] = player1.pieces[:pawn].color
-    # board.grid[6][1] = player1.pieces[:pawn].color
-    # board.grid[6][2] = player1.pieces[:pawn].color
-    # board.grid[6][3] = player1.pieces[:pawn].color
-    # board.grid[6][4] = player1.pieces[:pawn].color
-    # board.grid[6][5] = player1.pieces[:pawn].color
-    # board.grid[6][6] = player1.pieces[:pawn].color
-    # board.grid[6][7] = player1.pieces[:pawn].color
+    board.grid[7][3] = player1.pieces[:king].color
+    board.grid[7][5] = player1.pieces[:bishop2].color
+    board.grid[7][6] = player1.pieces[:knight2].color
+    board.grid[7][7] = player1.pieces[:rook2].color
+    board.grid[6][0] = player1.pieces[:pawn1].color
+    board.grid[6][1] = player1.pieces[:pawn2].color
+    board.grid[6][2] = player1.pieces[:pawn3].color
+    board.grid[6][3] = player1.pieces[:pawn4].color
+    board.grid[6][4] = player1.pieces[:pawn5].color
+    board.grid[6][5] = player1.pieces[:pawn6].color
+    board.grid[6][6] = player1.pieces[:pawn7].color
+    board.grid[6][7] = player1.pieces[:pawn8].color
   end
 end

@@ -5,7 +5,7 @@ require './lib/pieces/rook'
 # rspec spec/rook_spec.rb
 
 describe Rook do
-  subject(:rook) { described_class.new('White') }
+  subject(:rook) { described_class.new('White', [0, 0]) }
   subject(:gameboard) { Board.new }
 
   describe '#move' do

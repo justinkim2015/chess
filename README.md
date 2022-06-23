@@ -85,3 +85,16 @@ Check movement logic
     -using these two values check to see if king would be in check.
       -if so then move is illegal and ask to try again
       -if not then move is allowed.
+
+Checkmate
+
+There are no safe spaces left for king -> checkmate
+-First check if the king itself can make any safe moves. **done**
+-How to check if there are any pieces that can eat the enemy attacking piece?
+  -Use king_in_check function except instead of king target the piece attacking the king.
+    -For example a king at a8 is being threatened by a queen at a7.  A rook a a1 is attacking a7, therefore theres a move that will save the king. 
+
+  I should probably actually refactor the (piece)_checking functions to attacking spots...  
+     -#valid_move? is basically this function that checks if a piece is attacking a certain square but it also requires the starting position, so it would be a pain to always write it in.  So if I make every single piece know its starting position i can set the default value.  but this would mean every single piece must be its own object... 
+      - **I think this is the way to go**
+      - Have position also be set on making a new class in the player class.

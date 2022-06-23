@@ -5,8 +5,8 @@ require './lib/pieces/pawn'
 # rspec spec/pawn_spec.rb
 
 describe Pawn do
-  subject(:white_pawn) { described_class.new('White') }
-  subject(:black_pawn) { described_class.new('Black') }
+  subject(:white_pawn) { described_class.new('White', [1, 0]) }
+  subject(:black_pawn) { described_class.new('Black', [6, 0]) }
   subject(:gameboard) { Board.new }
 
   describe '#move_pawn' do

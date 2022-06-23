@@ -1,11 +1,12 @@
 require_relative 'piece'
 
 class Pawn < Piece
-  attr_accessor :color
+  attr_accessor :color, :position
 
-  def initialize(color)
+  def initialize(color, position)
     super()
     @color = select_color(color)
+    @position = position
     @origin_white = [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]]
     @origin_black = [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]]
   end

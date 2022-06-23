@@ -5,10 +5,15 @@ class Piece
   end
 
   def move(board, start, fin)
-    return unless valid_move?(start, fin) && valid_spot?(board, fin)
+    return unless can_attack_square?(board, start, fin)
 
     board.grid[fin[0]][fin[1]] = @color
     board.grid[start[0]][start[1]] = ' '
+    @location = fin
+  end
+
+  def can_attack_square?(board, start = @location, fin)
+    valid_move?(start, fin) && valid_spot?(board, fin)
   end
 
   def valid_spot?(board, spot)

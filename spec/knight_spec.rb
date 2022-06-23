@@ -5,7 +5,7 @@ require './lib/pieces/knight'
 # rspec spec/knight_spec.rb
 
 describe Knight do
-  subject(:knight) { described_class.new('White') }
+  subject(:knight) { described_class.new('White', [0, 1]) }
   subject(:gameboard) { Board.new }
 
   describe '#move' do

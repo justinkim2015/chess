@@ -5,7 +5,7 @@ require './lib/pieces/piece'
 # rspec spec/bishop_spec.rb
 
 describe Bishop do
-  subject(:bishop) { described_class.new('White') }
+  subject(:bishop) { described_class.new('White', [0, 2]) }
   subject(:gameboard) { Board.new }
 
   describe '#move' do

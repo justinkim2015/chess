@@ -1,11 +1,12 @@
 require_relative 'piece'
 
 class Rook < Piece
-  attr_accessor :color
+  attr_accessor :color, :position
 
-  def initialize(color)
+  def initialize(color, position)
     super()
     @color = select_color(color)
+    @position = position
   end
 
   def select_color(color)
@@ -32,3 +33,8 @@ class Rook < Piece
     false
   end
 end
+
+# valid_moves = [[spot_x + i, spot_y],
+#                [spot_x - i, spot_y],
+#                [spot_x, spot_y + i],
+#                [spot_x, spot_y - i]]

@@ -143,15 +143,30 @@ describe Pawn do
       it 'can move two spaces(black)' do
         start = [1, 0]
         fin = [3, 0]
-        expect(black_pawn.move_two(gameboard, start, fin)).to be true
+        expect(black_pawn.move_forward(gameboard, start, fin)).to be true
       end
 
       it 'can move two spaces(white)' do
         start = [6, 3]
         fin = [4, 3]
-        expect(white_pawn.move_two(gameboard, start, fin)).to be true
+        expect(white_pawn.move_forward(gameboard, start, fin)).to be true
       end
 
+      context 'when piece isnt in original spot' do
+        it 'can move two spaces(black)' do
+          start = [1, 0]
+          fin = [3, 0]
+          black_pawn.position = [0, 0]
+          expect(black_pawn.move_forward(gameboard, start, fin)).to be false
+        end
+
+        it 'can move two spaces(white)' do
+          start = [1, 0]
+          fin = [3, 0]
+          white_pawn.position = [2, 0]
+          expect(white_pawn.move_forward(gameboard, start, fin)).to be false
+        end
+      end
     end
   end
 end

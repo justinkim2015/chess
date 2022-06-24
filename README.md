@@ -98,3 +98,10 @@ There are no safe spaces left for king -> checkmate
      -#valid_move? is basically this function that checks if a piece is attacking a certain square but it also requires the starting position, so it would be a pain to always write it in.  So if I make every single piece know its starting position i can set the default value.  but this would mean every single piece must be its own object... 
       - **I think this is the way to go**
       - Have position also be set on making a new class in the player class.
+
+  ***FIRST THING TO DO TOMORROW***
+  -Find out why my piece is always in check, see what broke.
+    -well only black pieces seem to be broken, white works just fine
+    **STILL DONT KNOW WHY** But going to take a step away from the check method to refactor a bit so it's easier to see whats going on in my logic
+
+    How can I make these valid_move? (possible moves) function work better

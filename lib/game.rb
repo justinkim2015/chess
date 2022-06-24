@@ -4,6 +4,7 @@ require_relative './pieces/pawn'
 require_relative './pieces/queen'
 require_relative './pieces/rook'
 require_relative './pieces/knight'
+require 'pry'
 
 class Game
   attr_accessor :board, :player1, :player2, :turn
@@ -36,31 +37,12 @@ class Game
   def take_turn
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
-    check?
+    # check?
     start = valid_input_start
     puts 'Where would you like to move it?'
     fin = valid_input_fin
     move(start, fin)
     change_turn if board.grid[start[0]][start[1]] == ' '
-  end
-
-  # This is currently only checking the movement of the king to escape check
-  def checkmate?
-    start = @turn.pieces[:king].position
-    fin = [[start[0] - 1, start[1]], [start[0] + 1, start[1]], [start[0], start[1] + 1], [start[0], start[1] - 1], [start[0] + 1, start[1] - 1], [start[0] + 1, start[1] + 1], [start[0] - 1, start[1] - 1], [start[0] - 1, start[1] + 1]]
-    i = 0
-    8.times do
-      move(start, fin[i])
-      return true if spot_in_check?
-
-      move(fin[i], start)
-      i += 1
-    end
-    false
-  end
-
-  def spot_in_check?
-    @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].position)
   end
 
   # This is working but very inelegant
@@ -80,6 +62,25 @@ class Game
     # kings_spot and board.  So basically to check if the new value would be safe, I'd
     # have to move there, and check the value, if its not safe then I roll back the board
     # change and run the function again.
+  end
+
+  def spot_in_check?
+    @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].position)
+  end
+
+  # This is currently only checking the movement of the king to escape check
+  def checkmate?
+    start = @turn.pieces[:king].position
+    fin = [[start[0] - 1, start[1]], [start[0] + 1, start[1]], [start[0], start[1] + 1], [start[0], start[1] - 1], [start[0] + 1, start[1] - 1], [start[0] + 1, start[1] + 1], [start[0] - 1, start[1] - 1], [start[0] - 1, start[1] + 1]]
+    i = 0
+    8.times do
+      move(start, fin[i])
+      return true if spot_in_check?
+
+      move(fin[i], start)
+      i += 1
+    end
+    false
   end
 
   def convert(value)

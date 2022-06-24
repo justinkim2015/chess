@@ -13,20 +13,17 @@ class Queen < Piece
     color == 'White' ? '♛' : '♕'
   end
 
-  def valid_move?(start, fin)
+  def moves(location, result = [])
     i = 1
     7.times do
-      return true if [fin[0], fin[1]] == [start[0] - i, start[1]] && (start[0] - i) >= 0 ||
-                     [fin[0], fin[1]] == [start[0] + i, start[1]] && (start[0] + i) <= 7 ||
-                     [fin[0], fin[1]] == [start[0], start[1] + i] && (start[1] + i) <= 7 ||
-                     [fin[0], fin[1]] == [start[0], start[1] - i] && (start[1] - i) >= 0 ||
-                     [fin[0], fin[1]] == [start[0] + i, start[1] - i] && ((start[0] + i) <= 7 && (start[1] - i)) >= 0 ||
-                     [fin[0], fin[1]] == [start[0] + i, start[1] + i] && (start[0] + i) && (start[1] + i) <= 7 ||
-                     [fin[0], fin[1]] == [start[0] - i, start[1] - i] && (start[0] - i) && (start[1] - i) >= 0 ||
-                     [fin[0], fin[1]] == [start[0] - i, start[1] + i] && (start[0] - i) >= 0 && (start[1] + i) <= 7
-
+      moves = [[i, i], [-i, -i], [-i, i], [i, -i], [i, 0], [-i, 0], [0, i], [0, -i]]
+      moves.each do |move|
+        x = location[0] + move[0]
+        y = location[1] + move[1]
+        result << [x, y] if x.between?(0, 7) && y.between?(0, 7)
+      end
       i += 1
     end
-    false
+    result
   end
 end

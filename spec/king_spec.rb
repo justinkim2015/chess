@@ -230,7 +230,7 @@ describe King do
     end
 
     context 'when the spot outside the baord' do
-      it 'returns false' do
+      xit 'returns false' do
         spot = [9, 5]
         expect(white_king.knight_checking?(gameboard, spot)).to be false
       end
@@ -241,6 +241,13 @@ describe King do
     context 'when the spot is safe' do
       it 'returns false' do
         spot = [3, 3]
+        gameboard.grid[1][5] = '♛'
+        expect(black_king.queen_checking?(gameboard, spot)).to be false
+      end
+
+      it 'returns false' do
+        spot = [0, 3]
+        gameboard.grid[7][4] = '♕'
         expect(white_king.queen_checking?(gameboard, spot)).to be false
       end
     end

@@ -13,16 +13,13 @@ class Knight < Piece
     color == 'White' ? '♞' : '♘'
   end
 
-  def valid_move?(start, fin)
-    return true if [fin[0], fin[1]] == [start[0] + 1, start[1] + 2] && ((start[0] + 1) && (start[1] + 2)) <= 7 ||
-                   [fin[0], fin[1]] == [start[0] + 1, start[1] - 2] && ((start[0] + 1) <= 7 && (start[1] - 2)) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] + 2, start[1] + 1] && (start[0] + 2) && (start[1] + 1) <= 7 ||
-                   [fin[0], fin[1]] == [start[0] + 2, start[1] - 1] && (start[0] + 2) <= 7 && (start[1] - 1) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] - 1, start[1] + 2] && ((start[0] - 1) >= 0 && (start[1] + 2)) <= 7 ||
-                   [fin[0], fin[1]] == [start[0] - 1, start[1] - 2] && (start[0] - 1) && (start[1] - 2) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] - 2, start[1] + 1] && (start[0] - 2) >= 0 && (start[1] + 1) <= 7 ||
-                   [fin[0], fin[1]] == [start[0] - 2, start[1] - 1] && (start[0] - 2) && (start[1] - 1) >= 0
-
-    false
+  def moves(location, result = [])
+    moves = [[1, 2], [2, 1], [-1, -2], [-2, -1], [-1, 2], [1, -2], [-2, 1], [2, -1]]
+    moves.each do |move|
+      x = location[0] + move[0]
+      y = location[1] + move[1]
+      result << [x, y] if x.between?(0, 7) && y.between?(0, 7)
+    end
+    result
   end
 end

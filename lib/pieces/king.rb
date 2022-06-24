@@ -15,26 +15,13 @@ class King < Piece
     color == 'White' ? '♚' : '♔'
   end
 
-  def valid_move?(start, fin)
-    return true if [fin[0], fin[1]] == [start[0] - 1, start[1]] && (start[0] - 1) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] + 1, start[1]] && (start[0] + 1) <= 7 ||
-                   [fin[0], fin[1]] == [start[0], start[1] + 1] && (start[1] + 1) <= 7 ||
-                   [fin[0], fin[1]] == [start[0], start[1] - 1] && (start[1] - 1) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] + 1, start[1] - 1] && ((start[0] + 1) <= 7 && (start[1] - 1)) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] + 1, start[1] + 1] && (start[0] + 1) && (start[1] + 1) <= 7 ||
-                   [fin[0], fin[1]] == [start[0] - 1, start[1] - 1] && (start[0] - 1) && (start[1] - 1) >= 0 ||
-                   [fin[0], fin[1]] == [start[0] - 1, start[1] + 1] && (start[0] - 1) >= 0 && (start[1] + 1) <= 7
-
-    false
-  end
-
   def pawn_checking?(board, spot)
     if @color == '♚'
-      return true if board.grid[spot[0] - 1][spot[1] - 1] == '♙' ||
-                     board.grid[spot[0] - 1][spot[1] + 1] == '♙'
+      return true if (spot[0] - 1) >= 0 && (spot[1] - 1) >= 0 && board.grid[spot[0] - 1][spot[1] - 1] == '♙' ||
+                     (spot[0] - 1) >= 0 && (spot[1] + 1) <= 7 && board.grid[spot[0] - 1][spot[1] + 1] == '♙'
     else
-      return true if board.grid[spot[0] + 1][spot[1] + 1] == '♟' ||
-                     board.grid[spot[0] + 1][spot[1] - 1] == '♟'
+      return true if (spot[0] + 1) <= 7 && (spot[1] + 1) <= 7 && board.grid[spot[0] + 1][spot[1] + 1] == '♟' ||
+                     (spot[0] + 1) <= 7 && (spot[1] - 1) >= 0 && board.grid[spot[0] + 1][spot[1] - 1] == '♟'
     end
     false
   end
@@ -133,5 +120,15 @@ class King < Piece
                    rook_checking?(board, spot)
 
     false
+  end
+
+  def moves(location, result = [])
+    moves = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [-1, 1], [1, -1]]
+    moves.each do |move|
+      x = location[0] + move[0]
+      y = location[1] + move[1]
+      result << [x, y] if x.between?(0, 7) && y.between?(0, 7)
+    end
+    result
   end
 end

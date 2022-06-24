@@ -12,6 +12,12 @@ class Piece
     @location = fin
   end
 
+  def valid_move?(start, fin)
+    return true if moves(start).include?(fin)
+
+    false
+  end
+
   def can_attack_square?(board, start = @location, fin)
     valid_move?(start, fin) && valid_spot?(board, fin)
   end

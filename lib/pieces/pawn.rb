@@ -38,12 +38,10 @@ class Pawn < Piece
 
   def move_forward(board, start, fin)
     if @color == '♙'
-      return true if [fin[0], fin[1]] == [start[0] + 1, start[1]] &&
-                     (start[0] + 1) <= 7 &&
+      return true if moves(start).include?(fin) &&
                      !@white_pieces.include?(board.grid[fin[0]][fin[1]])
     else
-      return true if [fin[0], fin[1]] == [start[0] - 1, start[1]] &&
-                     (start[0] - 1) >= 0 &&
+      return true if moves(start).include?(fin) &&
                      !@black_pieces.include?(board.grid[fin[0]][fin[1]])
     end
     false
@@ -71,5 +69,13 @@ class Pawn < Piece
 
     board.grid[fin[0]][fin[1]] = @color
     board.grid[start[0]][start[1]] = ' '
+  end
+
+  def moves(location, result = [])
+    move = @color == '♙' ? [1, 0] : [-1, 0]
+    x = location[0] + move[0]
+    y = location[1] + move[1]
+    result << [x, y] if x.between?(0, 7) && y.between?(0, 7)
+    result
   end
 end

@@ -121,4 +121,34 @@ describe Bishop do
       end
     end
   end
+
+  describe '#attacking_square?' do
+    context 'when spot is in legal range' do
+      it 'returns true' do
+        x = 4
+        y = 4
+        gameboard.grid[5][5] = '♗'
+        gameboard.grid[0][0] = '♝'
+        expect(bishop.attacking_square?(gameboard, [x, y])).to be true
+      end
+    end
+
+    context 'when spot is not in legal range' do
+      it 'returns false' do
+        x = 0
+        y = 0
+        expect(bishop.attacking_square?(gameboard, [x, y])).to be false
+      end
+    end
+
+    context 'when spot is being blocked by another piece' do
+      it 'returns false' do
+        x = 4
+        y = 4
+        gameboard.grid[2][2] = '♗'
+        gameboard.grid[0][0] = '♝'
+        expect(bishop.attacking_square?(gameboard, [x, y])).to be false
+      end
+    end
+  end
 end

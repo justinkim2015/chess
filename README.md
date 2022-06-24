@@ -104,4 +104,3 @@ There are no safe spaces left for king -> checkmate
     -well only black pieces seem to be broken, white works just fine
     **STILL DONT KNOW WHY** But going to take a step away from the check method to refactor a bit so it's easier to see whats going on in my logic
 
-    How can I make these valid_move? (possible moves) function work better

@@ -27,11 +27,30 @@ class Bishop < Piece
     result
   end
 
-  def attacking_square?(board, spot)
-    all_moves = moves(spot)
-    all_moves.each do |move|
-      return true if board.grid[move[0]][move[1]] == @color
+  # To find if the path is empty I can either loop over every instance between
+  # the two points or find all instances and see if there are any
+  # pieces in all the
+  def path_empty?(board, start, fin)
+    x = fin[0] - start[0]
+    y = fin[1] - start[1]
+
+    if x.positive? && y.positive?
+      until start == [fin[0] - 1, fin[1] - 1]
+        return false if board.grid[start[0] += 1][start[1] += 1] != ' '
+      end
+    elsif x.positive? && y.negative?
+      until start == [fin[0] - 1, fin[1] + 1]
+        return false if board.grid[start[0] += 1][start[1] -= 1] != ' '
+      end
+    elsif x.negative? && y.positive?
+      until start == [fin[0] + 1, fin[1] - 1]
+        return false if board.grid[start[0] -= 1][start[1] += 1] != ' '
+      end
+    elsif x.negative? && y.negative?
+      until start == [fin[0] + 1, fin[1] + 1]
+        return false if board.grid[start[0] -= 1][start[1] -= 1] != ' '
+      end
     end
-    false
+    true
   end
 end

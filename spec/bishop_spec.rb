@@ -131,6 +131,14 @@ describe Bishop do
         gameboard.grid[0][0] = '♝'
         expect(bishop.attacking_square?(gameboard, [x, y])).to be true
       end
+
+      it 'returns true' do
+        x = 0
+        y = 0
+        gameboard.grid[5][5] = '♗'
+        gameboard.grid[3][3] = '♝'
+        expect(bishop.attacking_square?(gameboard, [x, y])).to be true
+      end
     end
 
     context 'when spot is not in legal range' do

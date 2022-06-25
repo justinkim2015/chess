@@ -34,4 +34,13 @@ class Piece
 
     false
   end
+
+  def attacking_square?(board, spot)
+    all_moves = moves(spot)
+    all_moves.each do |move|
+      return true if board.grid[move[0]][move[1]] == @color &&
+                     path_empty?(board, spot, [move[0], move[1]])
+    end
+    false
+  end
 end

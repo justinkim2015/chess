@@ -27,9 +27,7 @@ class Bishop < Piece
     result
   end
 
-  # To find if the path is empty I can either loop over every instance between
-  # the two points or find all instances and see if there are any
-  # pieces in all the
+  # Good enough for now, I want to refactor later
   def path_empty?(board, start, fin)
     x = fin[0] - start[0]
     y = fin[1] - start[1]

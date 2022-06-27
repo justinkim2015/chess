@@ -84,4 +84,12 @@ class Pawn < Piece
 
     result
   end
+
+  def pawn_attacking_square?(board, spot)
+    all_moves = diag_moves(spot)
+    all_moves.each do |move|
+      return true if board.grid[move[0]][move[1]] == @color
+    end
+    false
+  end
 end

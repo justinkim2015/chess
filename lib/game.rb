@@ -46,14 +46,13 @@ class Game
   end
 
   # This is working but very inelegant
-  def check?
-    return unless spot_in_check?
+  def escape_check
 
     puts 'You are in check, protect your king!'
     start = valid_input_start
     fin = valid_input_fin
     move(start, fin)
-    if spot_in_check?
+    if spot_being_attacked?(fin)
       move(fin, start)
       check?
     end
@@ -64,18 +63,33 @@ class Game
     # change and run the function again.
   end
 
-  def spot_in_check?
-    @turn.pieces[:king].king_in_check?(@board, @turn.pieces[:king].position)
+  def check?
+    return true if spot_being_attacked?(@turn.pieces[:king].position)
+
+    false
+  end
+
+  # Right now this is returning true if @turn color is attacking the square
+  def spot_being_attacked?(spot)
+    enemy = @turn == @player1 ? @player2 : @player1
+
+    return true if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot) ||
+                   enemy.pieces[:bishop1].attacking_square?(@board, spot) ||
+                   enemy.pieces[:knight1].attacking_square?(@board, spot) ||
+                   enemy.pieces[:queen].attacking_square?(@board, spot) ||
+                   enemy.pieces[:rook1].attacking_square?(@board, spot)
+
+    false
   end
 
   # This is currently only checking the movement of the king to escape check
   def checkmate?
     start = @turn.pieces[:king].position
-    fin = [[start[0] - 1, start[1]], [start[0] + 1, start[1]], [start[0], start[1] + 1], [start[0], start[1] - 1], [start[0] + 1, start[1] - 1], [start[0] + 1, start[1] + 1], [start[0] - 1, start[1] - 1], [start[0] - 1, start[1] + 1]]
+    fin = @turn.pieces[:king].moves(start)
     i = 0
     8.times do
       move(start, fin[i])
-      return true if spot_in_check?
+      return true if spot_being_attacked?(fin[i])
 
       move(fin[i], start)
       i += 1

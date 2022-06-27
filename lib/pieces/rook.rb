@@ -28,25 +28,26 @@ class Rook < Piece
     result
   end
 
-  # Start is spot im attacking / Fin is location of actual piece
-  def path_empty?(board, start, fin)
-    x = fin[0] - start[0]
-    y = fin[1] - start[1]
-    if x.positive? && y.zero?
-      until start == [fin[0] - 1, fin[1]]
-        return false if board.grid[start[0] += 1][start[1]] != ' '
+  # spot is spot im attacking / piece is location of actual piece
+  def path_empty?(board, spot, piece)
+    x = piece[0] - spot[0]
+    y = piece[1] - spot[1]
+
+    if x.positive?
+      until spot == [piece[0] - 1, piece[1]]
+        return false if board.grid[spot[0] += 1][spot[1]] != ' '
       end
-    elsif x.negative? && y.zero?
-      until start == [fin[0] + 1, fin[1]]
-        return false if board.grid[start[0] += 1][start[1]] != ' '
+    elsif x.negative?
+      until spot == [piece[0] + 1, piece[1]]
+        return false if board.grid[spot[0] -= 1][spot[1]] != ' '
       end
-    elsif x.zero? && y.positive?
-      until start == [fin[0], fin[1] - 1]
-        return false if board.grid[start[0]][start[1] += 1] != ' '
+    elsif y.positive?
+      until spot == [piece[0], piece[1] - 1]
+        return false if board.grid[spot[0]][spot[1] += 1] != ' '
       end
-    elsif x.zero? && y.negative?
-      until start == [fin[0], fin[1] + 1]
-        return false if board.grid[start[0]][start[1] -= 1] != ' '
+    elsif y.negative?
+      until spot == [piece[0], piece[1] + 1]
+        return false if board.grid[spot[0]][spot[1] -= 1] != ' '
       end
     end
     true

@@ -5,13 +5,28 @@ require './lib/player'
 
 describe Game do
   subject(:game) { described_class.new }
-  subject(:board) { described_class.new }
-  subject(:player1) { double(Player) }
-  subject(:player2) { double(Player) }
+
+  describe '#spot_being_attacked?' do
+    context 'when spot is being attacked' do
+      it 'returns true' do
+        spot = [3, 3]
+        game.board.grid[2][2] = '♕'
+        expect(game.spot_being_attacked?(spot)).to be true
+      end
+    end
+
+    context 'when spot is not being attacked' do
+      it 'returns false' do
+        spot = [3, 3]
+        game.board.grid[5][2] = '♛'
+        expect(game.spot_being_attacked?(spot)).to be false
+      end
+    end
+  end
 
   describe '#check?' do
     context 'when king is in check' do
-      xit 'returns true' do
+      it 'returns true' do
         game.board.grid[0][0] = '♚'
         game.board.grid[1][1] = '♕'
         game.turn.pieces[:king].position = [0, 0]
@@ -49,7 +64,7 @@ describe Game do
 
   describe '#checkmate' do
     context 'when king has no escape' do
-      it 'returns true' do
+      xit 'returns true' do
         game.board.grid[0][0] = '♚'
         game.board.grid[1][0] = '♕'
         game.turn.pieces[:king].position = [0, 0]
@@ -58,7 +73,7 @@ describe Game do
     end
 
     context 'when king has an escape' do
-      it 'returns false' do
+      xit 'returns false' do
         game.board.grid[0][0] = '♚'
         game.turn.pieces[:king].position = [0, 0]
         expect(game.checkmate?).to be false
@@ -66,7 +81,7 @@ describe Game do
     end
 
     context 'when another piece can save the king' do
-      it 'returns false' do
+      xit 'returns false' do
         game.board.grid[0][0] = '♚'
         game.board.grid[1][0] = '♕'
         game.board.grid[2][2] = '♞'

@@ -28,25 +28,25 @@ class Bishop < Piece
   end
 
   # Good enough for now, I want to refactor later
-  def path_empty?(board, start, fin)
-    x = fin[0] - start[0]
-    y = fin[1] - start[1]
+  def path_empty?(board, spot, piece)
+    x = piece[0] - spot[0]
+    y = piece[1] - spot[1]
 
     if x.positive? && y.positive?
-      until start == [fin[0] - 1, fin[1] - 1]
-        return false if board.grid[start[0] += 1][start[1] += 1] != ' '
+      until spot == [piece[0] - 1, piece[1] - 1]
+        return false if board.grid[spot[0] += 1][spot[1] += 1] != ' '
       end
     elsif x.positive? && y.negative?
-      until start == [fin[0] - 1, fin[1] + 1]
-        return false if board.grid[start[0] += 1][start[1] -= 1] != ' '
+      until spot == [piece[0] - 1, piece[1] + 1]
+        return false if board.grid[spot[0] += 1][spot[1] -= 1] != ' '
       end
     elsif x.negative? && y.positive?
-      until start == [fin[0] + 1, fin[1] - 1]
-        return false if board.grid[start[0] -= 1][start[1] += 1] != ' '
+      until spot == [piece[0] + 1, piece[1] - 1]
+        return false if board.grid[spot[0] -= 1][spot[1] += 1] != ' '
       end
     elsif x.negative? && y.negative?
-      until start == [fin[0] + 1, fin[1] + 1]
-        return false if board.grid[start[0] -= 1][start[1] -= 1] != ' '
+      until spot == [piece[0] + 1, piece[1] + 1]
+        return false if board.grid[spot[0] -= 1][spot[1] -= 1] != ' '
       end
     end
     true

@@ -7,6 +7,7 @@ class Player
     @pieces = make_pieces(@color)
   end
 
+  # I was trying to refactor the make pieces method here
   def positions
     if @color == 'White'
     else

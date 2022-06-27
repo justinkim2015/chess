@@ -26,4 +26,45 @@ class Queen < Piece
     end
     result
   end
+
+  def path_empty?(board, spot, piece)
+    x = piece[0] - spot[0]
+    y = piece[1] - spot[1]
+
+    if x.positive? && y.positive?
+      until spot == [piece[0] - 1, piece[1] - 1]
+        return false if board.grid[spot[0] += 1][spot[1] += 1] != ' '
+      end
+    elsif x.positive? && y.negative?
+      until spot == [piece[0] - 1, piece[1] + 1]
+        return false if board.grid[spot[0] += 1][spot[1] -= 1] != ' '
+      end
+    elsif x.negative? && y.positive?
+      until spot == [piece[0] + 1, piece[1] - 1]
+        return false if board.grid[spot[0] -= 1][spot[1] += 1] != ' '
+      end
+    elsif x.negative? && y.negative?
+      until spot == [piece[0] + 1, piece[1] + 1]
+        return false if board.grid[spot[0] -= 1][spot[1] -= 1] != ' '
+      end
+    elsif x.positive?
+      until spot == [piece[0] - 1, piece[1]]
+        return false if board.grid[spot[0] += 1][spot[1]] != ' '
+      end
+    elsif x.negative?
+      until spot == [piece[0] + 1, piece[1]]
+        return false if board.grid[spot[0] -= 1][spot[1]] != ' '
+      end
+    elsif y.positive?
+      until spot == [piece[0], piece[1] - 1]
+        return false if board.grid[spot[0]][spot[1] += 1] != ' '
+      end
+    elsif y.negative?
+      until spot == [piece[0], piece[1] + 1]
+        return false if board.grid[spot[0]][spot[1] -= 1] != ' '
+      end
+    end
+
+    true
+  end
 end

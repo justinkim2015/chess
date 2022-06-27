@@ -169,4 +169,30 @@ describe Pawn do
       end
     end
   end
+
+  describe '#pawn_attacking_square?' do
+    context 'when spot is in legal range' do
+      it 'returns true' do
+        x = 3
+        y = 3
+        gameboard.grid[2][2] = '♟'
+        expect(white_pawn.pawn_attacking_square?(gameboard, [x, y])).to be true
+      end
+
+      it 'returns true' do
+        x = 3
+        y = 3
+        gameboard.grid[4][4] = '♙'
+        expect(black_pawn.pawn_attacking_square?(gameboard, [x, y])).to be true
+      end
+    end
+
+    context 'when spot is not in legal range' do
+      it 'returns false' do
+        x = 0
+        y = 0
+        expect(black_pawn.pawn_attacking_square?(gameboard, [x, y])).to be false
+      end
+    end
+  end
 end

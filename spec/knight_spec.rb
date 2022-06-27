@@ -118,4 +118,30 @@ describe Knight do
       end
     end
   end
+
+  describe '#attacking_square?' do
+    context 'when spot is in legal range' do
+      it 'returns true' do
+        x = 4
+        y = 2
+        gameboard.grid[6][3] = '♞'
+        expect(knight.attacking_square?(gameboard, [x, y])).to be true
+      end
+
+      it 'returns true' do
+        x = 0
+        y = 0
+        gameboard.grid[1][2] = '♞'
+        expect(knight.attacking_square?(gameboard, [x, y])).to be true
+      end
+    end
+
+    context 'when spot is not in legal range' do
+      it 'returns false' do
+        x = 0
+        y = 0
+        expect(knight.attacking_square?(gameboard, [x, y])).to be false
+      end
+    end
+  end
 end

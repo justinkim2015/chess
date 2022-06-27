@@ -22,4 +22,9 @@ class Knight < Piece
     end
     result
   end
+
+  # If the spot is empty nothing can block a knight
+  def path_empty?(_, _, _)
+    true
+  end
 end

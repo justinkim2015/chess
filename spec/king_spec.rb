@@ -23,6 +23,12 @@ describe King do
         gameboard.grid[start[0]][start[1]] = '♚'
         expect { white_king.move(gameboard, start, fin) }.to change { gameboard.grid[start[0]][start[1]] }.from('♚').to(' ')
       end
+
+      it 'updates position' do
+        start = [0, 3]
+        fin = [0, 4]
+        expect { white_king.move(gameboard, start, fin) }.to change { white_king.position }.from([0, 3]).to([0, 4])
+      end
     end
 
     context 'space is not empty' do

@@ -191,6 +191,8 @@ describe Pawn do
       it 'returns false' do
         x = 0
         y = 0
+        gameboard.grid[4][4] = '♙'
+        gameboard.grid[2][2] = '♟'
         expect(black_pawn.pawn_attacking_square?(gameboard, [x, y])).to be false
       end
     end

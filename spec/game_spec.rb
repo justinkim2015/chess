@@ -35,28 +35,40 @@ describe Game do
     end
 
     context 'when king isnt in check' do
-      xit 'returns false' do
+      it 'returns false' do
         game.board.grid[0][0] = '♚'
         game.turn.pieces[:king].position = [0, 0]
+        expect(game.check?).to be false
+      end
+
+      it 'returns false' do
+        game.board.grid[0][0] = '♚'
+        game.turn.pieces[:king].position = [0, 0]
+        expect(game.check?).to be false
+      end
+
+      it 'returns false' do
+        game.board.grid[7][3] = '♚'
+        game.board.grid[0][4] = '♕'
+        game.player2.pieces[:queen].position = [0, 4]
+        game.player1.pieces[:king].position = [7, 3]
         expect(game.check?).to be false
       end
     end
 
     context 'if moving to a discovered space' do
-      xit 'returns true' do
-        game.board.grid[0][0] = '♚'
-        game.board.grid[1][2] = '♕'
-        game.turn.pieces[:king].position = [0, 0]
-        game.turn.pieces[:king].move_king(game.board, [0, 0], [0, 1])
+      it 'returns true' do
+        game.board.grid[0][3] = '♚'
+        game.board.grid[1][7] = '♕'
+        game.turn.pieces[:king].move(game.board, [0, 3], [1, 4])
         expect(game.check?).to be true
       end
     end
 
     context 'if moving to an undiscovered space' do
-      xit 'returns false' do
+      it 'returns false' do
         game.board.grid[0][0] = '♚'
-        game.turn.pieces[:king].position = [0, 0]
-        game.turn.pieces[:king].move_king(game.board, [0, 0], [0, 1])
+        game.turn.pieces[:king].move(game.board, [0, 0], [0, 1])
         expect(game.check?).to be false
       end
     end
@@ -64,16 +76,18 @@ describe Game do
 
   describe '#checkmate' do
     context 'when king has no escape' do
-      xit 'returns true' do
+      it 'returns true' do
         game.board.grid[0][0] = '♚'
-        game.board.grid[1][0] = '♕'
+        game.board.grid[1][0] = '♞'
+        game.board.grid[1][1] = '♞'
+        game.board.grid[0][2] = '♕'
         game.turn.pieces[:king].position = [0, 0]
         expect(game.checkmate?).to be true
       end
     end
 
     context 'when king has an escape' do
-      xit 'returns false' do
+      it 'returns false' do
         game.board.grid[0][0] = '♚'
         game.turn.pieces[:king].position = [0, 0]
         expect(game.checkmate?).to be false
@@ -81,12 +95,17 @@ describe Game do
     end
 
     context 'when another piece can save the king' do
-      xit 'returns false' do
+      xit 'returns false(eating)' do
         game.board.grid[0][0] = '♚'
-        game.board.grid[1][0] = '♕'
+        game.board.grid[1][0] = '♞'
+        game.board.grid[1][1] = '♞'
+        game.board.grid[0][2] = '♕'
         game.board.grid[2][2] = '♞'
         game.turn.pieces[:king].position = [0, 0]
         expect(game.checkmate?).to be false
+      end
+
+      xit 'returns false(blocking)' do
       end
     end
   end

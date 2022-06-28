@@ -9,7 +9,7 @@ class Piece
 
     board.grid[fin[0]][fin[1]] = @color
     board.grid[start[0]][start[1]] = ' '
-    @location = fin
+    @position = fin
   end
 
   def valid_move?(start, fin)

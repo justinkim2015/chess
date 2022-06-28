@@ -13,6 +13,8 @@ game = Game.new
 game.place_pieces
 # p game.spot_in_check?
 
-# loop do
-#   game.take_turn
-# end
+loop do
+  game.take_turn
+end
+
+# game.queen_attacking?(game.turn.pieces[:king].position)

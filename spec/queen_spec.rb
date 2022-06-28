@@ -197,6 +197,14 @@ describe Queen do
         gameboard.grid[0][0] = '♛'
         expect(queen.attacking_square?(gameboard, [x, y])).to be false
       end
+
+      it 'returns false' do
+        x = 7
+        y = 3
+        gameboard.grid[0][4] = '♕'
+        gameboard.grid[0][0] = '♛'
+        expect(queen.attacking_square?(gameboard, [x, y])).to be false
+      end
     end
   end
 end

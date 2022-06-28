@@ -182,10 +182,18 @@ describe Queen do
     end
 
     context 'when spot is being blocked by another piece' do
-      it 'returns false' do
+      it 'returns false (diff color)' do
         x = 3
         y = 0
         gameboard.grid[2][0] = '♕'
+        gameboard.grid[1][0] = '♛'
+        expect(queen.attacking_square?(gameboard, [x, y])).to be false
+      end
+
+      it 'returns false (same color)' do
+        x = 3
+        y = 0
+        gameboard.grid[2][0] = '♜'
         gameboard.grid[1][0] = '♛'
         expect(queen.attacking_square?(gameboard, [x, y])).to be false
       end

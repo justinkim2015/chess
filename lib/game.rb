@@ -34,18 +34,15 @@ class Game
     end
   end
 
-  # Why is it returning check! when starting the board
-  # I'll come back to this after figuring out how to find which piece
-  # is attacking the king
   def take_turn
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
-    puts 'check!' if check?
+    puts 'youre in check!' if check?
     start = valid_input_start
     puts 'Where would you like to move it?'
     fin = valid_input_fin
     move(start, fin)
-    puts 'check!' if check?
+    puts 'you checked the enemy!' if check?
     change_turn if board.grid[start[0]][start[1]] == ' '
   end
 
@@ -81,6 +78,7 @@ class Game
     elsif enemy.pieces[:rook1].attacking_square?(@board, spot)
       return 'rook'
     end
+
     'nothing'
   end
 
@@ -172,16 +170,16 @@ class Game
     board.grid[0][0] = player2.pieces[:rook1].color
     board.grid[0][1] = player2.pieces[:knight1].color
     board.grid[0][2] = player2.pieces[:bishop1].color
-    board.grid[0][4] = player2.pieces[:queen].color # This is causing check
+    board.grid[0][4] = player2.pieces[:queen].color
     board.grid[0][3] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color
     board.grid[1][0] = player2.pieces[:pawn1].color
     board.grid[1][1] = player2.pieces[:pawn2].color
-    board.grid[1][2] = player2.pieces[:pawn3].color # This is causing check
+    board.grid[1][2] = player2.pieces[:pawn3].color
     board.grid[1][3] = player2.pieces[:pawn4].color
-    board.grid[1][4] = player2.pieces[:pawn5].color # This is causing check
+    board.grid[1][4] = player2.pieces[:pawn5].color
     board.grid[1][5] = player2.pieces[:pawn6].color
     board.grid[1][6] = player2.pieces[:pawn7].color
     board.grid[1][7] = player2.pieces[:pawn8].color

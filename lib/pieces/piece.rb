@@ -35,14 +35,12 @@ class Piece
     false
   end
 
+  # path_empty? goes through enemy pieces but is blocked by ally pieces
   def attacking_square?(board, spot)
     all_moves = moves(spot)
     all_moves.each do |move|
-      if board.grid[move[0]][move[1]] == @color && path_empty?(board, spot, [move[0], move[1]])
-        p @color
-        p "This #{[move[0],move[1]]} is the spot where board.grid == @color"
-        return true
-      end
+      return true if board.grid[move[0]][move[1]] == @color &&
+                     path_empty?(board, spot, [move[0], move[1]])
     end
     false
   end

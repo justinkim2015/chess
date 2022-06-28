@@ -85,6 +85,7 @@ class Pawn < Piece
     result
   end
 
+  # Maybe change name to attacked_by_pawn?
   def pawn_attacking_square?(board, spot)
     all_moves = diag_moves(spot)
     all_moves.each do |move|

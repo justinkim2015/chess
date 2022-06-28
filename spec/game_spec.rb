@@ -50,8 +50,8 @@ describe Game do
       it 'returns false' do
         game.board.grid[7][3] = '♚'
         game.board.grid[0][4] = '♕'
-        game.player2.pieces[:queen].position = [0, 4]
         game.player1.pieces[:king].position = [7, 3]
+        game.player2.pieces[:queen].position = [0, 4]
         expect(game.check?).to be false
       end
     end

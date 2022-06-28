@@ -34,6 +34,9 @@ class Game
     end
   end
 
+  # Why is it returning check! when starting the board
+  # I'll come back to this after figuring out how to find which piece
+  # is attacking the king
   def take_turn
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
@@ -52,7 +55,6 @@ class Game
     false
   end
 
-  # Right now this is returning true if opposite of @turn color is attacking the square
   def spot_being_attacked?(spot)
     enemy = @turn == @player1 ? @player2 : @player1
 
@@ -65,15 +67,36 @@ class Game
     false
   end
 
-  def queen_attacking?(spot)
+  def which_piece(spot)
     enemy = @turn == @player1 ? @player2 : @player1
 
-    if enemy.pieces[:queen].attacking_square?(@board, spot)
+    if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
+      return 'pawn'
+    elsif enemy.pieces[:bishop1].attacking_square?(@board, spot)
+      return 'bishop'
+    elsif enemy.pieces[:knight1].attacking_square?(@board, spot)
+      return 'knight'
+    elsif enemy.pieces[:queen].attacking_square?(@board, spot)
+      return 'queen'
+    elsif enemy.pieces[:rook1].attacking_square?(@board, spot)
+      return 'rook'
+    end
+    'nothing'
+  end
+
+  # The queens are checking each other for some reason
+  # I wrote this to try to find the reason why its in check
+  def queen_attacking?(spot)
+    # enemy = @turn == @player1 ? @player2 : @player1
+
+    # player1 is white
+    # player2 is black
+    if @player2.pieces[:queen].attacking_square?(@board, spot)
       p 'queen is checking king'
       p spot
       puts '--------'
-      p @turn.name
-      p @turn.pieces[:king].position
+      p @player1.name
+      p @player1.pieces[:king].position
       puts '--------'
       p @player2.name
       p @player2.pieces[:queen].position
@@ -81,6 +104,7 @@ class Game
       puts 'player 2 queen moves'
       p @player2.pieces[:queen].moves(@player2.pieces[:queen].position)
     end 
+    p board.grid[0][0]
     board.drawboard
   end
 
@@ -155,9 +179,9 @@ class Game
     board.grid[0][7] = player2.pieces[:rook2].color
     board.grid[1][0] = player2.pieces[:pawn1].color
     board.grid[1][1] = player2.pieces[:pawn2].color
-    # board.grid[1][2] = player2.pieces[:pawn3].color # This is causing check
+    board.grid[1][2] = player2.pieces[:pawn3].color # This is causing check
     board.grid[1][3] = player2.pieces[:pawn4].color
-    # board.grid[1][4] = player2.pieces[:pawn5].color # This is causing check
+    board.grid[1][4] = player2.pieces[:pawn5].color # This is causing check
     board.grid[1][5] = player2.pieces[:pawn6].color
     board.grid[1][6] = player2.pieces[:pawn7].color
     board.grid[1][7] = player2.pieces[:pawn8].color
@@ -165,16 +189,16 @@ class Game
     board.grid[7][0] = player1.pieces[:rook1].color
     board.grid[7][1] = player1.pieces[:knight1].color
     board.grid[7][2] = player1.pieces[:bishop1].color
-    # board.grid[7][4] = player1.pieces[:queen].color
+    board.grid[7][4] = player1.pieces[:queen].color
     board.grid[7][3] = player1.pieces[:king].color
     board.grid[7][5] = player1.pieces[:bishop2].color
     board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
     board.grid[6][0] = player1.pieces[:pawn1].color
     board.grid[6][1] = player1.pieces[:pawn2].color
-    # board.grid[6][2] = player1.pieces[:pawn3].color
+    board.grid[6][2] = player1.pieces[:pawn3].color
     board.grid[6][3] = player1.pieces[:pawn4].color
-    # board.grid[6][4] = player1.pieces[:pawn5].color
+    board.grid[6][4] = player1.pieces[:pawn5].color
     board.grid[6][5] = player1.pieces[:pawn6].color
     board.grid[6][6] = player1.pieces[:pawn7].color
     board.grid[6][7] = player1.pieces[:pawn8].color

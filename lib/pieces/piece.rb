@@ -38,8 +38,11 @@ class Piece
   def attacking_square?(board, spot)
     all_moves = moves(spot)
     all_moves.each do |move|
-      return true if board.grid[move[0]][move[1]] == @color &&
-                     path_empty?(board, spot, [move[0], move[1]])
+      if board.grid[move[0]][move[1]] == @color && path_empty?(board, spot, [move[0], move[1]])
+        p @color
+        p "This #{[move[0],move[1]]} is the spot where board.grid == @color"
+        return true
+      end
     end
     false
   end

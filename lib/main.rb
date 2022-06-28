@@ -11,10 +11,11 @@ require_relative './pieces/knight'
 game = Game.new
 
 game.place_pieces
-# p game.spot_in_check?
 
-loop do
-  game.take_turn
-end
+# loop do
+#   game.take_turn
+# end
 
-# game.queen_attacking?(game.turn.pieces[:king].position)
+game.queen_attacking?(game.turn.pieces[:king].position)
+p game.which_piece(game.turn.pieces[:king].position)
+p game.spot_being_attacked?(game.turn.pieces[:king].position)

@@ -1,5 +1,5 @@
 require_relative 'piece'
-
+require 'pry'
 class Queen < Piece
   attr_accessor :color, :position
 
@@ -111,18 +111,38 @@ class Queen < Piece
 
   # Find a method that prints out the full path with one move to a spot, maybe filter would be
   # elegant here?
-  def find_path(start, fin, path = [])
-    all_moves = moves(start)
-    x = fin[0] - start[0]
-    y = fin[1] - start[1]
-    p [x, y]
-    i = 0
-    x.times do
-      if move[0] == start[0] + i && move[1] == start[1] + i
-        path << move
-      end
-    end
-    path
-  end
+  # def find_path(start, fin, path = [])  # start is 1,1 fin is 3,3
+  #   all_moves = moves(start)
+  #   x = fin[0] - start[0]
+  #   y = fin[1] - start[1]
 
+  #   i = 0
+  #   x.times do
+  #     if fin[0] >= start[0] + i && fin[1] >= start[1] + i
+  #       path << [start[0] + i, start[1] + i]
+  #       i += 1
+  #     end
+  #   end
+
+  #   path
+  # end
+
+  def find_path(start, fin) # start is 1,1 fin is 3,3
+    all_moves = moves(start)
+
+    if start[0] > fin[0]
+      max = start[0]
+      min = fin[0]
+    else
+      max = fin[0]
+      min = start[0]
+    end
+
+    # this is working for both positive and negative
+    all_moves.filter do |move|
+      move[0] == move[1] && move[0].between?(min, max)
+    end
+
+    # maybe write one more for diagonals
+  end
 end

@@ -221,7 +221,25 @@ describe Queen do
       it 'returns path' do
         spot = [1, 1]
         queen_location = [3, 3]
-        path = [[1, 1], [2, 2], [3, 3]]
+        path = [[2, 2], [3, 3]]
+        expect(queen.find_path(spot, queen_location)).to eq(path)
+      end
+    end
+
+    context 'when x and y are negative' do
+      it 'returns path' do
+        spot = [3, 3]
+        queen_location = [1, 1]
+        path = [[2, 2], [1, 1]]
+        expect(queen.find_path(spot, queen_location)).to eq(path)
+      end
+    end
+
+    context 'when x is positive and y are negative' do
+      it 'returns path' do
+        spot = [3, 3]
+        queen_location = [5, 1]
+        path = [[4, 2], [5, 1]]
         expect(queen.find_path(spot, queen_location)).to eq(path)
       end
     end

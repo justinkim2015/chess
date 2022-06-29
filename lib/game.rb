@@ -14,6 +14,7 @@ class Game
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
     @turn = @player1
+    @enemy = @turn == @player1 ? @player2 : @player1
   end
 
   def move(start, fin)
@@ -52,9 +53,7 @@ class Game
     false
   end
 
-  def spot_being_attacked?(spot)
-    enemy = @turn == @player1 ? @player2 : @player1
-
+  def spot_being_attacked?(spot, enemy = @enemy)
     return true if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot) ||
                    enemy.pieces[:bishop1].attacking_square?(@board, spot) ||
                    enemy.pieces[:knight1].attacking_square?(@board, spot) ||
@@ -65,8 +64,7 @@ class Game
   end
 
   # currently this checks which piece and where the piece is thats attacking a spot
-  def which_piece(spot)
-    enemy = @turn == @player1 ? @player2 : @player1
+  def which_piece_checking(spot, enemy = @enemy)
 
     if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
       return enemy.pieces[:pawn1].pawn_attacking_square_info(@board, spot)
@@ -107,15 +105,26 @@ class Game
   end
 
   def checkmate?
-    king_escape?
+    king_no_escape? && no_save_eating?
   end
 
-  def king_save_eat?
+  def path_unblockable?
+  end
+
+  # This is checking if a piece can be saved by being eaten by another
+  def no_save_eating?
+    return true unless check?
+
+    enemy_piece = which_piece_checking(@turn.pieces[:king].position)
+    return false if spot_being_attacked?(enemy_piece[:location], @turn)
+
+    true
   end
 
   # This is currently only checking the movement of the king to escape check
   # It does it by checking if the updated spot after calling move is being attacked
-  def king_escape?
+  # If all possible moves are being attacked then its true
+  def king_no_escape?
     start = @turn.pieces[:king].position
     fin = @turn.pieces[:king].moves(start)
     array = []

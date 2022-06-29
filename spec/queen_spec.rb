@@ -215,4 +215,15 @@ describe Queen do
       end
     end
   end
+
+  describe '#path' do
+    context 'when x and y are positive' do
+      it 'returns path' do
+        spot = [1, 1]
+        queen_location = [3, 3]
+        path = [[1, 1], [2, 2], [3, 3]]
+        expect(queen.find_path(spot, queen_location)).to eq(path)
+      end
+    end
+  end
 end

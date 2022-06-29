@@ -27,6 +27,7 @@ class Queen < Piece
     result
   end
 
+  # spot is where im attacking, piece is where the piece is
   def path_empty?(board, spot, piece)
     x = piece[0] - spot[0]
     y = piece[1] - spot[1]
@@ -67,4 +68,61 @@ class Queen < Piece
 
     true
   end
+
+  # def path(board, spot, piece, path = [])
+  #   x = piece[0] - spot[0]
+  #   y = piece[1] - spot[1]
+
+  #   if x.positive? && y.positive?
+  #     until spot == piece
+  #       path << [spot[0] += 1, spot[1] += 1]
+  #     end
+  #   elsif x.positive? && y.negative?
+  #     until spot == [piece[0] - 1, piece[1] + 1]
+  #       path << board.grid[spot[0] += 1][spot[1] -= 1]
+  #     end
+  #   elsif x.negative? && y.positive?
+  #     until spot == [piece[0] + 1, piece[1] - 1]
+  #       path << board.grid[spot[0] -= 1][spot[1] += 1]
+  #     end
+  #   elsif x.negative? && y.negative?
+  #     until spot == [piece[0] + 1, piece[1] + 1]
+  #       path << board.grid[spot[0] -= 1][spot[1] -= 1]
+  #     end
+  #   elsif x.positive?
+  #     until spot == [piece[0] - 1, piece[1]]
+  #       path << board.grid[spot[0] += 1][spot[1]]
+  #     end
+  #   elsif x.negative?
+  #     until spot == [piece[0] + 1, piece[1]]
+  #       path << board.grid[spot[0] -= 1][spot[1]]
+  #     end
+  #   elsif y.positive?
+  #     until spot == [piece[0], piece[1] - 1]
+  #       path << board.grid[spot[0]][spot[1] += 1]
+  #     end
+  #   elsif y.negative?
+  #     until spot == [piece[0], piece[1] + 1]
+  #       path << board.grid[spot[0]][spot[1] -= 1]
+  #     end
+  #   end
+  #   path
+  # end
+
+  # Find a method that prints out the full path with one move to a spot, maybe filter would be
+  # elegant here?
+  def find_path(start, fin, path = [])
+    all_moves = moves(start)
+    x = fin[0] - start[0]
+    y = fin[1] - start[1]
+    p [x, y]
+    i = 0
+    x.times do
+      if move[0] == start[0] + i && move[1] == start[1] + i
+        path << move
+      end
+    end
+    path
+  end
+
 end

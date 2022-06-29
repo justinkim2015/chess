@@ -109,6 +109,17 @@ class Game
   end
 
   def path_unblockable?
+    return true unless check?
+
+    enemy = which_piece_checking(@turn.pieces[:king].position)
+    enemy_location = enemy[:location]
+    symbol_piece = enemy[:piece].to_sym
+    possible_atk_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
+                            ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop'}
+    enemy_piece = possible_atk_pieces[symbol_piece]
+    symbol_name = enemy_piece.to_sym
+    path = @turn.pieces[symbol_name].path(@board, @turn.pieces[:king].position, enemy_location)
+    p path
   end
 
   # This is checking if a piece can be saved by being eaten by another

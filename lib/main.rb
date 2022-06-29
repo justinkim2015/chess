@@ -12,10 +12,10 @@ game = Game.new
 
 game.place_pieces
 
-loop do
-  game.take_turn
-  p game.which_piece(game.turn.pieces[:king].position)
-end
+# loop do
+#   game.take_turn
+#   p game.which_piece(game.turn.pieces[:king].position)
+# end
 
 # game.queen_attacking?(game.turn.pieces[:king].position)
 # p game.spot_being_attacked?(game.turn.pieces[:king].position)

@@ -143,7 +143,7 @@ describe Game do
 
   describe '#king_no_escape?' do
     context 'the king can escape by moving' do
-      it 'returns false' do
+      xit 'returns false' do
         game.board.grid[0][0] = '♚'
         game.board.grid[0][2] = '♕'
         game.turn.pieces[:king].position = [0, 0]
@@ -154,9 +154,27 @@ describe Game do
     context 'the king cant escape by moving' do
       it 'returns true' do
         game.board.grid[7][7] = '♚'
-        game.board.grid[7][6] = '♕'
+        game.board.grid[3][5] = '♜'
+        game.board.grid[7][0] = '♕'
         game.turn.pieces[:king].position = [7, 7]
         expect(game.no_save_eating?).to be true
+      end
+    end
+  end
+
+  describe '#path_unblockable?' do
+    context 'the path can be blocked by an allied piece' do
+      it 'returns false' do
+        game.board.grid[0][0] = '♚'
+        game.board.grid[0][4] = '♕'
+        game.turn.pieces[:king].position = [0, 0]
+        expect(game.path_unblockable?).to be false
+      end
+    end
+
+    context 'the path cant be blocked by an allied piece' do
+      it 'returns true' do
+        expect(game.path_unblockable?).to be true
       end
     end
   end

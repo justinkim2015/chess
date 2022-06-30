@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'pry'
 
 class Bishop < Piece
   attr_accessor :color, :position
@@ -50,5 +51,33 @@ class Bishop < Piece
       end
     end
     true
+  end
+
+  def find_path(start, fin, path = [])
+    x = fin[0] - start[0] # 1 - 4
+    y = fin[1] - start[1] # 1 - 4
+    i = start[0] # 4
+    j = start[1]
+
+    if x.positive? && y.positive?
+      until i == fin[0] - 1
+        path << [start[0] + i, start[1] + i]
+        i += 1
+      end
+    elsif x.positive? && y.negative?
+      until i == fin[0]
+        path << [start[0] + i, start[1] - i]
+        i += 1
+      end
+    elsif x.negative? && y.positive?
+      until i == fin[0]
+      end
+    elsif x.negative? && y.negative?
+      (x * x / 2).times do
+        path << [start[0] - i, start[1] - i]
+        i += 1
+      end
+    end
+    path
   end
 end

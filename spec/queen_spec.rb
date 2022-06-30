@@ -236,7 +236,7 @@ describe Queen do
     end
 
     context 'when x is positive and y are negative' do
-      it 'returns path' do
+      xit 'returns path' do
         spot = [3, 3]
         queen_location = [5, 1]
         path = [[4, 2], [5, 1]]

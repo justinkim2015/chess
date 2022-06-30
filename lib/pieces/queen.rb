@@ -127,7 +127,7 @@ class Queen < Piece
   #   path
   # end
 
-  def find_path(start, fin) # start is 1,1 fin is 3,3
+  def find_path(start, fin) # start is 3,3 fin is 5,1
     all_moves = moves(start)
 
     if start[0] > fin[0]
@@ -143,6 +143,11 @@ class Queen < Piece
       move[0] == move[1] && move[0].between?(min, max)
     end
 
-    # maybe write one more for diagonals
+    # maybe write one more for one pos, one neg
+    # all_moves.filter do |move|
+    #   start[0] == (move[0] + move[1]) / 2 &&
+    #   start[0] < move[0] &&
+    #   start[1] > move[1]
+    # end
   end
 end

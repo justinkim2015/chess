@@ -168,6 +168,13 @@ describe Bishop do
         path = [[2, 2], [3, 3]]
         expect(bishop.find_path(start, fin)).to eq(path)
       end
+
+      it 'returns path' do
+        start = [1, 1]
+        fin = [5, 5]
+        path = [[2, 2], [3, 3], [4, 4]]
+        expect(bishop.find_path(start, fin)).to eq(path)
+      end
     end
 
     context 'when x and y are negative' do
@@ -177,13 +184,43 @@ describe Bishop do
         path = [[3, 3], [2, 2]]
         expect(bishop.find_path(start, fin)).to eq(path)
       end
+
+      it 'returns path' do
+        start = [6, 6]
+        fin = [1, 1]
+        path = [[5, 5], [4, 4], [3, 3], [2, 2]]
+        expect(bishop.find_path(start, fin)).to eq(path)
+      end
     end
 
     context 'when x is positive and y are negative' do
-      xit 'returns path' do
+      it 'returns path' do
         start = [4, 3]
         fin = [7, 0]
         path = [[5, 2], [6, 1]]
+        expect(bishop.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [3, 4]
+        fin = [7, 0]
+        path = [[4, 3], [5, 2], [6, 1]]
+        expect(bishop.find_path(start, fin)).to eq(path)
+      end
+    end
+
+    context 'when x is negative and y is positive' do
+      it 'returns path' do
+        start = [4, 3]
+        fin = [1, 6]
+        path = [[3, 4], [2, 5]]
+        expect(bishop.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [3, 4]
+        fin = [0, 7]
+        path = [[2, 5], [1, 6]]
         expect(bishop.find_path(start, fin)).to eq(path)
       end
     end

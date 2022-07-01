@@ -56,28 +56,34 @@ class Bishop < Piece
   def find_path(start, fin, path = [])
     x = fin[0] - start[0] # 1 - 4
     y = fin[1] - start[1] # 1 - 4
-    i = start[0] # 4
-    j = start[1]
+    i = 1
 
     if x.positive? && y.positive?
-      until i == fin[0] - 1
+      (x - 1).times do
         path << [start[0] + i, start[1] + i]
         i += 1
       end
     elsif x.positive? && y.negative?
-      until i == fin[0]
+      # fin is 7,0 and start is 4, 3 
+      (x - 1).times do
         path << [start[0] + i, start[1] - i]
         i += 1
       end
     elsif x.negative? && y.positive?
-      until i == fin[0]
+      (abs_val(x) - 1).times do
+        path << [start[0] - i, start[1] + i]
+        i += 1
       end
     elsif x.negative? && y.negative?
-      (x * x / 2).times do
+      (abs_val(x) - 1).times do
         path << [start[0] - i, start[1] - i]
         i += 1
       end
     end
     path
+  end
+
+  def abs_val(num)
+    -num * num / num
   end
 end

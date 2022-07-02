@@ -50,7 +50,7 @@ class Piece
     all_moves = moves(spot)
     all_moves.each do |place|
       if board.grid[place[0]][place[1]] == @color && path_empty?(board, spot, [place[0], place[1]])
-        return { location: [place[0], place[1]],
+        return { position: [place[0], place[1]],
                  piece: @color }
       end
     end

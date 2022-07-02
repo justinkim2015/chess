@@ -36,15 +36,32 @@ class Game
     end
   end
 
+  def winner_message
+    puts "Congrats #{@enemy.name} you are the winner!!!"
+  end
+
+  def escape_check
+    return winner_message if checkmate?
+
+    puts 'You are in check!'
+    start = @turn.pieces[:king].position
+    puts 'Move your king to a safe spot'
+    fin = valid_input_fin
+    if spot_being_attacked?(fin)
+      escape_check
+    else
+      move(start, fin)
+    end
+  end
+
   def take_turn
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
-    puts 'youre in check!' if check?
+    escape_check if check?
     start = valid_input_start
     puts 'Where would you like to move it?'
     fin = valid_input_fin
     move(start, fin)
-    puts 'you checked the enemy!' if check?
     change_turn if board.grid[start[0]][start[1]] == ' '
   end
 
@@ -64,7 +81,6 @@ class Game
     false
   end
 
-  # This is the thing changing the spot not check --> Follow to attacking_square_info
   def which_piece_checking(spot, enemy = @enemy)
     if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
       return enemy.pieces[:pawn1].pawn_attacking_square_info(@board, spot)
@@ -81,7 +97,7 @@ class Game
   end
 
   def checkmate?
-    king_no_escape? && no_save_eating?
+    king_no_escape? && no_save_eating? #&& path_unblockable?
   end
 
   def unicode_to_word(unicode)
@@ -92,18 +108,25 @@ class Game
   end
 
   def path_unblockable?
+    return true unless check?
+
     king_spot = @turn.pieces[:king].position
     enemy = which_piece_checking(king_spot)
-    enemy_location = enemy[:location]
+    enemy_position = enemy[:position]
     symbol_name = unicode_to_word(enemy[:piece]).to_sym
-    path = @turn.pieces[symbol_name].find_path(@turn.pieces[:king].position, enemy_location)
-    p path
+    path = @turn.pieces[symbol_name].find_path(king_spot, enemy_position)
+    path.each do |place|
+      return false if spot_being_attacked?(place, @turn)
+    end
+    true
   end
 
   # This is checking if a piece can be saved by being eaten by another
   def no_save_eating?
+    return true unless check?
+
     enemy_piece = which_piece_checking(@turn.pieces[:king].position)
-    return false if spot_being_attacked?(enemy_piece[:location], @turn)
+    return false if spot_being_attacked?(enemy_piece[:position], @turn)
 
     true
   end
@@ -167,7 +190,7 @@ class Game
     board.grid[0][1] = player2.pieces[:knight1].color
     board.grid[0][2] = player2.pieces[:bishop1].color
     board.grid[0][4] = player2.pieces[:queen].color
-    # board.grid[0][3] = player2.pieces[:king].color
+    board.grid[0][3] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color

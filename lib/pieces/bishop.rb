@@ -32,22 +32,31 @@ class Bishop < Piece
   def path_empty?(board, spot, piece)
     x = piece[0] - spot[0]
     y = piece[1] - spot[1]
+    i = 1
 
     if x.positive? && y.positive?
-      until spot == [piece[0] - 1, piece[1] - 1]
-        return false if board.grid[spot[0] += 1][spot[1] += 1] != ' '
+      (x - 1).times do
+        return false if board.grid[spot[0] + i][spot[1] + i] != ' '
+
+        i += 1
       end
     elsif x.positive? && y.negative?
-      until spot == [piece[0] - 1, piece[1] + 1]
-        return false if board.grid[spot[0] += 1][spot[1] -= 1] != ' '
+      (x - 1).times do
+        return false if board.grid[spot[0] + i][spot[1] - i] != ' '
+
+        i += 1
       end
     elsif x.negative? && y.positive?
-      until spot == [piece[0] + 1, piece[1] - 1]
-        return false if board.grid[spot[0] -= 1][spot[1] += 1] != ' '
+      (abs_val(x) - 1).times do
+        return false if board.grid[spot[0] - i][spot[1] + i] != ' '
+
+        i += 1
       end
     elsif x.negative? && y.negative?
-      until spot == [piece[0] + 1, piece[1] + 1]
-        return false if board.grid[spot[0] -= 1][spot[1] -= 1] != ' '
+      (abs_val(x) - 1).times do
+        return false if board.grid[spot[0] - i][spot[1] - i] != ' '
+
+        i += 1
       end
     end
     true

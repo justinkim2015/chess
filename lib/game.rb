@@ -166,7 +166,7 @@ class Game
     board.grid[0][0] = player2.pieces[:rook1].color
     board.grid[0][1] = player2.pieces[:knight1].color
     board.grid[0][2] = player2.pieces[:bishop1].color
-    board.grid[0][3] = player2.pieces[:queen].color
+    board.grid[0][4] = player2.pieces[:queen].color
     # board.grid[0][3] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color

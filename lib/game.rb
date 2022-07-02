@@ -6,7 +6,6 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require 'pry'
 
-# BIG PROBLEM, KING'S POSITION GETS MOVED SOMEHOW WHEN I CALL #WHICH_PIECE, #1 IMPORTANT FIX
 
 class Game
   attr_accessor :board, :player1, :player2, :turn, :enemy
@@ -65,7 +64,7 @@ class Game
     false
   end
 
-  # This is the thing changing the spot not check
+  # This is the thing changing the spot not check --> Follow to attacking_square_info
   def which_piece_checking(spot, enemy = @enemy)
     if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
       return enemy.pieces[:pawn1].pawn_attacking_square_info(@board, spot)
@@ -93,9 +92,8 @@ class Game
   end
 
   def path_unblockable?
-    binding.pry
-    p @turn.pieces[:king].position
-    enemy = which_piece_checking(@turn.pieces[:king].position)
+    king_spot = @turn.pieces[:king].position
+    enemy = which_piece_checking(king_spot)
     enemy_location = enemy[:location]
     symbol_name = unicode_to_word(enemy[:piece]).to_sym
     path = @turn.pieces[symbol_name].find_path(@turn.pieces[:king].position, enemy_location)

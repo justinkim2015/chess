@@ -1,3 +1,5 @@
+require 'pry'
+
 class Piece
   def initialize
     @white_pieces = ['♚', '♛', '♜', '♝', '♞', '♟']
@@ -37,20 +39,24 @@ class Piece
 
   def attacking_square?(board, spot)
     all_moves = moves(spot)
-    all_moves.each do |move|
-      return true if board.grid[move[0]][move[1]] == @color &&
-                     path_empty?(board, spot, [move[0], move[1]])
+    all_moves.each do |place|
+      return true if board.grid[place[0]][place[1]] == @color &&
+                     path_empty?(board, spot, [place[0], place[1]])
     end
     false
   end
 
   def attacking_square_info(board, spot)
     all_moves = moves(spot)
-    all_moves.each do |move|
-      if board.grid[move[0]][move[1]] == @color && path_empty?(board, spot, [move[0], move[1]])
-        return { location: [move[0], move[1]],
+    all_moves.each do |place|
+      if board.grid[place[0]][place[1]] == @color && path_empty?(board, spot, [place[0], place[1]])
+        return { location: [place[0], place[1]],
                  piece: @color }
       end
     end
+  end
+
+  def abs_val(num)
+    -num * num / num
   end
 end

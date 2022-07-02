@@ -19,3 +19,24 @@ game.place_pieces
 
 # game.queen_attacking?(game.turn.pieces[:king].position)
 # p game.spot_being_attacked?(game.turn.pieces[:king].position)
+
+puts '#which_piece_checking'
+p game.turn.pieces[:king].position
+p game.which_piece_checking(game.turn.pieces[:king].position)
+p game.turn.pieces[:king].position
+
+puts '----------------------'
+game = Game.new
+
+puts '#spot_being_attacked?'
+p game.turn.pieces[:king].position
+p game.spot_being_attacked?(game.turn.pieces[:king].position)
+p game.turn.pieces[:king].position
+
+puts '----------------------'
+game = Game.new
+
+puts '#check?'
+p game.turn.pieces[:king].position
+p game.check?
+p game.turn.pieces[:king].position

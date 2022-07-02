@@ -52,4 +52,33 @@ class Rook < Piece
     end
     true
   end
+
+  def find_path(start, fin, path = [])
+    x = fin[0] - start[0]
+    y = fin[1] - start[1]
+    i = 1
+
+    if x.positive?
+      (x - 1).times do
+        path << [start[0] + i, start[1]]
+        i += 1
+      end
+    elsif x.negative?
+      (abs_val(x) - 1).times do
+        path << [start[0] - i, start[1]]
+        i += 1
+      end
+    elsif y.positive?
+      (y - 1).times do
+        path << [start[0], start[1] + i]
+        i += 1
+      end
+    elsif y.negative?
+      (abs_val(y) - 1).times do
+        path << [start[0], start[1] - i]
+        i += 1
+      end
+    end
+    path
+  end
 end

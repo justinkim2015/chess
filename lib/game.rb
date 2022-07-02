@@ -6,8 +6,10 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require 'pry'
 
+# BIG PROBLEM, KING'S POSITION GETS MOVED SOMEHOW WHEN I CALL #WHICH_PIECE, #1 IMPORTANT FIX
+
 class Game
-  attr_accessor :board, :player1, :player2, :turn
+  attr_accessor :board, :player1, :player2, :turn, :enemy
 
   def initialize
     @player1 = Player.new('Player 1', 'White')
@@ -63,9 +65,8 @@ class Game
     false
   end
 
-  # currently this checks which piece and where the piece is thats attacking a spot
+  # This is the thing changing the spot not check
   def which_piece_checking(spot, enemy = @enemy)
-
     if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
       return enemy.pieces[:pawn1].pawn_attacking_square_info(@board, spot)
     elsif enemy.pieces[:bishop1].attacking_square?(@board, spot)
@@ -80,52 +81,29 @@ class Game
     'nothing'
   end
 
-  # The queens are checking each other for some reason
-  # I wrote this to try to find the reason why its in check
-  def queen_attacking?(spot)
-    # enemy = @turn == @player1 ? @player2 : @player1
-
-    # player1 is white
-    # player2 is black
-    if @player2.pieces[:queen].attacking_square?(@board, spot)
-      p 'queen is checking king'
-      p spot
-      puts '--------'
-      p @player1.name
-      p @player1.pieces[:king].position
-      puts '--------'
-      p @player2.name
-      p @player2.pieces[:queen].position
-      puts '--------'
-      puts 'player 2 queen moves'
-      p @player2.pieces[:queen].moves(@player2.pieces[:queen].position)
-    end 
-    p board.grid[0][0]
-    board.drawboard
-  end
-
   def checkmate?
     king_no_escape? && no_save_eating?
   end
 
-  def path_unblockable?
-    return true unless check?
+  def unicode_to_word(unicode)
+    possible_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
+                        ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop'}
+    sym = unicode.to_sym
+    possible_pieces[sym]
+  end
 
+  def path_unblockable?
+    binding.pry
+    p @turn.pieces[:king].position
     enemy = which_piece_checking(@turn.pieces[:king].position)
     enemy_location = enemy[:location]
-    symbol_piece = enemy[:piece].to_sym
-    possible_atk_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
-                            ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop'}
-    enemy_piece = possible_atk_pieces[symbol_piece]
-    symbol_name = enemy_piece.to_sym
-    path = @turn.pieces[symbol_name].path(@board, @turn.pieces[:king].position, enemy_location)
+    symbol_name = unicode_to_word(enemy[:piece]).to_sym
+    path = @turn.pieces[symbol_name].find_path(@turn.pieces[:king].position, enemy_location)
     p path
   end
 
   # This is checking if a piece can be saved by being eaten by another
   def no_save_eating?
-    return true unless check?
-
     enemy_piece = which_piece_checking(@turn.pieces[:king].position)
     return false if spot_being_attacked?(enemy_piece[:location], @turn)
 
@@ -190,8 +168,8 @@ class Game
     board.grid[0][0] = player2.pieces[:rook1].color
     board.grid[0][1] = player2.pieces[:knight1].color
     board.grid[0][2] = player2.pieces[:bishop1].color
-    board.grid[0][4] = player2.pieces[:queen].color
-    board.grid[0][3] = player2.pieces[:king].color
+    board.grid[0][3] = player2.pieces[:queen].color
+    # board.grid[0][3] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color

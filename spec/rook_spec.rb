@@ -132,4 +132,70 @@ describe Rook do
       end
     end
   end
+
+  describe '#find_path' do
+    context 'when x is positive' do
+      it 'returns path' do
+        start = [1, 1]
+        fin = [4, 1]
+        path = [[2, 1], [3, 1]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [1, 1]
+        fin = [5, 1]
+        path = [[2, 1], [3, 1], [4, 1]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+    end
+
+    context 'when x is negative' do
+      it 'returns path' do
+        start = [4, 1]
+        fin = [1, 1]
+        path = [[3, 1], [2, 1]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [6, 1]
+        fin = [1, 1]
+        path = [[5, 1], [4, 1], [3, 1], [2, 1]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+    end
+
+    context 'when y is positive' do
+      it 'returns path' do
+        start = [7, 0]
+        fin = [7, 3]
+        path = [[7, 1], [7, 2]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [3, 4]
+        fin = [3, 7]
+        path = [[3, 5], [3, 6]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+    end
+
+    context 'when y is negative' do
+      it 'returns path' do
+        start = [4, 6]
+        fin = [4, 3]
+        path = [[4, 5], [4, 4]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+
+      it 'returns path' do
+        start = [3, 4]
+        fin = [3, 1]
+        path = [[3, 3], [3, 2]]
+        expect(rook.find_path(start, fin)).to eq(path)
+      end
+    end
+  end
 end

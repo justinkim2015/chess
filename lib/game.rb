@@ -6,7 +6,6 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require 'pry'
 
-
 class Game
   attr_accessor :board, :player1, :player2, :turn, :enemy
 
@@ -41,20 +40,21 @@ class Game
   end
 
   def escape_check
-    return winner_message if checkmate?
-
     puts 'You are in check!'
-    start = @turn.pieces[:king].position
-    puts 'Move your king to a safe spot'
+    start = valid_input_start
+    puts 'Protect your king'
     fin = valid_input_fin
-    if spot_being_attacked?(fin)
-      escape_check
-    else
-      move(start, fin)
-    end
+    move(start, fin)
+    return unless check?
+
+    puts 'You\'re still in check!'
+    move(fin, start)
+    escape_check
   end
 
   def take_turn
+    return winner_message if checkmate?
+
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
     escape_check if check?
@@ -97,7 +97,7 @@ class Game
   end
 
   def checkmate?
-    king_no_escape? && no_save_eating? #&& path_unblockable?
+    king_no_escape? && no_save_eating? && path_unblockable?
   end
 
   def unicode_to_word(unicode)
@@ -194,14 +194,14 @@ class Game
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color
-    # board.grid[1][0] = player2.pieces[:pawn1].color
-    # board.grid[1][1] = player2.pieces[:pawn2].color
-    # board.grid[1][2] = player2.pieces[:pawn3].color
-    # board.grid[1][3] = player2.pieces[:pawn4].color
-    # board.grid[1][4] = player2.pieces[:pawn5].color
-    # board.grid[1][5] = player2.pieces[:pawn6].color
-    # board.grid[1][6] = player2.pieces[:pawn7].color
-    # board.grid[1][7] = player2.pieces[:pawn8].color
+    board.grid[1][0] = player2.pieces[:pawn1].color
+    board.grid[1][1] = player2.pieces[:pawn2].color
+    board.grid[1][2] = player2.pieces[:pawn3].color
+    board.grid[1][3] = player2.pieces[:pawn4].color
+    board.grid[1][4] = player2.pieces[:pawn5].color
+    board.grid[1][5] = player2.pieces[:pawn6].color
+    board.grid[1][6] = player2.pieces[:pawn7].color
+    board.grid[1][7] = player2.pieces[:pawn8].color
 
     board.grid[7][0] = player1.pieces[:rook1].color
     board.grid[7][1] = player1.pieces[:knight1].color
@@ -211,13 +211,13 @@ class Game
     board.grid[7][5] = player1.pieces[:bishop2].color
     board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
-    # board.grid[6][0] = player1.pieces[:pawn1].color
-    # board.grid[6][1] = player1.pieces[:pawn2].color
-    # board.grid[6][2] = player1.pieces[:pawn3].color
-    # board.grid[6][3] = player1.pieces[:pawn4].color
-    # board.grid[6][4] = player1.pieces[:pawn5].color
-    # board.grid[6][5] = player1.pieces[:pawn6].color
-    # board.grid[6][6] = player1.pieces[:pawn7].color
-    # board.grid[6][7] = player1.pieces[:pawn8].color
+    board.grid[6][0] = player1.pieces[:pawn1].color
+    board.grid[6][1] = player1.pieces[:pawn2].color
+    board.grid[6][2] = player1.pieces[:pawn3].color
+    board.grid[6][3] = player1.pieces[:pawn4].color
+    board.grid[6][4] = player1.pieces[:pawn5].color
+    board.grid[6][5] = player1.pieces[:pawn6].color
+    board.grid[6][6] = player1.pieces[:pawn7].color
+    board.grid[6][7] = player1.pieces[:pawn8].color
   end
 end

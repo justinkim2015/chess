@@ -15,4 +15,3 @@ game.place_pieces
 loop do
   game.take_turn
 end
-

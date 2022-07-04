@@ -40,15 +40,17 @@ class Game
   end
 
   def escape_check
-    puts 'You are in check!'
+    puts 'You are in check! Protect your king!'
     start = valid_input_start
-    puts 'Protect your king'
+    puts 'Where would you like to go?'
     fin = valid_input_fin
     move(start, fin)
+    change_turn if board.grid[start[0]][start[1]] == ' ' && check? == false # I need to insert an error message here
     return unless check?
 
-    puts 'You\'re still in check!'
     move(fin, start)
+    board.drawboard
+    puts 'You\'re still in check!'
     escape_check
   end
 
@@ -57,12 +59,19 @@ class Game
 
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
-    escape_check if check?
-    start = valid_input_start
-    puts 'Where would you like to move it?'
-    fin = valid_input_fin
-    move(start, fin)
-    change_turn if board.grid[start[0]][start[1]] == ' '
+    if check?
+      info = which_piece_checking(@turn.pieces[:king].position)
+      piece = info[:piece]
+      loc = info[:position]
+      puts "#{@turn.name} is being checked by #{piece} at #{loc}"
+      escape_check
+    else
+      start = valid_input_start
+      puts 'Where would you like to move it?'
+      fin = valid_input_fin
+      move(start, fin)
+      change_turn if board.grid[start[0]][start[1]] == ' '
+    end
   end
 
   def check?
@@ -122,6 +131,7 @@ class Game
   end
 
   # This is checking if a piece can be saved by being eaten by another
+  # WHICH PLAYER IS IT CHECKING
   def no_save_eating?
     return true unless check?
 
@@ -177,11 +187,13 @@ class Game
   end
 
   def change_turn
-    @turn = if @turn == @player1
-              @player2
-            else
-              @player1
-            end
+    if @turn == @player1
+      @turn = @player2
+      @enemy = @player1
+    else
+      @turn = @player1
+      @enemy = @player2
+    end
   end
 
   # Maybe I can use blocks to clean this up
@@ -197,7 +209,7 @@ class Game
     board.grid[1][0] = player2.pieces[:pawn1].color
     board.grid[1][1] = player2.pieces[:pawn2].color
     board.grid[1][2] = player2.pieces[:pawn3].color
-    board.grid[1][3] = player2.pieces[:pawn4].color
+    # board.grid[1][3] = player2.pieces[:pawn4].color
     board.grid[1][4] = player2.pieces[:pawn5].color
     board.grid[1][5] = player2.pieces[:pawn6].color
     board.grid[1][6] = player2.pieces[:pawn7].color
@@ -211,13 +223,13 @@ class Game
     board.grid[7][5] = player1.pieces[:bishop2].color
     board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
-    board.grid[6][0] = player1.pieces[:pawn1].color
-    board.grid[6][1] = player1.pieces[:pawn2].color
-    board.grid[6][2] = player1.pieces[:pawn3].color
-    board.grid[6][3] = player1.pieces[:pawn4].color
-    board.grid[6][4] = player1.pieces[:pawn5].color
-    board.grid[6][5] = player1.pieces[:pawn6].color
-    board.grid[6][6] = player1.pieces[:pawn7].color
-    board.grid[6][7] = player1.pieces[:pawn8].color
+    # board.grid[6][0] = player1.pieces[:pawn1].color
+    # board.grid[6][1] = player1.pieces[:pawn2].color
+    # board.grid[6][2] = player1.pieces[:pawn3].color
+    # board.grid[6][3] = player1.pieces[:pawn4].color
+    # board.grid[6][4] = player1.pieces[:pawn5].color
+    # board.grid[6][5] = player1.pieces[:pawn6].color
+    # board.grid[6][6] = player1.pieces[:pawn7].color
+    # board.grid[6][7] = player1.pieces[:pawn8].color
   end
 end

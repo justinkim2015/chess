@@ -1,6 +1,8 @@
 require 'pry'
 
 class Piece
+  attr_accessor :white_pieces, :black_pieces
+  
   def initialize
     @white_pieces = ['♚', '♛', '♜', '♝', '♞', '♟']
     @black_pieces = ['♔', '♕', '♖', '♗', '♘', '♙']

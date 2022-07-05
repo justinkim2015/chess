@@ -7,6 +7,7 @@ require_relative './pieces/pawn'
 require_relative './pieces/queen'
 require_relative './pieces/rook'
 require_relative './pieces/knight'
+require 'pry'
 
 game = Game.new
 
@@ -14,4 +15,5 @@ game.place_pieces
 
 loop do
   game.take_turn
+  game.taken_pieces
 end

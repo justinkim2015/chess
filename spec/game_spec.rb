@@ -197,4 +197,40 @@ describe Game do
       end
     end
   end
+
+  describe '#remember_spot' do
+    context 'When it eats a piece' do
+      it 'remembers the piece(white player)' do
+        game.board.grid[0][0] = '♕'
+        game.turn.taken_pieces = ['♕']
+        fin = [0, 0]
+        expect(game.remember_spot(fin)).to eq(['♕', '♕'])
+      end
+
+      it 'remembers the piece(black player)' do
+        game.change_turn
+        game.board.grid[0][0] = '♜'
+        fin = [0, 0]
+        expect(game.remember_spot(fin)).to eq(['♜'])
+      end
+    end
+  end
+
+  describe '#valid_move?' do
+    context 'When its valid' do
+      it 'returns true' do
+        game.board.grid[0][0] = '♕'
+        start = [0, 0]
+        fin = [4, 4]
+        expect(game.valid_move?(start, fin)).to be true
+      end
+
+      xit 'returns true' do
+        game.change_turn
+        game.board.grid[0][0] = '♜'
+        fin = [0, 0]
+        expect(game.remember_spot(fin)).to eq(['♜'])
+      end
+    end
+  end
 end

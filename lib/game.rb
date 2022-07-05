@@ -17,6 +17,31 @@ class Game
     @enemy = @turn == @player1 ? @player2 : @player1
   end
 
+  def taken_pieces
+    p @turn.taken_pieces
+  end
+
+  def remember_spot(fin)
+    pieces = if @turn == @player1
+               @turn.pieces[:queen].black_pieces
+             else
+               @turn.pieces[:queen].white_pieces
+             end
+
+    return unless pieces.include?(board.grid[fin[0]][fin[1]])
+
+    @turn.taken_pieces << board.grid[fin[0]][fin[1]]
+  end
+
+  def find_piece(spot)
+    piece = board.grid[spot[0]][spot[1]]
+    unicode_to_word(piece).to_sym
+  end
+
+  def valid_move?(start, fin)
+    board.grid[start[0]][start[1]] == @turn.pieces[find_piece(fin)].color
+  end
+
   def move(start, fin)
     if board.grid[start[0]][start[1]] == @turn.pieces[:bishop1].color
       @turn.pieces[:bishop1].move(@board, start, fin)
@@ -46,6 +71,8 @@ class Game
     fin = valid_input_fin
     move(start, fin)
     change_turn if board.grid[start[0]][start[1]] == ' ' && check? == false # I need to insert an error message here
+    return if checkmate?
+
     return unless check?
 
     move(fin, start)
@@ -209,7 +236,7 @@ class Game
     board.grid[1][0] = player2.pieces[:pawn1].color
     board.grid[1][1] = player2.pieces[:pawn2].color
     board.grid[1][2] = player2.pieces[:pawn3].color
-    # board.grid[1][3] = player2.pieces[:pawn4].color
+    board.grid[1][3] = player2.pieces[:pawn4].color
     board.grid[1][4] = player2.pieces[:pawn5].color
     board.grid[1][5] = player2.pieces[:pawn6].color
     board.grid[1][6] = player2.pieces[:pawn7].color

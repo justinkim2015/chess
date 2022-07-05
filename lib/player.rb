@@ -1,10 +1,11 @@
 class Player
-  attr_accessor :pieces, :name
+  attr_accessor :pieces, :name, :taken_pieces
 
   def initialize(name, color)
     @name = name
     @color = color
     @pieces = make_pieces(@color)
+    @taken_pieces = []
   end
 
   # I was trying to refactor the make pieces method here

@@ -21,73 +21,9 @@ class Game
     p @turn.taken_pieces
   end
 
-  def remember_spot(fin)
-    pieces = if @turn == @player1
-               @turn.pieces[:queen].black_pieces
-             else
-               @turn.pieces[:queen].white_pieces
-             end
-
-    return unless pieces.include?(board.grid[fin[0]][fin[1]])
-
-    @turn.taken_pieces << board.grid[fin[0]][fin[1]]
-  end
-
-  def find_piece(spot)
-    piece = board.grid[spot[0]][spot[1]]
-    unicode_to_word(piece).to_sym
-  end
-
-  def valid_move?(start, fin)
-    return true if @turn.pieces[find_piece(start)].can_attack_square?(@board, start, fin)
-
-    false
-  end
-
-  def validated_move(start, fin)
-    return unless valid_move?(start, fin)
-
-    remember_spot(fin)
-    move(start, fin)
-  end
-
-  def move(start, fin)
-    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop1].color
-      @turn.pieces[:bishop1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook1].color
-      @turn.pieces[:rook1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight1].color
-      @turn.pieces[:knight1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn1].color
-      @turn.pieces[:pawn1].move_pawn(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
-      @turn.pieces[:king].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
-      @turn.pieces[:queen].move(@board, start, fin)
-    else
-      false
-    end
-  end
-
-  def winner_message
-    puts "Congrats #{@enemy.name} you are the winner!!!"
-  end
-
-  def escape_check
-    puts 'You are in check! Protect your king!'
-    start = valid_input_start
-    puts 'Where would you like to go?'
-    fin = valid_input_fin
-    validated_move(start, fin)
-    change_turn if board.grid[start[0]][start[1]] == ' ' && check? == false # I need to insert an error message here
-    return if checkmate?
-
-    return unless check?
-
-    move(fin, start)
-    board.drawboard
-    puts 'You\'re still in check!'
-    escape_check
+  # How to change piece
+  def make_new_piece(spot)
+    @turn.pieces
   end
 
   def take_turn
@@ -107,6 +43,41 @@ class Game
       fin = valid_input_fin
       validated_move(start, fin)
       change_turn if board.grid[start[0]][start[1]] == ' '
+    end
+  end
+
+  def escape_check
+    puts 'You are in check! Protect your king!'
+    start = valid_input_start
+    puts 'Where would you like to go?'
+    fin = valid_input_fin
+    validated_move(start, fin)
+    change_turn if board.grid[start[0]][start[1]] == ' ' && check? == false # I need to insert an error message here
+    return if checkmate?
+
+    return unless check?
+
+    move(fin, start)
+    board.drawboard
+    puts 'You\'re still in check!'
+    escape_check
+  end
+
+  def move(start, fin)
+    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop1].color
+      @turn.pieces[:bishop1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook1].color
+      @turn.pieces[:rook1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight1].color
+      @turn.pieces[:knight1].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn1].color
+      @turn.pieces[:pawn1].move_pawn(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
+      @turn.pieces[:king].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
+      @turn.pieces[:queen].move(@board, start, fin)
+    else
+      false
     end
   end
 
@@ -143,14 +114,6 @@ class Game
 
   def checkmate?
     king_no_escape? && no_save_eating? && path_unblockable?
-  end
-
-  # This might be a problem because I need to ID each piece by its number
-  def unicode_to_word(unicode)
-    possible_pieces = { ♙: 'pawn1', ♕: 'queen', ♖: 'rook1', ♘: 'knight1', ♗: 'bishop1',
-                        ♟: 'pawn1', ♛: 'queen', ♜: 'rook1', ♞: 'knight1', ♝: 'bishop1'}
-    sym = unicode.to_sym
-    possible_pieces[sym]
   end
 
   def path_unblockable?
@@ -193,6 +156,51 @@ class Game
     end
     array.length == fin.length
   end
+
+  def remember_spot(fin)
+    pieces = if @turn == @player1
+               @turn.pieces[:queen].black_pieces
+             else
+               @turn.pieces[:queen].white_pieces
+             end
+
+    return unless pieces.include?(board.grid[fin[0]][fin[1]])
+
+    @turn.taken_pieces << board.grid[fin[0]][fin[1]]
+  end
+
+  def find_piece(spot)
+    piece = board.grid[spot[0]][spot[1]]
+    unicode_to_word(piece).to_sym
+  end
+
+  def valid_move?(start, fin)
+    return true if @turn.pieces[find_piece(start)].can_attack_square?(@board, start, fin)
+
+    false
+  end
+
+  def validated_move(start, fin)
+    return unless valid_move?(start, fin)
+
+    remember_spot(fin)
+    move(start, fin)
+  end
+
+    # This might be a problem because I need to ID each piece by its number
+  # Actually no this is okay, because it only uses this string info to
+  # get the logic behind which piece it is.
+  def unicode_to_word(unicode)
+    possible_pieces = { ♙: 'pawn1', ♕: 'queen', ♖: 'rook1', ♘: 'knight1', ♗: 'bishop1',
+                        ♟: 'pawn1', ♛: 'queen', ♜: 'rook1', ♞: 'knight1', ♝: 'bishop1'}
+    sym = unicode.to_sym
+    possible_pieces[sym]
+  end
+
+  def winner_message
+    puts "Congrats #{@enemy.name} you are the winner!!!"
+  end
+
 
   def convert(value)
     letter_value = value[0].ord

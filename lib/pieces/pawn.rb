@@ -14,6 +14,14 @@ class Pawn < Piece
     color == 'White' ? '♟' : '♙'
   end
 
+  # NOT FINISHED, only works for white
+  def pawn_upgrade?
+    final_row = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
+    return true if final_row.include?(@position)
+
+    false
+  end
+
   def valid_move?(board, start, fin)
     return false if board.grid[fin[0]].nil?
 

@@ -219,17 +219,19 @@ describe Game do
   describe '#valid_move?' do
     context 'When its valid' do
       it 'returns true' do
-        game.board.grid[0][0] = '♕'
-        start = [0, 0]
+        game.board.grid[0][4] = '♜'
+        game.turn.pieces[:rook1].position = [0, 4]
+        start = [0, 4]
         fin = [4, 4]
         expect(game.valid_move?(start, fin)).to be true
       end
-
-      xit 'returns true' do
-        game.change_turn
+    end
+    context 'When its invalid' do
+      it 'returns false' do
         game.board.grid[0][0] = '♜'
-        fin = [0, 0]
-        expect(game.remember_spot(fin)).to eq(['♜'])
+        start = [0, 0]
+        fin = [4, 4]
+        expect(game.valid_move?(start, fin)).to be false
       end
     end
   end

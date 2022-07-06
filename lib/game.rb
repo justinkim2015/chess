@@ -39,7 +39,16 @@ class Game
   end
 
   def valid_move?(start, fin)
-    board.grid[start[0]][start[1]] == @turn.pieces[find_piece(fin)].color
+    return true if @turn.pieces[find_piece(start)].can_attack_square?(@board, start, fin)
+
+    false
+  end
+
+  def validated_move(start, fin)
+    return unless valid_move?(start, fin)
+
+    remember_spot(fin)
+    move(start, fin)
   end
 
   def move(start, fin)
@@ -69,7 +78,7 @@ class Game
     start = valid_input_start
     puts 'Where would you like to go?'
     fin = valid_input_fin
-    move(start, fin)
+    validated_move(start, fin)
     change_turn if board.grid[start[0]][start[1]] == ' ' && check? == false # I need to insert an error message here
     return if checkmate?
 
@@ -96,7 +105,7 @@ class Game
       start = valid_input_start
       puts 'Where would you like to move it?'
       fin = valid_input_fin
-      move(start, fin)
+      validated_move(start, fin)
       change_turn if board.grid[start[0]][start[1]] == ' '
     end
   end
@@ -136,9 +145,10 @@ class Game
     king_no_escape? && no_save_eating? && path_unblockable?
   end
 
+  # This might be a problem because I need to ID each piece by its number
   def unicode_to_word(unicode)
-    possible_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
-                        ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop'}
+    possible_pieces = { ♙: 'pawn1', ♕: 'queen', ♖: 'rook1', ♘: 'knight1', ♗: 'bishop1',
+                        ♟: 'pawn1', ♛: 'queen', ♜: 'rook1', ♞: 'knight1', ♝: 'bishop1'}
     sym = unicode.to_sym
     possible_pieces[sym]
   end

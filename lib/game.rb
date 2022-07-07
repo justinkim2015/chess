@@ -14,6 +14,7 @@ class Game
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
     @turn = @player1
+    @turn_count = 0
     @enemy = @turn == @player1 ? @player2 : @player1
   end
 
@@ -21,9 +22,32 @@ class Game
     p @turn.taken_pieces
   end
 
+  def enemy_taken_pieces(result = [])
+    @enemy.taken_pieces.each do |piece|
+      result << unicode_to_word(piece)
+    end
+    result
+  end
+
+  def replace_piece(spot, piece)
+    @turn.make_piece(spot, piece.to_sym)
+    board.grid[spot[0]][spot[1]] = word_to_unicode(@turn.color, piece.to_s)
+  end
+
   # How to change piece
-  def make_new_piece(spot)
-    @turn.pieces
+  def change_piece(spot)
+    return unless @turn.pieces[:pawn].pawn_upgrade?(spot)
+
+    pieces = enemy_taken_pieces
+
+    puts "#{@enemy.taken_pieces} Which piece would you like?"
+    piece = gets.chomp.downcase
+    if pieces.include?(piece)
+      replace_piece(spot, piece)
+    else
+      puts 'Invalid choice, choose again'
+      change_piece
+    end
   end
 
   def take_turn
@@ -44,6 +68,7 @@ class Game
       validated_move(start, fin)
       change_turn if board.grid[start[0]][start[1]] == ' '
     end
+    @turn_count += 1
   end
 
   def escape_check
@@ -64,14 +89,14 @@ class Game
   end
 
   def move(start, fin)
-    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop1].color
-      @turn.pieces[:bishop1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook1].color
-      @turn.pieces[:rook1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight1].color
-      @turn.pieces[:knight1].move(@board, start, fin)
-    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn1].color
-      @turn.pieces[:pawn1].move_pawn(@board, start, fin)
+    if board.grid[start[0]][start[1]] == @turn.pieces[:bishop].color
+      @turn.pieces[:bishop].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:rook].color
+      @turn.pieces[:rook].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight].color
+      @turn.pieces[:knight].move(@board, start, fin)
+    elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
+      @turn.pieces[:pawn].move_pawn(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
       @turn.pieces[:king].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
@@ -88,26 +113,26 @@ class Game
   end
 
   def spot_being_attacked?(spot, enemy = @enemy)
-    return true if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot) ||
-                   enemy.pieces[:bishop1].attacking_square?(@board, spot) ||
-                   enemy.pieces[:knight1].attacking_square?(@board, spot) ||
+    return true if enemy.pieces[:pawn].pawn_attacking_square?(@board, spot) ||
+                   enemy.pieces[:bishop].attacking_square?(@board, spot) ||
+                   enemy.pieces[:knight].attacking_square?(@board, spot) ||
                    enemy.pieces[:queen].attacking_square?(@board, spot) ||
-                   enemy.pieces[:rook1].attacking_square?(@board, spot)
+                   enemy.pieces[:rook].attacking_square?(@board, spot)
 
     false
   end
 
   def which_piece_checking(spot, enemy = @enemy)
-    if enemy.pieces[:pawn1].pawn_attacking_square?(@board, spot)
-      return enemy.pieces[:pawn1].pawn_attacking_square_info(@board, spot)
-    elsif enemy.pieces[:bishop1].attacking_square?(@board, spot)
-      return enemy.pieces[:bishop1].attacking_square_info(@board, spot)
-    elsif enemy.pieces[:knight1].attacking_square?(@board, spot)
-      return enemy.pieces[:knight1].attacking_square_info(@board, spot)
+    if enemy.pieces[:pawn].pawn_attacking_square?(@board, spot)
+      return enemy.pieces[:pawn].pawn_attacking_square_info(@board, spot)
+    elsif enemy.pieces[:bishop].attacking_square?(@board, spot)
+      return enemy.pieces[:bishop].attacking_square_info(@board, spot)
+    elsif enemy.pieces[:knight].attacking_square?(@board, spot)
+      return enemy.pieces[:knight].attacking_square_info(@board, spot)
     elsif enemy.pieces[:queen].attacking_square?(@board, spot)
       return enemy.pieces[:queen].attacking_square_info(@board, spot)
-    elsif enemy.pieces[:rook1].attacking_square?(@board, spot)
-      return enemy.pieces[:rook1].attacking_square_info(@board, spot)
+    elsif enemy.pieces[:rook].attacking_square?(@board, spot)
+      return enemy.pieces[:rook].attacking_square_info(@board, spot)
     end
     'nothing'
   end
@@ -191,9 +216,19 @@ class Game
   # Actually no this is okay, because it only uses this string info to
   # get the logic behind which piece it is.
   def unicode_to_word(unicode)
-    possible_pieces = { ♙: 'pawn1', ♕: 'queen', ♖: 'rook1', ♘: 'knight1', ♗: 'bishop1',
-                        ♟: 'pawn1', ♛: 'queen', ♜: 'rook1', ♞: 'knight1', ♝: 'bishop1'}
+    possible_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
+                        ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop' }
     sym = unicode.to_sym
+    possible_pieces[sym]
+  end
+
+  def word_to_unicode(color, word)
+    if color == 'White'
+      possible_pieces = {pawn: '♟', queen: '♛', rook: '♜', knight: '♞', bishop: '♝' }
+    else 
+      possible_pieces = {pawn: '♙', queen: '♕', rook: '♖', knight: '♘', bishop: '♗'}
+    end
+    sym = word.downcase.to_sym
     possible_pieces[sym]
   end
 
@@ -243,15 +278,15 @@ class Game
 
   # Maybe I can use blocks to clean this up
   def place_pieces
-    board.grid[0][0] = player2.pieces[:rook1].color
-    board.grid[0][1] = player2.pieces[:knight1].color
-    board.grid[0][2] = player2.pieces[:bishop1].color
+    board.grid[0][0] = player2.pieces[:rook].color
+    board.grid[0][1] = player2.pieces[:knight].color
+    board.grid[0][2] = player2.pieces[:bishop].color
     board.grid[0][4] = player2.pieces[:queen].color
     board.grid[0][3] = player2.pieces[:king].color
     board.grid[0][5] = player2.pieces[:bishop2].color
     board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color
-    board.grid[1][0] = player2.pieces[:pawn1].color
+    board.grid[1][0] = player2.pieces[:pawn].color
     board.grid[1][1] = player2.pieces[:pawn2].color
     board.grid[1][2] = player2.pieces[:pawn3].color
     board.grid[1][3] = player2.pieces[:pawn4].color
@@ -260,15 +295,15 @@ class Game
     board.grid[1][6] = player2.pieces[:pawn7].color
     board.grid[1][7] = player2.pieces[:pawn8].color
 
-    board.grid[7][0] = player1.pieces[:rook1].color
-    board.grid[7][1] = player1.pieces[:knight1].color
-    board.grid[7][2] = player1.pieces[:bishop1].color
+    board.grid[7][0] = player1.pieces[:rook].color
+    board.grid[7][1] = player1.pieces[:knight].color
+    board.grid[7][2] = player1.pieces[:bishop].color
     board.grid[7][4] = player1.pieces[:queen].color
     board.grid[7][3] = player1.pieces[:king].color
     board.grid[7][5] = player1.pieces[:bishop2].color
     board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
-    # board.grid[6][0] = player1.pieces[:pawn1].color
+    # board.grid[6][0] = player1.pieces[:pawn].color
     # board.grid[6][1] = player1.pieces[:pawn2].color
     # board.grid[6][2] = player1.pieces[:pawn3].color
     # board.grid[6][3] = player1.pieces[:pawn4].color

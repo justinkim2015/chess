@@ -15,9 +15,9 @@ class Pawn < Piece
   end
 
   # NOT FINISHED, only works for white
-  def pawn_upgrade?
+  def pawn_upgrade?(spot)
     final_row = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
-    return true if final_row.include?(@position)
+    return true if final_row.include?(spot)
 
     false
   end

@@ -220,7 +220,7 @@ describe Game do
     context 'When its valid' do
       it 'returns true' do
         game.board.grid[0][4] = '♜'
-        game.turn.pieces[:rook1].position = [0, 4]
+        game.turn.pieces[:rook].position = [0, 4]
         start = [0, 4]
         fin = [4, 4]
         expect(game.valid_move?(start, fin)).to be true
@@ -233,6 +233,15 @@ describe Game do
         fin = [4, 4]
         expect(game.valid_move?(start, fin)).to be false
       end
+    end
+  end
+
+  describe '#replace_piece?' do
+    it 'changes the piece' do
+      game.board.grid[0][0] = '♜'
+      spot = [0, 0]
+      piece = :pawn
+      expect { game.replace_piece(spot, piece) }.to change { game.board.grid[0][0] }.from('♜').to('♟')
     end
   end
 end

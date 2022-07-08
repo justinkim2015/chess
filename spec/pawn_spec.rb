@@ -197,4 +197,33 @@ describe Pawn do
       end
     end
   end
+
+  describe '#pawn_upgrade?' do
+    context 'when pawn is on last row' do
+      it 'returns true(white)' do
+        white_pawn.position = [0, 0]
+        spot = white_pawn.position
+        expect(white_pawn.pawn_upgrade?(spot)).to be true
+      end
+
+      it 'returns true(black)' do
+        black_pawn.position = [7, 7]
+        spot = black_pawn.position
+        expect(black_pawn.pawn_upgrade?(spot)).to be true
+      end
+    end
+    context 'when pawn isnt on last row' do
+      it 'returns false(white)' do
+        white_pawn.position = [1, 0]
+        spot = white_pawn.position
+        expect(white_pawn.pawn_upgrade?(spot)).to be false
+      end
+
+      it 'returns false(black)' do
+        black_pawn.position = [6, 7]
+        spot = black_pawn.position
+        expect(black_pawn.pawn_upgrade?(spot)).to be false
+      end
+    end
+  end
 end

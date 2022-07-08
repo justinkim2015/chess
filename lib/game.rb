@@ -6,6 +6,8 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require 'pry'
 
+# for some reason rook from a7 -> c7 makes the rook vanish
+
 class Game
   attr_accessor :board, :player1, :player2, :turn, :enemy
 
@@ -43,7 +45,8 @@ class Game
     puts "#{@enemy.taken_pieces} Which piece would you like?"
     piece = gets.chomp.downcase
     if pieces.include?(piece)
-      replace_piece(spot, piece)
+      replace_piece(spot, piece.to_sym)
+      board.drawboard
     else
       puts 'Invalid choice, choose again'
       change_piece
@@ -97,6 +100,7 @@ class Game
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
       @turn.pieces[:pawn].move_pawn(@board, start, fin)
+      change_piece(fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
       @turn.pieces[:king].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color

@@ -14,9 +14,13 @@ class Pawn < Piece
     color == 'White' ? '♟' : '♙'
   end
 
-  # NOT FINISHED, only works for white
   def pawn_upgrade?(spot)
-    final_row = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
+    final_row = if @color == '♟'
+                  [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
+                else
+                  [[7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7]]
+                end
+
     return true if final_row.include?(spot)
 
     false
@@ -30,6 +34,11 @@ class Pawn < Piece
 
     false
   end
+
+  def can_attack_square?(board, start = @location, fin)
+    valid_move?(board, start, fin) && valid_spot?(board, fin)
+  end
+
 
   def move_forward(board, start, fin)
     if @color == '♙'

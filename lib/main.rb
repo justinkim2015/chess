@@ -15,5 +15,8 @@ game.place_pieces
 
 loop do
   game.take_turn
-  game.taken_pieces
 end
+
+# start = [6, 0]
+# fin = [4, 0]
+# game.move(start, fin)

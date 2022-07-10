@@ -226,6 +226,7 @@ describe Game do
         expect(game.valid_move?(start, fin)).to be true
       end
     end
+
     context 'When its invalid' do
       it 'returns false' do
         game.board.grid[0][0] = '♜'
@@ -242,6 +243,70 @@ describe Game do
       spot = [0, 0]
       piece = :pawn
       expect { game.replace_piece(spot, piece) }.to change { game.board.grid[0][0] }.from('♜').to('♟')
+    end
+  end
+
+  describe '#remove_piece_from_array?' do
+    it 'removes the piece' do
+      game.turn.taken_pieces = ['♜', '♜']
+      piece = '♜'
+      expect { game.remove_piece_from_array(piece) }.to change { game.turn.taken_pieces }.from( ['♜', '♜']).to( ['♜'])
+    end
+  end
+
+  describe '#castling' do
+    context 'castling left side' do
+      it 'moves the piece(white)' do
+        direction = 'left'
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 0]
+        game.board.grid[7][0] = '♜'
+        game.board.grid[7][3] = '♚'
+        expect { game.castling(direction) }.to change { game.board.grid[7][0] }.from('♜').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+      end
+
+      it 'moves the piece(black)' do
+        direction = 'left'
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 7]
+        game.board.grid[0][7] = '♜'
+        game.board.grid[0][3] = '♚'
+        expect { game.castling(direction) }.to change { game.board.grid[0][7] }.from('♜').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+      end
+    end
+
+    context 'castling right side' do
+      it 'moves the piece(white)' do
+        direction = 'right'
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][7] = '♜'
+        expect { game.castling(direction) }.to change { game.board.grid[7][7] }.from('♜').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+      end
+
+      it 'moves the piece(black)' do
+        direction = 'right'
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][3] = '♚'
+        game.board.grid[0][0] = '♜'
+        # expect { game.castling(direction) }.to change { game.board.grid[0][7] }.from('♜').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+        expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♖')
+      end
     end
   end
 end

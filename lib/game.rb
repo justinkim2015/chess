@@ -20,8 +20,56 @@ class Game
     @enemy = @turn == @player1 ? @player2 : @player1
   end
 
-  def taken_pieces
-    p @turn.taken_pieces
+  def castle_left
+    if @turn.color == 'White'
+      king_start = [7, 3]
+      king_fin = [7, 1]
+      rook_start = [7, 0]
+      rook_fin = [7, 2]
+    else
+      king_start = [0, 3]
+      king_fin = [0, 5]
+      rook_start = [0, 7]
+      rook_fin = [0, 4]
+    end
+    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
+
+    @turn.pieces[:king].position = king_fin
+    @turn.pieces[:rook].position = rook_fin
+    @board.grid[king_start[0]][king_start[1]] = ' '
+    @board.grid[rook_start[0]][rook_start[1]] = ' '
+    @board.grid[king_fin[0]][king_fin[1]] = @turn.pieces[:king].color
+    @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
+  end
+
+  def castle_right
+    if @turn.color == 'White'
+      king_start = [7, 3]
+      king_fin = [7, 5]
+      rook_start = [7, 7]
+      rook_fin = [7, 4]
+    else
+      king_start = [0, 3]
+      king_fin = [0, 1]
+      rook_start = [0, 0]
+      rook_fin = [0, 2]
+    end
+    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
+
+    @turn.pieces[:king].position = king_fin
+    @turn.pieces[:rook].position = rook_fin
+    @board.grid[king_start[0]][king_start[1]] = ' '
+    @board.grid[rook_start[0]][rook_start[1]] = ' '
+    @board.grid[king_fin[0]][king_fin[1]] = @turn.pieces[:king].color
+    @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
+  end
+
+  def castling(direction)
+    if direction.downcase == 'left'
+      castle_left
+    else
+      castle_right
+    end
   end
 
   def enemy_taken_pieces(result = [])
@@ -36,6 +84,10 @@ class Game
     board.grid[spot[0]][spot[1]] = word_to_unicode(@turn.color, piece.to_s)
   end
 
+  def remove_piece_from_array(piece)
+    @turn.taken_pieces.delete_at(@turn.taken_pieces.index(piece))
+  end
+
   # How to change piece
   def change_piece(spot)
     return unless @turn.pieces[:pawn].pawn_upgrade?(spot)
@@ -46,6 +98,7 @@ class Game
     piece = gets.chomp.downcase
     if pieces.include?(piece)
       replace_piece(spot, piece.to_sym)
+      remove_piece_from_array(piece)
       board.drawboard
     else
       puts 'Invalid choice, choose again'
@@ -100,7 +153,7 @@ class Game
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
       @turn.pieces[:pawn].move_pawn(@board, start, fin)
-      change_piece(fin)
+      change_piece(fin) if valid_move?(start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
       @turn.pieces[:king].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
@@ -216,9 +269,6 @@ class Game
     move(start, fin)
   end
 
-    # This might be a problem because I need to ID each piece by its number
-  # Actually no this is okay, because it only uses this string info to
-  # get the logic behind which piece it is.
   def unicode_to_word(unicode)
     possible_pieces = { ♙: 'pawn', ♕: 'queen', ♖: 'rook', ♘: 'knight', ♗: 'bishop',
                         ♟: 'pawn', ♛: 'queen', ♜: 'rook', ♞: 'knight', ♝: 'bishop' }
@@ -239,7 +289,6 @@ class Game
   def winner_message
     puts "Congrats #{@enemy.name} you are the winner!!!"
   end
-
 
   def convert(value)
     letter_value = value[0].ord

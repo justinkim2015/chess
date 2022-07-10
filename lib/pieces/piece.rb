@@ -8,6 +8,10 @@ class Piece
     @black_pieces = ['♔', '♕', '♖', '♗', '♘', '♙']
   end
 
+  def update_position(fin)
+    @position = fin
+  end
+
   def move(board, start, fin)
     return unless can_attack_square?(board, start, fin)
 

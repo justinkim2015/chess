@@ -20,6 +20,13 @@ class Game
     @enemy = @turn == @player1 ? @player2 : @player1
   end
 
+  # This checks if path is empty, next find a way to check if spot is being attacked.
+  def can_castle?(rook_spot)
+    return true if @turn.pieces[:rook].path_empty?(@board, @turn.pieces[:king].position, rook_spot)
+
+    false
+  end
+
   def castle_left
     if @turn.color == 'White'
       king_start = [7, 3]
@@ -64,6 +71,7 @@ class Game
     @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
   end
 
+  # Castling still doesn't check if it would put the king through check or if the path between two spots is empty
   def castling(direction)
     if direction.downcase == 'left'
       castle_left

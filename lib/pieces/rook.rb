@@ -36,25 +36,25 @@ class Rook < Piece
 
     if x.positive?
       (x - 1).times do
-        return false if board.grid[spot[0] + 1][spot[1]] != ' '
+        return false if board.grid[spot[0] + i][spot[1]] != ' '
 
         i += 1
       end
     elsif x.negative?
       (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - 1][spot[1]] != ' '
+        return false if board.grid[spot[0] - i][spot[1]] != ' '
 
         i += 1
       end
     elsif y.positive?
       (y - 1).times do
-        return false if board.grid[spot[0]][spot[1] + 1] != ' '
+        return false if board.grid[spot[0]][spot[1] + i] != ' '
 
         i += 1
       end
     elsif y.negative?
       (abs_val(y) - 1).times do
-        return false if board.grid[spot[0]][spot[1] - 1] != ' '
+        return false if board.grid[spot[0]][spot[1] - include?] != ' '
 
         i += 1
       end

@@ -309,4 +309,30 @@ describe Game do
       end
     end
   end
+
+  describe '#can_castle?' do
+    context 'path between king and rook is empty' do
+      it 'returns true' do
+        rook = [7, 7]
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][7] = '♜'
+        expect(game.can_castle?(rook)).to be true 
+      end
+    end
+
+    context 'path between king and rook is not empty' do
+      it 'returns false' do
+        rook = [7, 7]
+        game.turn.pieces[:king].position = [7, 3]
+        game.enemy.pieces[:rook].position = [7, 5]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][5] = '♖'
+        game.board.grid[7][7] = '♜'
+        expect(game.can_castle?(rook)).to be false
+      end
+    end
+  end
 end

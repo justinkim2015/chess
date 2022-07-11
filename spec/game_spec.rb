@@ -310,7 +310,7 @@ describe Game do
     end
   end
 
-  describe '#can_castle?' do
+  describe '#space_clear?' do
     context 'path between king and rook is empty' do
       it 'returns true' do
         rook = [7, 7]
@@ -318,7 +318,7 @@ describe Game do
         game.turn.pieces[:rook].position = [7, 7]
         game.board.grid[7][3] = '♚'
         game.board.grid[7][7] = '♜'
-        expect(game.can_castle?(rook)).to be true 
+        expect(game.space_clear?(rook)).to be true 
       end
     end
 
@@ -331,7 +331,33 @@ describe Game do
         game.board.grid[7][3] = '♚'
         game.board.grid[7][5] = '♖'
         game.board.grid[7][7] = '♜'
-        expect(game.can_castle?(rook)).to be false
+        expect(game.space_clear?(rook)).to be false
+      end
+    end
+
+    describe '#spots_safe?' do
+      context 'spots are not being attacked' do
+        it 'returns true' do
+          rook = [7, 7]
+          game.turn.pieces[:king].position = [7, 3]
+          game.turn.pieces[:rook].position = [7, 7]
+          game.board.grid[7][3] = '♚'
+          game.board.grid[7][7] = '♜'
+          # game.board.grid[0][5] = '♖'
+          expect(game.spots_safe?(rook)).to be true
+        end
+      end
+
+      context 'path between king and rook is not empty' do
+        it 'returns false' do
+          rook = [7, 7]
+          game.turn.pieces[:king].position = [7, 3]
+          game.turn.pieces[:rook].position = [7, 7]
+          game.board.grid[7][3] = '♚'
+          game.board.grid[7][7] = '♜'
+          game.board.grid[0][5] = '♖'
+          expect(game.spots_safe?(rook)).to be false
+        end
       end
     end
   end

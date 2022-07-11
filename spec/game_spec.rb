@@ -254,62 +254,6 @@ describe Game do
     end
   end
 
-  describe '#castling' do
-    context 'castling left side' do
-      it 'moves the piece(white)' do
-        direction = 'left'
-        game.turn.pieces[:king].position = [7, 3]
-        game.turn.pieces[:rook].position = [7, 0]
-        game.board.grid[7][0] = '♜'
-        game.board.grid[7][3] = '♚'
-        expect { game.castling(direction) }.to change { game.board.grid[7][0] }.from('♜').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
-      end
-
-      it 'moves the piece(black)' do
-        direction = 'left'
-        game.change_turn
-        game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 7]
-        game.board.grid[0][7] = '♜'
-        game.board.grid[0][3] = '♚'
-        expect { game.castling(direction) }.to change { game.board.grid[0][7] }.from('♜').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
-      end
-    end
-
-    context 'castling right side' do
-      it 'moves the piece(white)' do
-        direction = 'right'
-        game.turn.pieces[:king].position = [7, 3]
-        game.turn.pieces[:rook].position = [7, 7]
-        game.board.grid[7][3] = '♚'
-        game.board.grid[7][7] = '♜'
-        expect { game.castling(direction) }.to change { game.board.grid[7][7] }.from('♜').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
-      end
-
-      it 'moves the piece(black)' do
-        direction = 'right'
-        game.change_turn
-        game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 0]
-        game.board.grid[0][3] = '♚'
-        game.board.grid[0][0] = '♜'
-        # expect { game.castling(direction) }.to change { game.board.grid[0][7] }.from('♜').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
-        # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
-        expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♖')
-      end
-    end
-  end
-
   describe '#space_clear?' do
     context 'path between king and rook is empty' do
       it 'returns true' do
@@ -358,6 +302,96 @@ describe Game do
           game.board.grid[0][5] = '♖'
           expect(game.spots_safe?(rook)).to be false
         end
+      end
+    end
+  end
+
+  describe '#castle_left' do
+    it 'moves the piece(white)' do
+      game.turn.pieces[:king].position = [7, 3]
+      game.turn.pieces[:rook].position = [7, 0]
+      game.board.grid[7][0] = '♜'
+      game.board.grid[7][3] = '♚'
+      expect { game.castle_left }.to change { game.board.grid[7][0] }.from('♜').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+    end
+
+    it 'moves the piece(black)' do
+      game.change_turn
+      game.turn.pieces[:king].position = [0, 3]
+      game.turn.pieces[:rook].position = [0, 7]
+      game.board.grid[0][7] = '♜'
+      game.board.grid[0][3] = '♚'
+      expect { game.castle_left }.to change { game.board.grid[0][7] }.from('♜').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+    end
+  end
+
+  describe '#castle_right' do
+    it 'moves the piece(white)' do
+      game.turn.pieces[:king].position = [7, 3]
+      game.turn.pieces[:rook].position = [7, 7]
+      game.board.grid[7][3] = '♚'
+      game.board.grid[7][7] = '♜'
+      expect { game.castle_right }.to change { game.board.grid[7][7] }.from('♜').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][2] }.from(' ').to('♜')
+    end
+
+    it 'moves the piece(black)' do
+      game.change_turn
+      game.turn.pieces[:king].position = [0, 3]
+      game.turn.pieces[:rook].position = [0, 0]
+      game.board.grid[0][3] = '♚'
+      game.board.grid[0][0] = '♜'
+      # expect { game.castling(direction) }.to change { game.board.grid[0][7] }.from('♜').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][3] }.from('♚').to(' ')
+      # expect { game.castling(direction) }.to change { game.board.grid[0][1] }.from(' ').to('♚')
+      expect { game.castle_right }.to change { game.board.grid[0][2] }.from(' ').to('♖')
+    end
+  end
+
+  describe '#original_positions?' do
+    context 'king and rook are in original positions' do
+      it 'returns true(white)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][7] = '♜'
+        expect(game.original_positions?).to be true
+      end
+
+      it 'returns true(black)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][3] = '♚'
+        game.board.grid[0][0] = '♜'
+        expect(game.original_positions?).to be true
+      end
+    end
+
+    context 'king and rook are not in original positions' do
+      it 'returns false(white)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 6]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][6] = '♜'
+        expect(game.original_positions?).to be false
+      end
+
+      it 'returns false(black)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 5]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][5] = '♚'
+        game.board.grid[0][0] = '♜'
+        expect(game.original_positions?).to be false
       end
     end
   end

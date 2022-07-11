@@ -4,11 +4,13 @@ require_relative './pieces/pawn'
 require_relative './pieces/queen'
 require_relative './pieces/rook'
 require_relative './pieces/knight'
+require_relative 'castling'
 require 'pry'
 
 # for some reason rook from a7 -> c7 makes the rook vanish
 
 class Game
+  include Castling
   attr_accessor :board, :player1, :player2, :turn, :enemy
 
   def initialize
@@ -18,116 +20,6 @@ class Game
     @turn = @player1
     @turn_count = 0
     @enemy = @turn == @player1 ? @player2 : @player1
-  end
-
-  # This checks if path is empty, next find a way to check if spot is being attacked.
-  def space_clear?(rook_spot)
-    return true if @turn.pieces[:rook].path_empty?(@board, @turn.pieces[:king].position, rook_spot)
-
-    false
-  end
-
-  def spots_safe?(rook_spot)
-    spots = @turn.pieces[:rook].find_path(@turn.pieces[:king].position, rook_spot)
-    spots.each do |spot|
-      return false if spot_being_attacked?(spot)
-    end
-    true
-  end
-
-  def original_positions_left?
-    if @turn.color == 'White'
-      king_start = [7, 3]
-      rook_start = [7, 0]
-    else
-      king_start = [0, 3]
-      rook_start = [0, 7]
-    end
-    return true if @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
-
-    false
-  end
-
-  def original_positions_right?
-    if @turn.color == 'White'
-      king_start = [7, 3]
-      rook_start = [7, 7]
-    else
-      king_start = [0, 3]
-      rook_start = [0, 0]
-    end
-    return true if @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
-
-    false
-  end
-
-  def can_castle?
-    return true if space_clear?(@turn.pieces[:rook].position) && spots_safe?(@turn.pieces[:rook].position) ||
-                   space_clear?(@turn.pieces[:rook2].position) && spots_safe?(@turn.pieces[:rook2].position)
-
-    false
-  end
-  
-  def castle_left
-    if @turn.color == 'White'
-      king_start = [7, 3]
-      king_fin = [7, 1]
-      rook_start = [7, 0]
-      rook_fin = [7, 2]
-    else
-      king_start = [0, 3]
-      king_fin = [0, 5]
-      rook_start = [0, 7]
-      rook_fin = [0, 4]
-    end
-    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
-
-    @turn.pieces[:king].position = king_fin
-    @turn.pieces[:rook].position = rook_fin
-    @board.grid[king_start[0]][king_start[1]] = ' '
-    @board.grid[rook_start[0]][rook_start[1]] = ' '
-    @board.grid[king_fin[0]][king_fin[1]] = @turn.pieces[:king].color
-    @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
-  end
-
-  def castle_right
-    if @turn.color == 'White'
-      king_start = [7, 3]
-      king_fin = [7, 5]
-      rook_start = [7, 7]
-      rook_fin = [7, 4]
-    else
-      king_start = [0, 3]
-      king_fin = [0, 1]
-      rook_start = [0, 0]
-      rook_fin = [0, 2]
-    end
-    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
-
-    @turn.pieces[:king].position = king_fin
-    @turn.pieces[:rook].position = rook_fin
-    @board.grid[king_start[0]][king_start[1]] = ' '
-    @board.grid[rook_start[0]][rook_start[1]] = ' '
-    @board.grid[king_fin[0]][king_fin[1]] = @turn.pieces[:king].color
-    @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
-  end
-
-  def castling(direction)
-    if direction.downcase == 'left'
-      castle_left
-    else
-      castle_right
-    end
-  end
-
-  def castle
-    puts 'Would you like to castle? (y/n)'
-    y_or_n = gets.chomp
-    return unless y_or_n == 'y'
-
-    puts 'Would you like to castle left or right?'
-    l_or_r = gets.chomp
-
   end
 
   def enemy_taken_pieces(result = [])
@@ -176,9 +68,7 @@ class Game
       puts "#{@turn.name} is being checked by #{piece} at #{loc}"
       escape_check
     else
-      if can_castle? == true
-        # DO CASTLE STUFF
-      end
+      castle if can_castle? == true
       start = valid_input_start
       puts 'Where would you like to move it?'
       fin = valid_input_fin

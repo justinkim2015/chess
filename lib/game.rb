@@ -17,7 +17,7 @@ class Game
     @player1 = Player.new('Player 1', 'White')
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
-    @turn = @player1
+    @turn = @player2
     @turn_count = 0
     @enemy = @turn == @player1 ? @player2 : @player1
   end
@@ -67,15 +67,24 @@ class Game
       loc = info[:position]
       puts "#{@turn.name} is being checked by #{piece} at #{loc}"
       escape_check
+    elsif can_castle?
+      puts 'Would you like to castle? (y/n)'
+      y_or_n = ' '
+      y_or_n = gets.chomp until %w[y n].include?(y_or_n)
+      y_or_n == 'y' ? castle : normal_move
     else
-      castle if can_castle? == true
-      start = valid_input_start
-      puts 'Where would you like to move it?'
-      fin = valid_input_fin
-      validated_move(start, fin)
-      change_turn if board.grid[start[0]][start[1]] == ' '
+      normal_move
     end
     @turn_count += 1
+  end
+
+  def normal_move
+    puts 'Please select a piece!'
+    start = valid_input_start
+    puts 'Where would you like to move it?'
+    fin = valid_input_fin
+    validated_move(start, fin)
+    change_turn if board.grid[start[0]][start[1]] == ' '
   end
 
   def escape_check
@@ -103,8 +112,12 @@ class Game
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight].color
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
-      @turn.pieces[:pawn].move_pawn(@board, start, fin)
+      # THIS IS THE VALID MOVE CALL THATS MESSING IT UP GOT IT
+      # I think changing the order of these two lines should fix it issue, it 
+      # might cause more issues in the future with upgrading pieces
+      # so i'll leave this comment here for now
       change_piece(fin) if valid_move?(start, fin)
+      @turn.pieces[:pawn].move_pawn(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:king].color
       @turn.pieces[:king].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:queen].color
@@ -203,7 +216,11 @@ class Game
   end
 
   def find_piece(spot)
-    piece = board.grid[spot[0]][spot[1]]
+    piece = @board.grid[spot[0]][spot[1]]
+    # p piece
+    # binding.pry
+    # This is returning nil because validated move is moving the piece out of
+    # the spot before calling unicode_to_word only for pawns tho
     unicode_to_word(piece).to_sym
   end
 

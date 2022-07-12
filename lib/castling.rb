@@ -94,7 +94,6 @@ module Castling
       rook_start = [0, 7]
       rook_fin = [0, 4]
     end
-    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
 
     @turn.pieces[:king].position = king_fin
     @turn.pieces[:rook].position = rook_fin
@@ -116,7 +115,6 @@ module Castling
       rook_start = [0, 0]
       rook_fin = [0, 2]
     end
-    return unless @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
 
     @turn.pieces[:king].position = king_fin
     @turn.pieces[:rook].position = rook_fin
@@ -126,23 +124,9 @@ module Castling
     @board.grid[rook_fin[0]][rook_fin[1]] = @turn.pieces[:rook].color
   end
 
-  # def castle_direction
-  #   puts 'Would you like to castle left or right?'
-  #   direction = gets.chomp
-  #   case direction.downcase
-  #   when 'left'
-  #     castle_left
-  #   when 'right'
-  #     castle_right
-  #   else
-  #     puts 'Please input your selection again!'
-  #     castle_direction
-  #   end
-  # end
-
   def castle_direction(direction = ' ')
     puts 'Would you like to castle left or right?'
-    direction = gets.chomp until direction == 'left' || direction == 'left'
+    direction = gets.chomp until %w[left right].include?(direction)
     if direction.downcase == 'left' && can_castle_left?
       castle_left
     elsif direction.downcase == 'right' && can_castle_right?
@@ -154,10 +138,7 @@ module Castling
   end
 
   def castle(y_or_n = ' ')
-    puts 'Would you like to castle? (y/n)'
-    y_or_n = gets.chomp until y_or_n == 'y' || y_or_n == 'n'
-    return unless y_or_n == 'y'
-
     castle_direction
+    change_turn
   end
 end

@@ -54,7 +54,7 @@ class Rook < Piece
       end
     elsif y.negative?
       (abs_val(y) - 1).times do
-        return false if board.grid[spot[0]][spot[1] - include?] != ' '
+        return false if board.grid[spot[0]][spot[1] - i] != ' '
 
         i += 1
       end

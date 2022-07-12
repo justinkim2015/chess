@@ -19,12 +19,4 @@ describe Player do
   before do
     allow(rook).to receive(:color) { 'Black' }
   end
-
-  describe '#make_pieces' do
-    xit 'makes pieces' do
-      color = 'Black'
-      expect(rook).to receive(:new).with(color)
-      player.make_pieces
-    end
-  end
 end

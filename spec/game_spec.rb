@@ -395,4 +395,42 @@ describe Game do
       end
     end
   end
+
+  describe '#can_castle_left?' do
+    it 'moves the piece(white)' do
+      game.turn.pieces[:king].position = [7, 3]
+      game.turn.pieces[:rook].position = [7, 0]
+      game.board.grid[7][0] = '♜'
+      game.board.grid[7][3] = '♚'
+      expect(game.can_castle_left?).to be true
+    end
+
+    it 'moves the piece(black)' do
+      game.change_turn
+      game.turn.pieces[:king].position = [0, 3]
+      game.turn.pieces[:rook].position = [0, 7]
+      game.board.grid[0][7] = '♜'
+      game.board.grid[0][3] = '♚'
+      expect(game.can_castle_left?).to be true
+    end
+  end
+
+  describe '#can_castle_right?' do
+    it 'moves the piece(white)' do
+      game.turn.pieces[:king].position = [7, 3]
+      game.turn.pieces[:rook].position = [7, 7]
+      game.board.grid[7][3] = '♚'
+      game.board.grid[7][7] = '♜'
+      expect(game.can_castle_right?).to be true
+    end
+
+    it 'moves the piece(black)' do
+      game.change_turn
+      game.turn.pieces[:king].position = [0, 3]
+      game.turn.pieces[:rook].position = [0, 0]
+      game.board.grid[0][3] = '♚'
+      game.board.grid[0][0] = '♜'
+      expect(game.can_castle_right?).to be true
+    end
+  end
 end

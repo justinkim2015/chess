@@ -1,4 +1,8 @@
+require 'pry'
+
 module Castling
+  # if i try to castle after moving a piece it doesnt work
+
   # This checks if path is empty, next find a way to check if spot is being attacked.
   def space_clear?(rook_spot)
     return true if @turn.pieces[:rook].path_empty?(@board, @turn.pieces[:king].position, rook_spot)
@@ -13,29 +17,33 @@ module Castling
     end
     true
   end
-  
+
   def original_positions_left?
+    rook = @turn.color == 'White' ? :rook : :rook2
+
     if @turn.color == 'White'
       king_start = [7, 3]
-      rook_start = [7, 0]
+      rook_start = [7, 0] # rook
     else
       king_start = [0, 3]
-      rook_start = [0, 7]
+      rook_start = [0, 7] # rook2
     end
-    return true if @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
+    return true if @turn.pieces[:king].position == king_start && @turn.pieces[rook].position == rook_start
 
     false
   end
 
   def original_positions_right?
+    rook = @turn.color == 'White' ? :rook2 : :rook
+
     if @turn.color == 'White'
       king_start = [7, 3]
-      rook_start = [7, 7]
+      rook_start = [7, 7] # rook2
     else
       king_start = [0, 3]
-      rook_start = [0, 0]
+      rook_start = [0, 0] # rook
     end
-    return true if @turn.pieces[:king].position == king_start && @turn.pieces[:rook].position == rook_start
+    return true if @turn.pieces[:king].position == king_start && @turn.pieces[rook].position == rook_start
 
     false
   end
@@ -59,24 +67,20 @@ module Castling
   end
 
   def can_castle_left?
-    return true if space_clear?(@turn.pieces[:rook].position) &&
-                   spots_safe?(@turn.pieces[:rook].position) &&
-                   original_positions_left? ||
+    rook = @turn.color == 'White' ? :rook : :rook2
 
-                   space_clear?(@turn.pieces[:rook2].position) &&
-                   spots_safe?(@turn.pieces[:rook2].position) &&
+    return true if space_clear?(@turn.pieces[rook].position) &&
+                   spots_safe?(@turn.pieces[rook].position) &&
                    original_positions_left?
 
     false
   end
 
   def can_castle_right?
-    return true if space_clear?(@turn.pieces[:rook].position) &&
-                   spots_safe?(@turn.pieces[:rook].position) &&
-                   original_positions_right? ||
+    rook = @turn.color == 'White' ? :rook2 : :rook
 
-                   space_clear?(@turn.pieces[:rook2].position) &&
-                   spots_safe?(@turn.pieces[:rook2].position) &&
+    return true if space_clear?(@turn.pieces[rook].position) &&
+                   spots_safe?(@turn.pieces[rook].position) &&
                    original_positions_right?
 
     false
@@ -137,7 +141,7 @@ module Castling
     end
   end
 
-  def castle(y_or_n = ' ')
+  def castle
     castle_direction
     change_turn
   end

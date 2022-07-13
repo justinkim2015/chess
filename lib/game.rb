@@ -17,7 +17,7 @@ class Game
     @player1 = Player.new('Player 1', 'White')
     @player2 = Player.new('Player 2', 'Black')
     @board = Board.new
-    @turn = @player2
+    @turn = @player1
     @turn_count = 0
     @enemy = @turn == @player1 ? @player2 : @player1
   end
@@ -113,7 +113,7 @@ class Game
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
       # THIS IS THE VALID MOVE CALL THATS MESSING IT UP GOT IT
-      # I think changing the order of these two lines should fix it issue, it 
+      # I think changing the order of these two lines should fix it issue, it
       # might cause more issues in the future with upgrading pieces
       # so i'll leave this comment here for now
       change_piece(fin) if valid_move?(start, fin)
@@ -300,12 +300,12 @@ class Game
   # Maybe I can use blocks to clean this up
   def place_pieces
     board.grid[0][0] = player2.pieces[:rook].color
-    board.grid[0][1] = player2.pieces[:knight].color
-    board.grid[0][2] = player2.pieces[:bishop].color
-    board.grid[0][4] = player2.pieces[:queen].color
+    # board.grid[0][1] = player2.pieces[:knight].color
+    # board.grid[0][2] = player2.pieces[:bishop].color
+    # board.grid[0][4] = player2.pieces[:queen].color
     board.grid[0][3] = player2.pieces[:king].color
-    board.grid[0][5] = player2.pieces[:bishop2].color
-    board.grid[0][6] = player2.pieces[:knight2].color
+    # board.grid[0][5] = player2.pieces[:bishop2].color
+    # board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color
     board.grid[1][0] = player2.pieces[:pawn].color
     board.grid[1][1] = player2.pieces[:pawn2].color
@@ -317,20 +317,20 @@ class Game
     board.grid[1][7] = player2.pieces[:pawn8].color
 
     board.grid[7][0] = player1.pieces[:rook].color
-    board.grid[7][1] = player1.pieces[:knight].color
-    board.grid[7][2] = player1.pieces[:bishop].color
-    board.grid[7][4] = player1.pieces[:queen].color
+    # board.grid[7][1] = player1.pieces[:knight].color
+    # board.grid[7][2] = player1.pieces[:bishop].color
+    # board.grid[7][4] = player1.pieces[:queen].color
     board.grid[7][3] = player1.pieces[:king].color
-    board.grid[7][5] = player1.pieces[:bishop2].color
-    board.grid[7][6] = player1.pieces[:knight2].color
+    # board.grid[7][5] = player1.pieces[:bishop2].color
+    # board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
-    # board.grid[6][0] = player1.pieces[:pawn].color
-    # board.grid[6][1] = player1.pieces[:pawn2].color
-    # board.grid[6][2] = player1.pieces[:pawn3].color
-    # board.grid[6][3] = player1.pieces[:pawn4].color
-    # board.grid[6][4] = player1.pieces[:pawn5].color
-    # board.grid[6][5] = player1.pieces[:pawn6].color
-    # board.grid[6][6] = player1.pieces[:pawn7].color
-    # board.grid[6][7] = player1.pieces[:pawn8].color
+    board.grid[6][0] = player1.pieces[:pawn].color
+    board.grid[6][1] = player1.pieces[:pawn2].color
+    board.grid[6][2] = player1.pieces[:pawn3].color
+    board.grid[6][3] = player1.pieces[:pawn4].color
+    board.grid[6][4] = player1.pieces[:pawn5].color
+    board.grid[6][5] = player1.pieces[:pawn6].color
+    board.grid[6][6] = player1.pieces[:pawn7].color
+    board.grid[6][7] = player1.pieces[:pawn8].color
   end
 end

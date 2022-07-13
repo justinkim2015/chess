@@ -397,40 +397,159 @@ describe Game do
   end
 
   describe '#can_castle_left?' do
-    it 'moves the piece(white)' do
-      game.turn.pieces[:king].position = [7, 3]
-      game.turn.pieces[:rook].position = [7, 0]
-      game.board.grid[7][0] = '♜'
-      game.board.grid[7][3] = '♚'
-      expect(game.can_castle_left?).to be true
+    context 'castling conditions are met' do
+      it 'returns true(white)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 0]
+        game.board.grid[7][0] = '♜'
+        game.board.grid[7][3] = '♚'
+        expect(game.can_castle_left?).to be true
+      end
+
+      it 'returns true(black)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 7]
+        game.board.grid[0][7] = '♖'
+        game.board.grid[0][3] = '♔'
+        expect(game.can_castle_left?).to be true
+      end
     end
 
-    it 'moves the piece(black)' do
-      game.change_turn
-      game.turn.pieces[:king].position = [0, 3]
-      game.turn.pieces[:rook].position = [0, 7]
-      game.board.grid[0][7] = '♜'
-      game.board.grid[0][3] = '♚'
-      expect(game.can_castle_left?).to be true
+    context 'castling conditions arent met' do
+      it 'returns false(white/not original position)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 0]
+        game.board.grid[7][0] = '♜'
+        game.board.grid[7][2] = '♚'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(white/enemy attacking)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 0]
+        game.enemy.pieces[:rook].position = [6, 2]
+        game.board.grid[7][0] = '♜'
+        game.board.grid[6][2] = '♖'
+        game.board.grid[7][3] = '♚'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(white/no space)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 0]
+        game.board.grid[7][0] = '♜'
+        game.board.grid[7][1] = '♜'
+        game.board.grid[7][3] = '♚'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/no space)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook2].position = [0, 7]
+        game.board.grid[0][7] = '♖'
+        game.board.grid[0][5] = '♖'
+        game.board.grid[0][3] = '♔'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/not original position)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook2].position = [0, 7]
+        game.board.grid[0][7] = '♖'
+        game.board.grid[0][2] = '♔'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/space attacked)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook2].position = [0, 7]
+        game.board.grid[0][7] = '♖'
+        game.board.grid[2][5] = '♜'
+        game.board.grid[0][3] = '♔'
+        expect(game.can_castle_left?).to be false
+      end
     end
   end
 
   describe '#can_castle_right?' do
-    it 'moves the piece(white)' do
-      game.turn.pieces[:king].position = [7, 3]
-      game.turn.pieces[:rook].position = [7, 7]
-      game.board.grid[7][3] = '♚'
-      game.board.grid[7][7] = '♜'
-      expect(game.can_castle_right?).to be true
+    context 'castling conditions are met' do
+      it 'returns true(white)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][7] = '♜'
+        expect(game.can_castle_right?).to be true
+      end
+
+      it 'returns true(black)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][3] = '♔'
+        game.board.grid[0][0] = '♖'
+        expect(game.can_castle_right?).to be true
+      end
     end
 
-    it 'moves the piece(black)' do
-      game.change_turn
-      game.turn.pieces[:king].position = [0, 3]
-      game.turn.pieces[:rook].position = [0, 0]
-      game.board.grid[0][3] = '♚'
-      game.board.grid[0][0] = '♜'
-      expect(game.can_castle_right?).to be true
+    context 'castling conditions arent met' do
+      it 'returns false(white/not original position)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][6] = '♜'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(white/enemy attacking)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[0][5] = '♖'
+        game.board.grid[7][7] = '♜'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(white/no space)' do
+        game.turn.pieces[:king].position = [7, 3]
+        game.turn.pieces[:rook].position = [7, 7]
+        game.board.grid[7][3] = '♚'
+        game.board.grid[7][5] = '♜'
+        game.board.grid[7][7] = '♜'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/no space)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][3] = '♔'
+        game.board.grid[0][1] = '♖'
+        game.board.grid[0][0] = '♖'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/not original position)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][2] = '♔'
+        game.board.grid[0][0] = '♖'
+        expect(game.can_castle_left?).to be false
+      end
+
+      it 'returns false(black/space attacked)' do
+        game.change_turn
+        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:rook].position = [0, 0]
+        game.board.grid[0][3] = '♔'
+        game.board.grid[7][2] = '♜'
+        game.board.grid[0][0] = '♖'
+        expect(game.can_castle_left?).to be false
+      end
     end
   end
 end

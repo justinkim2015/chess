@@ -525,7 +525,7 @@ describe Game do
       it 'returns false(black/no space)' do
         game.change_turn
         game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 0]
+        game.turn.pieces[:rook2].position = [0, 0]
         game.board.grid[0][3] = '♔'
         game.board.grid[0][1] = '♖'
         game.board.grid[0][0] = '♖'
@@ -535,7 +535,7 @@ describe Game do
       it 'returns false(black/not original position)' do
         game.change_turn
         game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 0]
+        game.turn.pieces[:rook2].position = [0, 0]
         game.board.grid[0][2] = '♔'
         game.board.grid[0][0] = '♖'
         expect(game.can_castle_left?).to be false
@@ -544,7 +544,7 @@ describe Game do
       it 'returns false(black/space attacked)' do
         game.change_turn
         game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 0]
+        game.turn.pieces[:rook2].position = [0, 0]
         game.board.grid[0][3] = '♔'
         game.board.grid[7][2] = '♜'
         game.board.grid[0][0] = '♖'

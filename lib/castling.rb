@@ -1,9 +1,6 @@
 require 'pry'
 
 module Castling
-  # if i try to castle after moving a piece it doesnt work
-
-  # This checks if path is empty, next find a way to check if spot is being attacked.
   def space_clear?(rook_spot)
     return true if @turn.pieces[:rook].path_empty?(@board, @turn.pieces[:king].position, rook_spot)
 

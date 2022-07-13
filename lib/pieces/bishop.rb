@@ -28,36 +28,10 @@ class Bishop < Piece
     result
   end
 
-  # Good enough for now, I want to refactor later
   def path_empty?(board, spot, piece)
-    x = piece[0] - spot[0]
-    y = piece[1] - spot[1]
-    i = 1
-
-    if x.positive? && y.positive?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif x.positive? && y.negative?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1] - i] != ' '
-
-        i += 1
-      end
-    elsif x.negative? && y.positive?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif x.negative? && y.negative?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1] - i] != ' '
-
-        i += 1
-      end
+    moves = find_path(piece, spot)
+    moves.each do |move|
+      return false if board.grid[move[0]][move[1]] != ' '
     end
     true
   end

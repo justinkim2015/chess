@@ -28,40 +28,6 @@ class Rook < Piece
     result
   end
 
-  # spot is spot im attacking / piece is location of actual piece
-  def path_empty?(board, spot, piece)
-    x = piece[0] - spot[0]
-    y = piece[1] - spot[1]
-    i = 1
-
-    if x.positive?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1]] != ' '
-
-        i += 1
-      end
-    elsif x.negative?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1]] != ' '
-
-        i += 1
-      end
-    elsif y.positive?
-      (y - 1).times do
-        return false if board.grid[spot[0]][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif y.negative?
-      (abs_val(y) - 1).times do
-        return false if board.grid[spot[0]][spot[1] - i] != ' '
-
-        i += 1
-      end
-    end
-    true
-  end
-
   def find_path(start, fin, path = [])
     x = fin[0] - start[0]
     y = fin[1] - start[1]

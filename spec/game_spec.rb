@@ -356,46 +356,6 @@ describe Game do
     end
   end
 
-  describe '#original_positions?' do
-    context 'king and rook are in original positions' do
-      it 'returns true(white)' do
-        game.turn.pieces[:king].position = [7, 3]
-        game.turn.pieces[:rook].position = [7, 7]
-        game.board.grid[7][3] = '♚'
-        game.board.grid[7][7] = '♜'
-        expect(game.original_positions?).to be true
-      end
-
-      it 'returns true(black)' do
-        game.change_turn
-        game.turn.pieces[:king].position = [0, 3]
-        game.turn.pieces[:rook].position = [0, 0]
-        game.board.grid[0][3] = '♚'
-        game.board.grid[0][0] = '♜'
-        expect(game.original_positions?).to be true
-      end
-    end
-
-    context 'king and rook are not in original positions' do
-      it 'returns false(white)' do
-        game.turn.pieces[:king].position = [7, 3]
-        game.turn.pieces[:rook].position = [7, 6]
-        game.board.grid[7][3] = '♚'
-        game.board.grid[7][6] = '♜'
-        expect(game.original_positions?).to be false
-      end
-
-      it 'returns false(black)' do
-        game.change_turn
-        game.turn.pieces[:king].position = [0, 5]
-        game.turn.pieces[:rook].position = [0, 0]
-        game.board.grid[0][5] = '♚'
-        game.board.grid[0][0] = '♜'
-        expect(game.original_positions?).to be false
-      end
-    end
-  end
-
   describe '#can_castle_left?' do
     context 'castling conditions are met' do
       it 'returns true(white)' do
@@ -456,7 +416,7 @@ describe Game do
 
       it 'returns false(black/not original position)' do
         game.change_turn
-        game.turn.pieces[:king].position = [0, 3]
+        game.turn.pieces[:king].position = [0, 2]
         game.turn.pieces[:rook2].position = [0, 7]
         game.board.grid[0][7] = '♖'
         game.board.grid[0][2] = '♔'

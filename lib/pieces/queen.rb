@@ -27,66 +27,6 @@ class Queen < Piece
     result
   end
 
-  # spot is where im attacking, piece is where the piece is
-  # SOMEWHERE IN HERE IS MESSING UP THE MAIN THING
-  def path_empty?(board, spot, piece)
-    x = piece[0] - spot[0]
-    y = piece[1] - spot[1]
-    i = 1
-
-    if x.positive? && y.positive?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif x.positive? && y.negative?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1] - i] != ' '
-
-        i += 1
-      end
-    elsif x.negative? && y.positive?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif x.negative? && y.negative?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1] - i] != ' '
-
-        i += 1
-      end
-    elsif x.positive?
-      (x - 1).times do
-        return false if board.grid[spot[0] + i][spot[1]] != ' '
-
-        i += 1
-      end
-    elsif x.negative?
-      (abs_val(x) - 1).times do
-        return false if board.grid[spot[0] - i][spot[1]] != ' '
-
-        i += 1
-      end
-    elsif y.positive?
-      (y - 1).times do
-        return false if board.grid[spot[0]][spot[1] + i] != ' '
-
-        i += 1
-      end
-    elsif y.negative?
-      (abs_val(y) - 1).times do
-        return false if board.grid[spot[0]][spot[1] - i] != ' '
-
-        i += 1
-      end
-    end
-
-    true
-  end
-
   def find_path(start, fin, path = [])
     x = fin[0] - start[0]
     y = fin[1] - start[1]

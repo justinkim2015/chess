@@ -268,20 +268,28 @@ class Game
     [shift_value_number, shift_value_letter]
   end
 
-  def valid_input_start
-    input = convert(gets.chomp)
+  def valid_input_start(input = 'placeholder')
+    until input.match(/[a-h][1-8]/)
+      input = gets.chomp
+      puts 'Invalid input, retry'
+    end
+    conversion = convert(input)
 
-    return input if input[0].between?(0, 7) && input[1].between?(0, 7) &&
-                    board.grid[input[0]][input[1]] != ' '
+    return conversion if conversion[0].between?(0, 7) && conversion[1].between?(0, 7) &&
+                         board.grid[conversion[0]][conversion[1]] != ' '
 
     puts 'INVALID SPACE'
     valid_input_start
   end
 
-  def valid_input_fin
-    input = convert(gets.chomp)
+  def valid_input_fin(input = 'placeholder')
+    until input.match(/[a-h][1-8]/)
+      input = gets.chomp
+      puts 'Invalid input, retry'
+    end
+    conversion = convert(input)
 
-    return input if input[0].between?(0, 7) && input[1].between?(0, 7)
+    return conversion if conversion[0].between?(0, 7) && conversion[1].between?(0, 7)
 
     puts 'INVALID SPACE'
     valid_input_fin

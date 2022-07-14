@@ -28,14 +28,6 @@ class Bishop < Piece
     result
   end
 
-  def path_empty?(board, spot, piece)
-    moves = find_path(piece, spot)
-    moves.each do |move|
-      return false if board.grid[move[0]][move[1]] != ' '
-    end
-    true
-  end
-
   def find_path(start, fin, path = [])
     x = fin[0] - start[0]
     y = fin[1] - start[1]

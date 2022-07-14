@@ -39,9 +39,9 @@ class Pawn < Piece
     valid_move?(board, start, fin) && valid_spot?(board, fin)
   end
 
-
   def move_forward(board, start, fin)
-    if @color == '♙'
+    case @color
+    when '♙'
       return true if moves(start).include?(fin) &&
                      !@white_pieces.include?(board.grid[fin[0]][fin[1]])
     else
@@ -52,7 +52,8 @@ class Pawn < Piece
   end
 
   def eat_diag(board, start, fin)
-    if @color == '♙'
+    case @color
+    when '♙'
       return true if @white_pieces.include?(board.grid[fin[0]][fin[1]]) &&
                      diag_moves(start).include?(fin)
     else

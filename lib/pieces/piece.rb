@@ -12,6 +12,14 @@ class Piece
     @position = fin
   end
 
+  def path_empty?(board, spot, piece)
+    moves = find_path(piece, spot)
+    moves.each do |move|
+      return false if board.grid[move[0]][move[1]] != ' '
+    end
+    true
+  end
+
   def move(board, start, fin)
     return unless can_attack_square?(board, start, fin)
 

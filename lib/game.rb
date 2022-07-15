@@ -38,7 +38,6 @@ class Game
     @turn.taken_pieces.delete_at(@turn.taken_pieces.index(piece))
   end
 
-  # How to change piece
   def change_piece(spot)
     return unless @turn.pieces[:pawn].pawn_upgrade?(spot)
 
@@ -112,7 +111,6 @@ class Game
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:knight].color
       @turn.pieces[:knight].move(@board, start, fin)
     elsif board.grid[start[0]][start[1]] == @turn.pieces[:pawn].color
-      # THIS IS THE VALID MOVE CALL THATS MESSING IT UP GOT IT
       # I think changing the order of these two lines should fix it issue, it
       # might cause more issues in the future with upgrading pieces
       # so i'll leave this comment here for now
@@ -176,8 +174,6 @@ class Game
     true
   end
 
-  # This is checking if a piece can be saved by being eaten by another
-  # WHICH PLAYER IS IT CHECKING
   def no_save_eating?
     return true unless check?
 
@@ -187,9 +183,6 @@ class Game
     true
   end
 
-  # This is currently only checking the movement of the king to escape check
-  # It does it by checking if the updated spot after calling move is being attacked
-  # If all possible moves are being attacked then its true
   def king_no_escape?
     start = @turn.pieces[:king].position
     fin = @turn.pieces[:king].moves(start)
@@ -217,10 +210,6 @@ class Game
 
   def find_piece(spot)
     piece = @board.grid[spot[0]][spot[1]]
-    # p piece
-    # binding.pry
-    # This is returning nil because validated move is moving the piece out of
-    # the spot before calling unicode_to_word only for pawns tho
     unicode_to_word(piece).to_sym
   end
 
@@ -247,7 +236,7 @@ class Game
   def word_to_unicode(color, word)
     if color == 'White'
       possible_pieces = {pawn: '♟', queen: '♛', rook: '♜', knight: '♞', bishop: '♝' }
-    else 
+    else
       possible_pieces = {pawn: '♙', queen: '♕', rook: '♖', knight: '♘', bishop: '♗'}
     end
     sym = word.downcase.to_sym
@@ -308,12 +297,12 @@ class Game
   # Maybe I can use blocks to clean this up
   def place_pieces
     board.grid[0][0] = player2.pieces[:rook].color
-    # board.grid[0][1] = player2.pieces[:knight].color
-    # board.grid[0][2] = player2.pieces[:bishop].color
-    # board.grid[0][4] = player2.pieces[:queen].color
+    board.grid[0][1] = player2.pieces[:knight].color
+    board.grid[0][2] = player2.pieces[:bishop].color
+    board.grid[0][4] = player2.pieces[:queen].color
     board.grid[0][3] = player2.pieces[:king].color
-    # board.grid[0][5] = player2.pieces[:bishop2].color
-    # board.grid[0][6] = player2.pieces[:knight2].color
+    board.grid[0][5] = player2.pieces[:bishop2].color
+    board.grid[0][6] = player2.pieces[:knight2].color
     board.grid[0][7] = player2.pieces[:rook2].color
     board.grid[1][0] = player2.pieces[:pawn].color
     board.grid[1][1] = player2.pieces[:pawn2].color
@@ -325,12 +314,12 @@ class Game
     board.grid[1][7] = player2.pieces[:pawn8].color
 
     board.grid[7][0] = player1.pieces[:rook].color
-    # board.grid[7][1] = player1.pieces[:knight].color
-    # board.grid[7][2] = player1.pieces[:bishop].color
-    # board.grid[7][4] = player1.pieces[:queen].color
+    board.grid[7][1] = player1.pieces[:knight].color
+    board.grid[7][2] = player1.pieces[:bishop].color
+    board.grid[7][4] = player1.pieces[:queen].color
     board.grid[7][3] = player1.pieces[:king].color
-    # board.grid[7][5] = player1.pieces[:bishop2].color
-    # board.grid[7][6] = player1.pieces[:knight2].color
+    board.grid[7][5] = player1.pieces[:bishop2].color
+    board.grid[7][6] = player1.pieces[:knight2].color
     board.grid[7][7] = player1.pieces[:rook2].color
     board.grid[6][0] = player1.pieces[:pawn].color
     board.grid[6][1] = player1.pieces[:pawn2].color

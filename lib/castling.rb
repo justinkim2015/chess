@@ -52,13 +52,7 @@ module Castling
   end
 
   def can_castle?
-    return true if space_clear?(@turn.pieces[:rook].position) &&
-                   spots_safe?(@turn.pieces[:rook].position) &&
-                   original_positions? ||
-
-                   space_clear?(@turn.pieces[:rook2].position) &&
-                   spots_safe?(@turn.pieces[:rook2].position) &&
-                   original_positions?
+    return true if can_castle_left? || can_castle_right?
 
     false
   end

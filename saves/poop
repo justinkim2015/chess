@@ -1,0 +1,712 @@
+--- !ruby/object:Game
+player1: &17 !ruby/object:Player
+  name: Player 1
+  color: White
+  pieces:
+    :rook: !ruby/object:Rook
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♜"
+      position:
+      - 7
+      - 0
+    :rook2: !ruby/object:Rook
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♜"
+      position:
+      - 7
+      - 7
+    :queen: !ruby/object:Queen
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♛"
+      position:
+      - 7
+      - 4
+    :king: !ruby/object:King
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♚"
+      in_check: false
+      position:
+      - 7
+      - 3
+    :bishop: !ruby/object:Bishop
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♝"
+      position:
+      - 7
+      - 2
+    :bishop2: !ruby/object:Bishop
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♝"
+      position:
+      - 7
+      - 5
+    :knight: !ruby/object:Knight
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♞"
+      position:
+      - 7
+      - 1
+    :knight2: !ruby/object:Knight
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♞"
+      position:
+      - 7
+      - 6
+    :pawn: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &1
+      - 6
+      - 0
+      position: *1
+      location:
+      - 4
+      - 0
+    :pawn2: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &2
+      - 6
+      - 1
+      position: *2
+    :pawn3: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &3
+      - 6
+      - 2
+      position: *3
+    :pawn4: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &4
+      - 6
+      - 3
+      position: *4
+    :pawn5: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &5
+      - 6
+      - 4
+      position: *5
+    :pawn6: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &6
+      - 6
+      - 5
+      position: *6
+    :pawn7: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &7
+      - 6
+      - 6
+      position: *7
+    :pawn8: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♟"
+      original_position: &8
+      - 6
+      - 7
+      position: *8
+  taken_pieces: []
+player2: &18 !ruby/object:Player
+  name: Player 2
+  color: Black
+  pieces:
+    :rook: !ruby/object:Rook
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♖"
+      position:
+      - 0
+      - 0
+    :rook2: !ruby/object:Rook
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♖"
+      position:
+      - 0
+      - 7
+    :queen: !ruby/object:Queen
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♕"
+      position:
+      - 0
+      - 4
+    :king: !ruby/object:King
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♔"
+      in_check: false
+      position:
+      - 0
+      - 3
+    :bishop: !ruby/object:Bishop
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♗"
+      position:
+      - 0
+      - 2
+    :bishop2: !ruby/object:Bishop
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♗"
+      position:
+      - 0
+      - 5
+    :knight: !ruby/object:Knight
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♘"
+      position:
+      - 0
+      - 1
+    :knight2: !ruby/object:Knight
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♘"
+      position:
+      - 0
+      - 6
+    :pawn: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &9
+      - 1
+      - 0
+      position: *9
+      location:
+      - 3
+      - 0
+    :pawn2: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &10
+      - 1
+      - 1
+      position: *10
+    :pawn3: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &11
+      - 1
+      - 2
+      position: *11
+    :pawn4: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &12
+      - 1
+      - 3
+      position: *12
+    :pawn5: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &13
+      - 1
+      - 4
+      position: *13
+    :pawn6: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &14
+      - 1
+      - 5
+      position: *14
+    :pawn7: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &15
+      - 1
+      - 6
+      position: *15
+    :pawn8: !ruby/object:Pawn
+      white_pieces:
+      - "♚"
+      - "♛"
+      - "♜"
+      - "♝"
+      - "♞"
+      - "♟"
+      black_pieces:
+      - "♔"
+      - "♕"
+      - "♖"
+      - "♗"
+      - "♘"
+      - "♙"
+      color: "♙"
+      original_position: &16
+      - 1
+      - 7
+      position: *16
+  taken_pieces: []
+board: !ruby/object:Board
+  grid:
+  - - "♖"
+    - "♘"
+    - "♗"
+    - "♔"
+    - "♕"
+    - "♗"
+    - "♘"
+    - "♖"
+  - - " "
+    - "♙"
+    - "♙"
+    - "♙"
+    - "♙"
+    - "♙"
+    - "♙"
+    - "♙"
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - "♙"
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - "♟"
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - "♟"
+    - "♟"
+    - "♟"
+    - "♟"
+    - "♟"
+    - "♟"
+    - "♟"
+  - - "♜"
+    - "♞"
+    - "♝"
+    - "♚"
+    - "♛"
+    - "♝"
+    - "♞"
+    - "♜"
+turn: *17
+turn_count: 2
+enemy: *18

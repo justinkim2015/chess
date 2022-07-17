@@ -11,6 +11,13 @@ require 'pry'
 
 game = Game.new
 
+gamefiles = game.load
+game = if gamefiles.nil?
+         Game.new
+       else
+         gamefiles
+       end
+
 game.place_pieces
 
 loop do

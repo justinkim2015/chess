@@ -6,11 +6,13 @@ require_relative './pieces/rook'
 require_relative './pieces/knight'
 require_relative 'castling'
 require 'pry'
+require_relative 'save'
 
 # for some reason rook from a7 -> c7 makes the rook vanish
 
 class Game
   include Castling
+  include Save
   attr_accessor :board, :player1, :player2, :turn, :enemy
 
   def initialize

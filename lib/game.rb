@@ -58,8 +58,6 @@ class Game
   end
 
   def take_turn
-    return winner_message if checkmate?
-
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
     if check?

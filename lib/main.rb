@@ -21,5 +21,10 @@ game = if gamefiles.nil?
 game.place_pieces
 
 loop do
+  if game.checkmate?
+    game.winner_message
+    break
+  end
+
   game.take_turn
 end

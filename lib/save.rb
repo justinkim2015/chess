@@ -18,20 +18,34 @@ module Save
   end
 
   def save
-    puts 'Save?'
-    resp = gets.chomp
-    if resp == 'y'
-      puts 'What\'s the file name?'
-      save_file(gets.chomp)
-    end
+    puts 'Save?(y/n)'
+    resp = gets.chomp until %w[y n].include?(resp)
+    return unless resp == 'y'
+
+    puts 'What\'s the file name?'
+    save_file(gets.chomp)
   end
 
   def load
-    puts 'Load?'
-    resp = gets.chomp
-    if resp == 'y'
-      puts 'What\'s the file name?'
-      load_file(gets.chomp)
+    puts 'Load?(y/n)'
+    resp = gets.chomp until %w[y n].include?(resp)
+    return unless resp == 'y'
+
+    puts 'SAVED FILES'
+    display_saves
+    puts 'What\'s the file name?'
+    file_name = gets.chomp until saved_file_list.include?(file_name)
+    load_file(file_name)
+  end
+
+  def saved_file_list
+    Dir.entries('/home/justin/chess/saves')
+  end
+
+  def display_saves
+    names = saved_file_list
+    names.each do |name|
+      puts name unless %w[. ..].include?(name)
     end
   end
 end

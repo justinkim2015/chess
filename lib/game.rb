@@ -58,26 +58,39 @@ class Game
   end
 
   def take_turn
+    save
     board.drawboard
     puts "Its #{@turn.name}'s turn!"
     if check?
-      info = which_piece_checking(@turn.pieces[:king].position)
-      piece = info[:piece]
-      loc = info[:position]
-      puts "#{@turn.name} is being checked by #{piece} at #{loc}"
-      escape_check
+      check_turn
     elsif can_castle?
-      puts 'Would you like to castle? (y/n)'
-      y_or_n = ' '
-      y_or_n = gets.chomp until %w[y n].include?(y_or_n)
-      y_or_n == 'y' ? castle : normal_move
+      castle_turn
     else
-      normal_move
+      normal_turn
     end
     @turn_count += 1
   end
 
-  def normal_move
+  def check_turn
+    info = which_piece_checking(@turn.pieces[:king].position)
+    piece = info[:piece]
+    loc = info[:position]
+    puts "#{@turn.name} is being checked by #{piece} at #{loc}"
+    escape_check
+  end
+
+  def castle_turn
+    puts 'Would you like to castle? (y/n)'
+    y_or_n = ' '
+    y_or_n = gets.chomp until %w[y n save].include?(y_or_n)
+    if y_or_n == 'save'
+      save
+      return
+    end
+    y_or_n == 'y' ? castle : normal_turn
+  end
+
+  def normal_turn
     puts 'Please select a piece!'
     start = valid_input_start
     puts 'Where would you like to move it?'
